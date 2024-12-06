@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import CommentIcon from '@mui/icons-material/Comment';
 import DownloadIcon from '@mui/icons-material/Download';
 import { posts } from '../data/posts';
-interface PostProps {
+export interface PostProps {
     post: {
         id: number,
         author: {

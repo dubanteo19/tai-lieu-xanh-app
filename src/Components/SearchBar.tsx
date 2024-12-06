@@ -12,7 +12,7 @@ const SeachBar = () => {
             justifyContent: "center",
             alignItems: "center"
         }}>
-            <SearchIcon sx={{ mr: 2 ,color:"white"}} onClick={() => {
+            <SearchIcon sx={{ mr: 2, color: "white" }} onClick={() => {
             }} />
             <InputBase
                 sx={{

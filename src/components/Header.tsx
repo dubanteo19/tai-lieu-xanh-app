@@ -1,6 +1,7 @@
 import { AppBar, Box, Stack, styled, Toolbar, Typography } from "@mui/material"
 import { NavLink } from "react-router-dom";
 import SeachBar from "./SearchBar";
+import logo from "../assets/logo.png";
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
     textDecoration: 'none',
     fontSize: 16,
@@ -31,16 +32,15 @@ export const Header = () => {
                     paddingY: 1,
                     paddingX: 30
                 }}>
-                    <StyledNavLink to={"/home"}>
-                        LOGO
-                    </StyledNavLink>
-                    <StyledNavLink to={"/home"}>
-                        TRANG CHỦ
-                    </StyledNavLink>
-                    <StyledNavLink to={"/home"}>
-                    </StyledNavLink>
+                    <NavLink to="/">
+
+                        <Box sx={{
+                            width: 150,
+                            height: 50
+                        }} component="img" src={logo} />
+                    </NavLink>
                     <SeachBar />
-                    <Stack sx={{ ml: 10 }} direction="row">
+                    <Stack sx={{ ml: 35 }} direction="row">
                         <StyledNavLink to={"/register"}>
                             ĐĂNG KÝ
                         </StyledNavLink>

@@ -15,11 +15,7 @@ interface UserSpeedDialProps {
 }
 
 const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
-    const [isExpanded, setIsExpanded] = useState(true);
     const [selectedComponent, setSelectedComponent] = useState<string>('UserProfile');
-    const handleToggle = () => {
-        setIsExpanded(!isExpanded);
-    };
 
     const handleItemClick = (componentName: string) => {
         setSelectedComponent(componentName);
@@ -31,10 +27,7 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
     return (
         <Box className="UserProfile">
             <div className="left">
-                <Fab className="Fab" size="small" color="secondary" aria-label="add" onClick={handleToggle}>
-                    {isExpanded ? <RemoveIcon /> : <AddIcon />}
-                </Fab>
-                <Box className={isExpanded ? 'expanded' : 'collapsed'} sx={{ width: '100%', bgcolor: 'background.paper' }} style={{ display: isExpanded ? 'block' : 'none' }}>
+                <Box sx={{ width: '100%', bgcolor: 'background.paper' }} >
                     <nav aria-label="main mailbox folders">
                         <List>
                             <ListItem disablePadding sx={{ my: 2 }}>

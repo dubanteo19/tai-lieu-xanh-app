@@ -1,9 +1,9 @@
 import { Avatar, Box, Button, Grid2, Stack, Typography } from '@mui/material'
 import React from 'react'
-import RightPanel from '../Components/RightPanel'
-import PostList from '../Components/PostList'
-import { TopDocument } from '../Components/TopDocument'
-import { Detail } from '../Components/PostDetail/Detail'
+import RightPanel from '../components/RightPanel'
+import PostList from '../components/PostList'
+import { TopDocument } from '../components/TopDocument'
+import { Detail } from '../components/PostDetail/Detail'
 import { postDetail } from '../data/postDetail'
 const PostDetail = () => {
     return (

@@ -1,4 +1,4 @@
-import { DetailProps } from "../Components/PostDetail/Detail";
+import { DetailProps } from "../components/PostDetail/Detail";
 
 export const postDetail: DetailProps = {
     id: 1,

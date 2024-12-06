@@ -1,6 +1,6 @@
 import { Box, Grid, Grid2, Stack } from "@mui/material"
-import PostList from "../Components/PostList"
-import RightPanel from "../Components/RightPanel"
+import PostList from "../components/PostList"
+import RightPanel from "../components/RightPanel"
 
 const Home = () => {
     return (

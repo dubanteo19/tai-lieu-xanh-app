@@ -7,6 +7,7 @@ import ChangePassword from '../components/User/ChangePassword';
 import MyFriends from '../components/User/MyFriends';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { FriendRequest } from '../components/User/FriendRequest';
 const User = () => {
     const [selectedComponent, setSelectedComponent] = useState('UserProfile');
     const [isExpanded, setIsExpanded] = useState(true);
@@ -18,27 +19,27 @@ const User = () => {
     };
     return (
         <Box>
-            <Box sx={{ paddingX: 10, paddingY: 10 }
+            <Box sx={{ paddingX: 10, paddingY: 3 }
             }>
                 <Box sx={{ display: 'flex', width: '100%' }}>
                     <Fab className="Fab" size="small" color="secondary" aria-label="add" onClick={handleToggle}>
                         {isExpanded ? <RemoveIcon /> : <AddIcon />}
                     </Fab>
                     <Box sx={{
+                        flex: 3,
                         display: isExpanded ? 'block' : "none",
                         padding: '10px',
-                        transition: "flex 0.3s ease"
                     }}>
                         <UserSpeedDial onComponentChange={handleComponentChange} />
                     </Box>
                     < Box sx={{
-                        flex: 12,
+                        flex: isExpanded ? 12 : 10,
                         padding: '10px',
-                        transition: "flex 0.3s ease"
                     }}>
                         {selectedComponent === 'UserProfile' && <UserProfile />}
                         {selectedComponent === 'MyPosts' && <MyPosts />}
                         {selectedComponent === 'MyFriends' && <MyFriends />}
+                        {selectedComponent === 'FriendRequest' && <FriendRequest />}
                         {selectedComponent === 'ChangePassword' && <ChangePassword />}
                     </Box>
                 </Box>

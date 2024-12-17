@@ -1,28 +1,30 @@
-import { Avatar, Box, Button, Grid2, Stack, Typography } from '@mui/material'
-import React from 'react'
-import RightPanel from '../Components/RightPanel'
-import PostList from '../Components/PostList'
-import { TopDocument } from '../Components/TopDocument'
-import { Detail } from '../Components/PostDetail/Detail'
-import { postDetail } from '../data/postDetail'
+import { Avatar, Box, Button, Grid2, Stack, Typography } from "@mui/material";
+import { TopDocument, RelatedDocument } from "../components/TopDocument";
+import { Detail } from "../components/PostDetail/Detail";
+import { postDetail } from "../data/postDetail";
 const PostDetail = () => {
-    return (
-        <Grid2 sx={{
-            bgcolor: "secondary.main",
-            paddingY: 10,
-            paddingX: 30,
-            direction: "row"
-        }} container spacing={2}>
-            <Grid2 size={7} >
-                <Detail post={postDetail} />
-            </Grid2>
-            <Grid2 size={4}>
-                <Stack spacing={3}>
-                    <TopDocument />
-                </Stack >
-            </Grid2>
-        </Grid2>
-    )
-}
+  return (
+    <Grid2
+      sx={{
+        bgcolor: "secondary.main",
+        paddingY: 5,
+        paddingX: 30,
+        direction: "row",
+      }}
+      container
+      spacing={2}
+    >
+      <Grid2 size={7}>
+        <Detail post={postDetail} />
+      </Grid2>
+      <Grid2 size={4} position="sticky" top="70px" alignSelf="start">
+        <Stack spacing={3}>
+          <TopDocument />
+          <RelatedDocument />
+        </Stack>
+      </Grid2>
+    </Grid2>
+  );
+};
 
-export default PostDetail
+export default PostDetail;

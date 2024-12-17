@@ -1,11 +1,12 @@
 import { Box, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-const SeachBar = () => {
+const SeachBar = ({ color = "white" }) => {
   return (
     <Box
       sx={{
         marginX: 2,
-        border: "1px solid rgba(255,255,255,0.8)",
+        border: `1px solid `,
+        borderColor: color,
         borderRadius: 2,
         height: 40,
         paddingX: 2,
@@ -14,13 +15,13 @@ const SeachBar = () => {
         alignItems: "center",
       }}
     >
-      <SearchIcon sx={{ mr: 2, color: "white" }} onClick={() => { }} />
+      <SearchIcon sx={{ mr: 2, color: color }} onClick={() => { }} />
       <InputBase
         sx={{
           width: 250,
-          color: "white",
+          color: color,
           "input::placeholder": {
-            color: "white",
+            color: color,
             opacity: 1,
           },
         }}

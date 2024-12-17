@@ -26,7 +26,7 @@ export const navData = [
   },
   {
     title: "Bình luận",
-    path: "/admin/user",
+    path: "/admin/comment",
     icon: CommentIcon,
   },
 ];

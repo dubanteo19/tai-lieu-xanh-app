@@ -1,11 +1,12 @@
 import { Stack, Typography } from "@mui/material";
 import SearchBar from "../../components/SearchBar";
-import { UserTable } from "../components/user/UserTable";
-export const UserManager = () => {
+import { CommentTable } from "../components/comment/CommentTable";
+import { comments } from "../data/comments";
+export const CommentManager = () => {
   return (
     <Stack sx={{ px: 4 }}>
       <Typography fontWeight="bold" variant="h5">
-        Quản lý nguoi dung
+        Quản lý bình luận
       </Typography>
       <Stack
         direction="row"
@@ -17,8 +18,9 @@ export const UserManager = () => {
         <Stack>
           <SearchBar color="primary.main" />
         </Stack>
+        <Stack direction="row" spacing={2}></Stack>
       </Stack>
-      <UserTable />
+      <CommentTable comments={comments} />
     </Stack>
   );
 };

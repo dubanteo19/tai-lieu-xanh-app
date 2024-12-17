@@ -12,6 +12,8 @@ import { AdminLayout } from "./admin/AdminLayout";
 import { MDashboard } from "./admin/page/MDashboard";
 import { PostManager } from "./admin/page/PostManager";
 import { MajorManager } from "./admin/page/MajorManager";
+import { UserManager } from "./admin/page/UserManager";
+import { CommemtManager, CommentManager } from "./admin/page/CommentManager";
 const theme = createTheme({
   palette: {
     primary: {
@@ -46,6 +48,8 @@ function App() {
             <Route index element={<MDashboard />} />
             <Route path="post" element={<PostManager />} />
             <Route path="major" element={<MajorManager />} />
+            <Route path="user" element={<UserManager />} />
+            <Route path="comment" element={<CommentManager />} />
           </Route>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

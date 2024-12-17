@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./page/Layout";
 import Home from "./page/Home";
-import { colors, createTheme, Stack, ThemeProvider } from "@mui/material";
+import { colors, createTheme, ThemeProvider } from "@mui/material";
 import { Register } from "./page/Register";
 import { Login } from "./page/Login";
 import PostDetail from "./page/PostDetail";
@@ -10,6 +10,7 @@ import User from "./page/User";
 import { NewDoc } from "./page/NewDoc";
 import { AdminLayout } from "./admin/AdminLayout";
 import { MDashboard } from "./admin/page/MDashboard";
+import { PostManager } from "./admin/page/PostManager";
 const theme = createTheme({
   palette: {
     primary: {
@@ -42,6 +43,7 @@ function App() {
         <Routes>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<MDashboard />} />
+            <Route path="post" element={<PostManager />} />
           </Route>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

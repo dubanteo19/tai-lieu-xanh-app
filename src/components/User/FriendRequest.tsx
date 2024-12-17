@@ -20,7 +20,11 @@ const FriendRequestCardItem: React.FC<FriendRequestCardItemProps> = (props) => {
       <Button variant="contained" sx={{ color: "white", fontWeight: "bold" }}>
         Xác nhận
       </Button>
-      <Button variant="contained" color="secondary" sx={{ color: "black", fontWeight: "bold" }}>
+      <Button
+        variant="contained"
+        color="secondary"
+        sx={{ color: "black", fontWeight: "bold" }}
+      >
         Xoá
       </Button>
     </Stack>

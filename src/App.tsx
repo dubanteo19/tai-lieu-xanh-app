@@ -8,16 +8,22 @@ import { Login } from "./page/Login";
 import PostDetail from "./page/PostDetail";
 import User from "./page/User";
 import { NewDoc } from "./page/NewDoc";
+import { AdminLayout } from "./admin/AdminLayout";
+import { MDashboard } from "./admin/page/MDashboard";
 const theme = createTheme({
   palette: {
     primary: {
+      main: colors.lightGreen[400],
+      darker: colors.lightGreen[900],
+    },
+    mSecondary: {
       main: colors.lightGreen[400],
     },
     secondary: {
       main: colors.grey[200],
     },
     text: {
-      secondary: colors.grey[400],
+      secondary: colors.grey[500],
     },
     background: {
       default: "#fff",
@@ -34,6 +40,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<MDashboard />} />
+          </Route>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />

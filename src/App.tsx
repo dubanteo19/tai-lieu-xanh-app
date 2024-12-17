@@ -11,6 +11,7 @@ import { NewDoc } from "./page/NewDoc";
 import { AdminLayout } from "./admin/AdminLayout";
 import { MDashboard } from "./admin/page/MDashboard";
 import { PostManager } from "./admin/page/PostManager";
+import { MajorManager } from "./admin/page/MajorManager";
 const theme = createTheme({
   palette: {
     primary: {
@@ -44,6 +45,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<MDashboard />} />
             <Route path="post" element={<PostManager />} />
+            <Route path="major" element={<MajorManager />} />
           </Route>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

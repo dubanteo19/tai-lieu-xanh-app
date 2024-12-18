@@ -12,10 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 import BarChartIcon from "@mui/icons-material/BarChart";
-interface Major {
-  id: number;
-  name: string;
-}
+import { Major } from "../../../type/Major";
 interface Props {
   majors: Major[];
 }

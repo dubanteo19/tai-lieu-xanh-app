@@ -80,9 +80,11 @@ export const RecDocumentItem: React.FC<DocumentItemProps> = ({ item }) => {
         </Stack>
       </Stack>
       <Link sx={{ textDecoration: "none" }}>
-        <Typography color="black" textAlign="center">
-          {item.title}
-        </Typography>
+        <Box bgcolor="primary.main" sx={{ borderRadius: 2 }}>
+          <Typography color="black" textAlign="center">
+            {item.title}
+          </Typography>
+        </Box>
       </Link>
     </Grid>
   );

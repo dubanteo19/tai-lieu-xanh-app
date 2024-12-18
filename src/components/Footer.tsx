@@ -7,7 +7,6 @@ export const Footer = () => {
       direction="row"
       sx={{
         bgcolor: "primary.main",
-        mt: 2,
         justifyContent: "space-between",
         paddingY: 2,
         paddingX: 30,

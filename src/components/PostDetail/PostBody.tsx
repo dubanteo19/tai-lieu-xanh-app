@@ -9,7 +9,7 @@ interface PostBodyProps {
   content: string;
   documents: string[];
 }
-export const PostBody: React.FC<PostBodyProps> = ({ content, documents }) => {
+export const PostBody: React.FC<PostBodyProps> = ({ content }) => {
   const docs = [{ uri: doc }];
   return (
     <Box>

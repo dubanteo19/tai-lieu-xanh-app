@@ -1,27 +1,31 @@
-import { Box, Grid, Grid2, Stack } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import PostList from "../components/PostList";
 import RightPanel from "../components/RightPanel";
-import { useState } from "react";
+import { MajorList } from "../components/MajorList";
+import { majors } from "../admin/page/MajorManager";
 
 const Home = () => {
   return (
-    <Grid2
-      sx={{
-        bgcolor: "secondary.main",
-        paddingY: 3,
-        paddingX: 30,
-        direction: "row",
-      }}
-      container
-      spacing={2}
-    >
-      <Grid2 size={8}>
-        <PostList />
+    <Box>
+      <Grid2
+        sx={{
+          bgcolor: "secondary.main",
+          paddingY: 3,
+          paddingX: 30,
+          direction: "row",
+        }}
+        container
+        spacing={2}
+      >
+        <MajorList majors={majors} />
+        <Grid2 size={8}>
+          <PostList />
+        </Grid2>
+        <Grid2 size={4}>
+          <RightPanel />
+        </Grid2>
       </Grid2>
-      <Grid2 size={4}>
-        <RightPanel />
-      </Grid2>
-    </Grid2>
+    </Box>
   );
 };
 export default Home;

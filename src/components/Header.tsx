@@ -1,8 +1,19 @@
-import { AppBar, Box, Stack, styled, Toolbar, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Stack,
+  styled,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { NavLink, useNavigate } from "react-router-dom";
 import SeachBar from "./SearchBar";
 import logo from "../assets/logo.png";
-const StyledNavLink = styled(NavLink)(({ theme }) => ({
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+export const StyledNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
   fontSize: 16,
   padding: 10,
@@ -24,6 +35,10 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
   },
 }));
 export const Header = () => {
+  const { isLogin, fullName, avatar } = useSelector(
+    (state: RootState) => state.auth,
+  );
+  const navigate = useNavigate();
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -46,10 +61,35 @@ export const Header = () => {
             />
           </NavLink>
           <SeachBar />
-          <Stack sx={{ ml: 35 }} direction="row">
-            <StyledNavLink to={"/register"}>ĐĂNG KÝ</StyledNavLink>
-            <StyledNavLink to={"/login"}>ĐĂNG NHẬP</StyledNavLink>
-          </Stack>
+          {isLogin ? (
+            <Box sx={{ ml: 65 }}>
+              <Button
+                onClick={() => {
+                  navigate("/user");
+                }}
+                sx={{
+                  "&:focus": {
+                    outline: "none",
+                  },
+                }}
+              >
+                <Avatar
+                  sx={{
+                    "&:hover": {
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+                    },
+                  }}
+                  alt={fullName}
+                  src={avatar}
+                />
+              </Button>
+            </Box>
+          ) : (
+            <Stack sx={{ ml: 35 }} direction="row">
+              <StyledNavLink to={"/register"}>ĐĂNG KÝ</StyledNavLink>
+              <StyledNavLink to={"/login"}>ĐĂNG NHẬP</StyledNavLink>
+            </Stack>
+          )}
         </Stack>
       </Toolbar>
     </AppBar>

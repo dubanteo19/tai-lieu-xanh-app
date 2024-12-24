@@ -1,23 +1,25 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { PostInfo } from "./PostInfo";
 import { PostBody } from "./PostBody";
 import PostComments from "./PostComments";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DownloadIcon from "@mui/icons-material/Download";
 import FlagIcon from "@mui/icons-material/Flag";
+import { IComment } from "../../type/IComment";
+import { comments } from "../../admin/data/comments";
 export interface DetailProps {
-  post: {
-    id: number;
-    title: string;
-    author: {
-      fullName: string;
-      avatar: string;
-    };
-    date: string;
-    content: string;
-    documents: string[];
-    comments: Comment[];
+  id: number;
+  title: string;
+  author: {
+    fullName: string;
+    avatar: string;
   };
+  date: string;
+  major: string;
+  tags: string[];
+  description: string;
+  documents: string[];
+  comments: IComment[];
 }
 
 const PostButtons = () => {
@@ -45,7 +47,7 @@ const PostButtons = () => {
     </Stack>
   );
 };
-export const Detail: React.FC<DetailProps> = ({ post }) => {
+export const Detail: React.FC<DetailProps> = (post) => {
   return (
     <Box>
       <PostInfo
@@ -54,9 +56,13 @@ export const Detail: React.FC<DetailProps> = ({ post }) => {
         date={post.date}
         title={post.title}
       />
-      <PostBody content={post.content} documents={post.documents} />
+      <PostBody content={post.description} documents={post.documents} />
+      <Stack>
+        <Typography variant="h5">Nhan:</Typography>
+        {post.tags && post.tags.map((tag) => <Chip label={tag} />)}
+      </Stack>
       <PostButtons />
-      <PostComments comments={post.comments} />
+      <PostComments comments={comments} />
     </Box>
   );
 };

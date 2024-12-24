@@ -11,13 +11,28 @@ import {
   Avatar,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ArticleIcon from "@mui/icons-material/Article";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
 import EmailIcon from "@mui/icons-material/Email";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import React from "react";
-import { Label } from "@mui/icons-material";
+import React, { useEffect } from "react";
+import { useGetInfoQuery } from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import FullLoading from "../FullLoading";
+import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
 const UserProfile: React.FC = () => {
+  const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+  const userId = useSelector((state: RootState) => state.auth.id);
+  const { data, isLoading } = useGetInfoQuery(userId);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login");
+    }
+  }, [isLogin]);
   return (
     <Box
       sx={{
@@ -26,6 +41,7 @@ const UserProfile: React.FC = () => {
         alignItems: "center",
       }}
     >
+      {isLoading && <FullLoading />}
       <Paper sx={{ minHeight: 320, width: 800, py: 2, px: 5 }}>
         <Typography
           variant="h3"
@@ -44,10 +60,7 @@ const UserProfile: React.FC = () => {
           }}
         >
           <Box position="relative">
-            <Avatar
-              sx={{ width: 80, height: 80 }}
-              src="https://avatar.iran.liara.run/public/45"
-            />
+            <Avatar sx={{ width: 80, height: 80 }} src={data?.avatar || ""} />
             <CameraAltIcon
               sx={{
                 position: "absolute",
@@ -70,12 +83,8 @@ const UserProfile: React.FC = () => {
             >
               Tiểu sử:
             </Typography>
-            <Typography>
-              I am a student Noao I am a student Noao I am a student Noao I am a
-              student Noao I am a student Noao I am a student Noao I am a
-            </Typography>
+            <Typography>{data?.bio || "Chưa có tiểu sử"}</Typography>
           </Paper>
-            Tôi là sinh viên Noao   
         </Box>
         <List
           sx={{ width: "100%", maxWidth: 800, bgcolor: "background.paper" }}
@@ -84,11 +93,13 @@ const UserProfile: React.FC = () => {
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <LocalPhoneIcon />
+                <AccountCircleIcon />
               </ListItemIcon>
-              <ListItemText primary="Số điện thoại:" />
-              <ListItemText sx={{ textAlign: "right" }} primary="092582144" />
-              {/* <ListItemText sx={{ textAlign: 'right' }} primary={user?.phone || 'Chưa có số điện thoại'} /> */}
+              <ListItemText primary="Tên người dùng" />
+              <ListItemText
+                sx={{ textAlign: "right" }}
+                primary={data?.fullName}
+              />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -99,28 +110,32 @@ const UserProfile: React.FC = () => {
               <ListItemText primary="Email:" />
               <ListItemText
                 sx={{ textAlign: "right" }}
-                primary="dubanteo2003@gmail.com"
+                primary={data?.email || "Chưa có email"}
               />
-              {/* <ListItemText sx={{ textAlign: 'right' }} primary={user?.email || 'Chưa có email'} /> */}
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <AccountCircleIcon />
+                <Diversity3Icon />
               </ListItemIcon>
-              <ListItemText primary="Tên người dùng" />
-              <ListItemText sx={{ textAlign: "right" }} primary="Du Ban Teo" />
-              {/* <ListItemText sx={{ textAlign: 'right' }} primary={defaultAddressString || "Không có địa chỉ"} /> */}
+              <ListItemText primary="Bạn bè" />
+              <ListItemText
+                sx={{ textAlign: "right" }}
+                primary={data?.friends || 0}
+              />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <ThumbUpIcon />
+                <ArticleIcon />
               </ListItemIcon>
-              <ListItemText primary="Lượt thích" />
-              <ListItemText sx={{ textAlign: "right" }} primary="50" />
+              <ListItemText primary="Bài viết" />
+              <ListItemText
+                sx={{ textAlign: "right" }}
+                primary={data?.posts || 0}
+              />
             </ListItemButton>
           </ListItem>
         </List>
@@ -131,7 +146,13 @@ const UserProfile: React.FC = () => {
             alignContent: "center",
           }}
         >
-          <Button variant="contained" sx={{ margin: 1 }}>
+          <Button
+            id="update-btn"
+            onClick={() => dispatch(setSlectedComponent("UserProfileUpdate"))}
+            color="success"
+            variant="contained"
+            sx={{ margin: 1 }}
+          >
             Cập nhật thông tin
           </Button>
         </Box>

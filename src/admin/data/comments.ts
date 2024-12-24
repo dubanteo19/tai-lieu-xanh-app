@@ -1,18 +1,6 @@
-export interface Comment {
-  id: number;
-  postTitle: string;
-  comment: string;
-  parentComment: string;
-  author: {
-    fullName: string;
-    avatarUrl: string;
-  };
-  status: string;
-  createdAt: string;
-}
+import { IComment } from "../../type/IComment";
 
-// Sample list of 10 comments
-export const comments: Comment[] = [
+export const comments: IComment[] = [
   {
     id: 1,
     postTitle: "Understanding React Hooks",

@@ -14,21 +14,25 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import PeopleIcon from "@mui/icons-material/People";
 import PasswordIcon from "@mui/icons-material/Password";
 import Typography from "@mui/material/Typography";
+import { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
+import { logout } from "../../features/auth/authSlice";
 
 interface UserSpeedDialProps {
   onComponentChange: (componentName: string) => void;
-
 }
 
 const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
   const [openSubmenu, setOpenSubmenu] = useState(false);
 
-  const [selectedComponent, setSelectedComponent] =
-    useState<string>("UserProfile");
-
+  const selectedComponent = useSelector(
+    (state: RootState) => state.userMenu.selectedComponent,
+  );
+  const dispatch = useDispatch();
   const handleItemClick = (componentName: string) => {
     if (componentName !== "Friends") {
-      setSelectedComponent(componentName);
+      dispatch(setSlectedComponent(componentName));
     }
     setOpenSubmenu((prev) => (componentName === "Friends" ? !prev : false));
   };
@@ -49,7 +53,10 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
               <ListItem disablePadding>
                 <ListItemButton
                   onClick={() => handleItemClick("UserProfile")}
-                  selected={selectedComponent === "UserProfile"}
+                  selected={
+                    selectedComponent === "UserProfile" ||
+                    selectedComponent === "UserProfileUpdate"
+                  }
                   sx={{
                     "&.Mui-selected": {
                       bgcolor: "primary.main",
@@ -143,7 +150,7 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
           <nav aria-label="secondary mailbox folders">
             <List>
               <ListItem>
-                <ListItemButton>
+                <ListItemButton onClick={() => dispatch(logout())}>
                   <ListItemText primary="Đăng xuất" />
                 </ListItemButton>
               </ListItem>

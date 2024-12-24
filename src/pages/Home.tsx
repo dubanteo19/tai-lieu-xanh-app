@@ -2,7 +2,7 @@ import { Box, Grid2 } from "@mui/material";
 import PostList from "../components/PostList";
 import RightPanel from "../components/RightPanel";
 import { MajorList } from "../components/MajorList";
-import { majors } from "../admin/page/MajorManager";
+import { majors } from "../admin/pages/MajorManager";
 
 const Home = () => {
   return (

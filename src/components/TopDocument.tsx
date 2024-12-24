@@ -96,7 +96,7 @@ export const NewDocument = () => {
       <TitleBar text="TÀI LIỆU MỚI" />
       <Grid container spacing={2}>
         {documents.map((doc) => (
-          <RecDocumentItem item={doc} />
+          <RecDocumentItem key={doc.id} item={doc} />
         ))}
       </Grid>
     </Box>
@@ -109,7 +109,7 @@ export const TopDocument = () => {
       <TitleBar text="TÀI LIỆU HOT" />
       <Stack>
         {documents.map((doc) => (
-          <DocumentItem item={doc} />
+          <DocumentItem key={doc.id} item={doc} />
         ))}
       </Stack>
     </Box>

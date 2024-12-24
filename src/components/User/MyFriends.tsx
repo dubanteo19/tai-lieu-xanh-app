@@ -6,7 +6,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 import ArticleIcon from "@mui/icons-material/Article";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import { posts } from "../../data/posts";
 import { Post } from "../PostList";
 interface FriendItemProps {
   item: {
@@ -138,12 +137,12 @@ export const FriendDetail: React.FC<FriendDetailProps> = ({ friend }) => {
           </Paper>
         </Grid>
         <Grid size={8}>
-          <Stack>
+          {/* <Stack>
             {posts.map((post) => (
               <Post post={post} key={post.id} />
             ))}
-          </Stack>
-        </Grid>
+          </Stack>  */}
+        </Grid>{" "}
       </Grid>
     </Stack>
   );

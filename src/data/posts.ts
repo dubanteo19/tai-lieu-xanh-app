@@ -11,6 +11,8 @@ export const posts = [
     views: 150,
     comments: 12,
     downloads: 30,
+    major: "cong nghe thong tin",
+    tags: ["programming", "tech"],
   },
   {
     id: 2,
@@ -23,6 +25,8 @@ export const posts = [
     thumb: "https://picsum.photos/seed/2/800",
     views: 220,
     comments: 20,
+    major: "cong nghe thong tin",
+    tags: ["programming", "tech"],
     downloads: 45,
   },
   {

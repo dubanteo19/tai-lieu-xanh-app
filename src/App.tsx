@@ -1,19 +1,21 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Layout } from "./page/Layout";
-import Home from "./page/Home";
+import { Layout } from "./pages/Layout";
+import Home from "./pages/Home";
 import { colors, createTheme, ThemeProvider } from "@mui/material";
-import { Register } from "./page/Register";
-import { Login } from "./page/Login";
-import PostDetail from "./page/PostDetail";
-import User from "./page/User";
-import { NewDoc } from "./page/NewDoc";
+import { Register } from "./pages/Register";
+import { Login } from "./pages/Login";
+import PostDetail from "./pages/PostDetail";
+import User from "./pages/User";
+import { NewDoc } from "./pages/NewDoc";
 import { AdminLayout } from "./admin/AdminLayout";
-import { MDashboard } from "./admin/page/MDashboard";
-import { PostManager } from "./admin/page/PostManager";
-import { MajorManager } from "./admin/page/MajorManager";
-import { UserManager } from "./admin/page/UserManager";
-import { CommemtManager, CommentManager } from "./admin/page/CommentManager";
+import { MDashboard } from "./admin/pages/MDashboard";
+import { PostManager } from "./admin/pages/PostManager";
+import { MajorManager } from "./admin/pages/MajorManager";
+import { UserManager } from "./admin/pages/UserManager";
+import { CommentManager } from "./admin/pages/CommentManager";
+import { Search } from "./pages/Search";
+import Verify from "./pages/Verify";
 const theme = createTheme({
   palette: {
     primary: {
@@ -55,6 +57,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="register" element={<Register />} />
+            <Route path="verify" element={<Verify />} />
+            <Route path="search" element={<Search />} />
             <Route path="login" element={<Login />} />
             <Route path="user">
               <Route index element={<User />} />

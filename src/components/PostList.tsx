@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Chip,
-  Link,
   Paper,
   Stack,
   Typography,
@@ -17,6 +16,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import DownloadIcon from "@mui/icons-material/Download";
 import { IPost } from "../type/IPost";
 import { useGetAllPostsQuery } from "../api/postApi";
+import { Link } from "react-router-dom";
 export const Post: React.FC<IPost> = (post) => {
   return (
     <Paper sx={{ my: 1, p: 3 }}>
@@ -33,16 +33,7 @@ export const Post: React.FC<IPost> = (post) => {
       </Stack>
       <Stack sx={{ position: "relative" }}>
         <Typography variant="h4">
-          <Link
-            sx={{
-              "&:hover": {
-                color: "primary.main",
-              },
-            }}
-            href="/post/1"
-            underline="none"
-            color="black"
-          >
+          <Link to={"post/1"} color="black">
             {post.title}
           </Link>
         </Typography>

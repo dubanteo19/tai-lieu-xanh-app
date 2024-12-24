@@ -1,5 +1,5 @@
 export interface IMajor {
   id: number;
-  name: string;
-  posts: number;
+  majorName: string;
+  posts?: number;
 }

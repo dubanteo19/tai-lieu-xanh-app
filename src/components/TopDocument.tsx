@@ -122,7 +122,7 @@ export const RelatedDocument = () => {
       <TitleBar text="TÀI LIỆU LIÊN QUAN" />
       <Stack>
         {documents.map((doc) => (
-          <DocumentItem item={doc} />
+          <DocumentItem key={doc.id} item={doc} />
         ))}
       </Stack>
     </Box>

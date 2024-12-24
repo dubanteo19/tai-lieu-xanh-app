@@ -1,4 +1,12 @@
-import { Box, Button, Chip, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { PostInfo } from "./PostInfo";
 import { PostBody } from "./PostBody";
 import PostComments from "./PostComments";
@@ -6,21 +14,8 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DownloadIcon from "@mui/icons-material/Download";
 import FlagIcon from "@mui/icons-material/Flag";
 import { IComment } from "../../type/IComment";
-import { comments } from "../../admin/data/comments";
-export interface DetailProps {
-  id: number;
-  title: string;
-  author: {
-    fullName: string;
-    avatar: string;
-  };
-  date: string;
-  major: string;
-  tags: string[];
-  description: string;
-  documents: string[];
-  comments: IComment[];
-}
+import { useGetCommentsByPostIdQuery } from "../../api/commentApi";
+import { IPostDetail } from "../../type/IPostDetail";
 
 const PostButtons = () => {
   return (
@@ -47,22 +42,50 @@ const PostButtons = () => {
     </Stack>
   );
 };
-export const Detail: React.FC<DetailProps> = (post) => {
+export const Detail: React.FC<IPostDetail> = (post) => {
+  const { data } = useGetCommentsByPostIdQuery(1);
   return (
-    <Box>
-      <PostInfo
-        fullName={post.author.fullName}
-        avatar={post.author.avatar}
-        date={post.date}
-        title={post.title}
+    <Paper sx={{ px: 2, pb: 5 }}>
+      <Box position={"relative"}>
+        <Typography
+          variant="h5"
+          sx={{
+            position: "absolute",
+            top: 40,
+            right: 0,
+            transform: "rotate(20deg)",
+            border: "1px solid green",
+            p: 1,
+            color: "green",
+            cursor: "pointer",
+          }}
+        >
+          {post.major.majorName}
+        </Typography>
+        <PostInfo
+          fullName={post.author.fullName}
+          avatar={post.author.avatar}
+          date={post.createdDate}
+          title={post.title}
+        />
+      </Box>
+
+      <Divider variant="middle" />
+      <PostBody
+        mdoc={post.mdoc}
+        description={post.description}
+        postId={post.id}
       />
-      <PostBody content={post.description} documents={post.documents} />
-      <Stack>
+      <Stack direction="row" spacing={1} sx={{ my: 2 }}>
         <Typography variant="h5">Nhan:</Typography>
-        {post.tags && post.tags.map((tag) => <Chip label={tag} />)}
+        {post.tags &&
+          post.tags.map((tag) => (
+            <Chip key={tag.tagName} label={tag.tagName} />
+          ))}
       </Stack>
+
       <PostButtons />
-      <PostComments comments={comments} />
-    </Box>
+      {data && <PostComments comments={data} />}
+    </Paper>
   );
 };

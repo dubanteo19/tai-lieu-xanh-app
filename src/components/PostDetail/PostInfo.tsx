@@ -1,4 +1,4 @@
-import { Avatar, Stack, Typography } from "@mui/material";
+import { Avatar, Paper, Stack, Typography } from "@mui/material";
 
 interface PostInfoProps {
   avatar: string;
@@ -9,17 +9,17 @@ interface PostInfoProps {
 
 export const PostInfo: React.FC<PostInfoProps> = (info) => {
   return (
-    <Stack>
+    <Stack sx={{ p: 2 }}>
       <Stack direction="row" sx={{ alignItems: "center" }}>
         <Avatar src={info.avatar} />
         <Stack sx={{ flexBasis: "80%", ml: 2 }}>
-          <Typography  fontWeight="bold">
-            {info.fullName}
-          </Typography>
+          <Typography fontWeight="bold">{info.fullName}</Typography>
           <Typography>{info.date}</Typography>
         </Stack>
       </Stack>
-      <Typography fontWeight="bold" variant="h5">{info.title}</Typography>
+      <Typography fontWeight="bold" variant="h4">
+        {info.title}
+      </Typography>
     </Stack>
   );
 };

@@ -1,14 +1,16 @@
 import {
   AppBar,
   Avatar,
+  Badge,
   Box,
   Button,
+  IconButton,
   Stack,
   styled,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import SeachBar from "./SearchBar";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
@@ -62,7 +64,12 @@ export const Header = () => {
           </NavLink>
           <SeachBar />
           {isLogin ? (
-            <Box sx={{ ml: 65 }}>
+            <Stack sx={{ ml: 65 }} direction="row">
+              <IconButton>
+                <Badge badgeContent={3} color="error">
+                  <NotificationsIcon sx={{ color: "white" }} />
+                </Badge>
+              </IconButton>
               <Button
                 onClick={() => {
                   navigate("/user");
@@ -83,7 +90,7 @@ export const Header = () => {
                   src={avatar}
                 />
               </Button>
-            </Box>
+            </Stack>
           ) : (
             <Stack sx={{ ml: 35 }} direction="row">
               <StyledNavLink to={"/register"}>ĐĂNG KÝ</StyledNavLink>

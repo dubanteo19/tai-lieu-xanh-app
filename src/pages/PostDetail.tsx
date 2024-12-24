@@ -1,8 +1,23 @@
-import { Grid2, Stack } from "@mui/material";
+import { Grid2, Paper, Stack } from "@mui/material";
 import { TopDocument, RelatedDocument } from "../components/TopDocument";
 import { Detail } from "../components/PostDetail/Detail";
-import { postDetail } from "../data/postDetail";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setCommentForm } from "../features/comment/commentSlice";
+import { useParams } from "react-router-dom";
+import { useGetPostDetailQuery } from "../api/postApi";
+import FullLoading from "../components/FullLoading";
 const PostDetail = () => {
+  const { postId } = useParams();
+  const { data, isLoading } = useGetPostDetailQuery(Number(postId));
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      setCommentForm({
+        postId,
+      }),
+    );
+  }, [postId]);
   return (
     <Grid2
       sx={{
@@ -14,9 +29,8 @@ const PostDetail = () => {
       container
       spacing={2}
     >
-      <Grid2 size={7}>
-        <Detail {...postDetail} />
-      </Grid2>
+      {isLoading && <FullLoading />}
+      <Grid2 size={7}>{data && <Detail {...data} />}</Grid2>
       <Grid2 size={4} position="sticky" top="70px" alignSelf="start">
         <Stack spacing={3}>
           <TopDocument />

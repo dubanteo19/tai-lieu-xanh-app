@@ -8,10 +8,11 @@ export const Banner = () => {
       sx={{
         height: 200,
         justifyContent: "center",
+        borderRadius: 3,
         alignItems: "center",
         display: "flex",
         padding: 5,
-        color: "black",
+        color: "white",
       }}
     >
       <Typography fontSize={20} variant="subtitle1">

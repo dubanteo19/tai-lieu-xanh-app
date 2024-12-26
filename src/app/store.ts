@@ -6,6 +6,8 @@ import { userApi } from "../api/userApi";
 import userMenuSlice from "../features/user-menu/userMenuSlice";
 import { commentApi } from "../api/commentApi";
 import commentSlice from "../features/comment/commentSlice";
+import { majorApi } from "../api/majorApi";
+import { mDocApi } from "../api/mDocApi";
 export const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -14,14 +16,18 @@ export const store = configureStore({
     [postApi.reducerPath]: postApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
-    [commentApi.reducerPath]:commentApi.reducer,
+    [majorApi.reducerPath]: majorApi.reducer,
+    [mDocApi.reducerPath]: mDocApi.reducer,
+    [commentApi.reducerPath]: commentApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       postApi.middleware,
       authApi.middleware,
       userApi.middleware,
+      majorApi.middleware,
       commentApi.middleware,
+      mDocApi.middleware,
     ),
 });
 export type RootState = ReturnType<typeof store.getState>;

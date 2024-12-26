@@ -28,7 +28,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ item }) => {
         <Box sx={{ minHeight: 20 }}>
           <Typography fontSize={18}>{item.title}</Typography>
         </Box>
-        <Stack direction="row">
+        <Stack direction="row" spacing={1}>
           <DisplaySettingsIcon sx={{ color: "primary.main" }} />
           <Chip label={item.major} size="small" />
         </Stack>
@@ -44,7 +44,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ item }) => {
             />
           ))}
         </Stack>
-        <Stack direction="row">
+        <Stack direction="row" spacing={1}>
           <RemoveRedEyeIcon />
           <Typography>{item.view}</Typography>
         </Stack>
@@ -107,7 +107,7 @@ export const TopDocument = () => {
   return (
     <Box>
       <TitleBar text="TÀI LIỆU HOT" />
-      <Stack>
+      <Stack spacing={1}>
         {documents.map((doc) => (
           <DocumentItem key={doc.id} item={doc} />
         ))}

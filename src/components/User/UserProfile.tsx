@@ -15,24 +15,16 @@ import ArticleIcon from "@mui/icons-material/Article";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import EmailIcon from "@mui/icons-material/Email";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import React, { useEffect } from "react";
+import React from "react";
 import { useGetInfoQuery } from "../../api/userApi";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FullLoading from "../FullLoading";
 import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
 const UserProfile: React.FC = () => {
-  const isLogin = useSelector((state: RootState) => state.auth.isLogin);
   const userId = useSelector((state: RootState) => state.auth.id);
   const { data, isLoading } = useGetInfoQuery(userId);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isLogin) {
-      navigate("/login");
-    }
-  }, [isLogin]);
   return (
     <Box
       sx={{

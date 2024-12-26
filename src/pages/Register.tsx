@@ -16,7 +16,6 @@ export const Register = () => {
   const handleRegister: SubmitHandler<IRegisterReq> = async (data) => {
     try {
       const res = await registerAccount(data).unwrap();
-
       if (res.email) {
         navigate("/login", {
           state: {

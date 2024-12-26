@@ -14,6 +14,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadIcon from "@mui/icons-material/Download";
 import Grid from "@mui/material/Grid2";
 import { IPost } from "../../type/IPost";
+import { useNavigate } from "react-router-dom";
 const SeachBar = () => {
   return (
     <Box
@@ -28,7 +29,7 @@ const SeachBar = () => {
         alignItems: "center",
       }}
     >
-      <SearchIcon sx={{ mr: 2, color: "gray" }} onClick={() => { }} />
+      <SearchIcon sx={{ mr: 2, color: "gray" }} onClick={() => {}} />
       <InputBase
         sx={{
           width: 250,
@@ -81,6 +82,7 @@ const MyPostItem: React.FC<IPost> = (post) => {
   );
 };
 const MyPosts: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Paper sx={{ minHeight: 320, px: 5 }}>
       <Typography
@@ -95,6 +97,7 @@ const MyPosts: React.FC = () => {
       </Typography>
       <Stack direction="row" spacing={4} sx={{ px: 5 }}>
         <Button
+          onClick={() => navigate("new-doc")}
           startIcon={<AddIcon />}
           variant="contained"
           sx={{ color: "white", fontWeight: "bold" }}

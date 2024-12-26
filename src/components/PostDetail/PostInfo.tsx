@@ -17,7 +17,7 @@ export const PostInfo: React.FC<PostInfoProps> = (info) => {
           <Typography>{info.date}</Typography>
         </Stack>
       </Stack>
-      <Typography fontWeight="bold" variant="h4">
+      <Typography fontWeight="bold" variant="h5">
         {info.title}
       </Typography>
     </Stack>

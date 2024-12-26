@@ -17,7 +17,7 @@ const Home = () => {
         container
         spacing={2}
       >
-        <MajorList majors={majors} />
+        <MajorList  />
         <Grid2 size={8}>
           <PostList />
         </Grid2>

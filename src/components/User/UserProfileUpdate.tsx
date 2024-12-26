@@ -9,21 +9,20 @@ import {
   TextField,
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import React, { useEffect } from "react";
-import { IUserUpdateInfo, useUpdateInfoMutation } from "../../api/userApi";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import {
+  IUserUpdateInfo,
+  useGetInfoQuery,
+  useUpdateInfoMutation,
+} from "../../api/userApi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FullLoading from "../FullLoading";
 import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
 import { SubmitHandler, useForm } from "react-hook-form";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
 const UserProfileUpdate: React.FC = () => {
-  const notify = withReactContent(Swal);
-  const { fullName, bio, id, isLogin } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const { id } = useSelector((state: RootState) => state.auth);
+  const { data: user } = useGetInfoQuery(id);
   const {
     register,
     handleSubmit,
@@ -37,24 +36,13 @@ const UserProfileUpdate: React.FC = () => {
         id: id,
       }).unwrap();
       if (re) {
-        notify.fire({
-          icon: "success",
-          title: "Thông báo",
-          text: "Cập nhật thông tin tài khoản thành công",
-          showConfirmButton: true,
-        });
+        dispatch(setSlectedComponent("UserProfile"));
       }
     } catch (error) {
       console.log(error);
     }
   };
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isLogin) {
-      navigate("/login");
-    }
-  }, [data]);
   return (
     <Box
       sx={{
@@ -72,7 +60,7 @@ const UserProfileUpdate: React.FC = () => {
             position: "relative",
           }}
         >
-          Cap nhap Thông tin tài khoản
+          Cập nhập thông tin tài khoản
         </Typography>
         <Box
           sx={{
@@ -108,18 +96,18 @@ const UserProfileUpdate: React.FC = () => {
                 error={!!errors.fullName}
                 helperText={errors.fullName?.message || null}
                 label="Họ tên"
-                defaultValue={fullName}
+                defaultValue={user?.fullName}
               ></TextField>
             </ListItem>
             <ListItem sx={{ px: 20 }}>
               <TextField
                 id="name"
                 multiline
-                label="Giới thiệu"
+                label="Tiểu sử"
                 {...register("bio")}
                 rows={7}
                 fullWidth
-                defaultValue={bio}
+                defaultValue={user?.bio}
               ></TextField>
             </ListItem>
           </List>

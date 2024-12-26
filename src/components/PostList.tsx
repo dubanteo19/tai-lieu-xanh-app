@@ -9,15 +9,16 @@ import {
 } from "@mui/material";
 
 import React from "react";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CommentIcon from "@mui/icons-material/Comment";
-import DownloadIcon from "@mui/icons-material/Download";
 import { IPost } from "../type/IPost";
 import { useGetAllPostsQuery } from "../api/postApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export const Post: React.FC<IPost> = (post) => {
+  const navigate = useNavigate();
+  const encodeUrl = encodeURIComponent("/" + post.thumb);
+  const thumb = `http://localhost:8080/api/v1/documents/download-thumb?uri=${encodeUrl}`;
   return (
     <Paper sx={{ my: 1, p: 3 }}>
       <Stack direction="row" sx={{ alignItems: "center" }}>
@@ -27,19 +28,22 @@ export const Post: React.FC<IPost> = (post) => {
           <Typography>{post.createdDate}</Typography>
         </Stack>
         <Stack direction="row" spacing={1}>
-          <MoreHorizIcon />
           <CloseIcon />
         </Stack>
       </Stack>
       <Stack sx={{ position: "relative" }}>
-        <Typography variant="h4">
-          <Link to={"post/1"} color="black">
+        <Typography variant="h5">
+          <Link
+            to={`post/${post.id}`}
+            style={{
+              color: "black",
+            }}
+          >
             {post.title}
           </Link>
         </Typography>
         {post.major && (
           <Typography
-            key={post.major}
             sx={{
               py: 1,
               width: "fit-content",
@@ -56,6 +60,7 @@ export const Post: React.FC<IPost> = (post) => {
             {post.major}
           </Typography>
         )}
+        <Box component="img" width={600} height={400} src={thumb}></Box>
       </Stack>
       <Stack
         direction="row"
@@ -70,7 +75,7 @@ export const Post: React.FC<IPost> = (post) => {
         </Box>
         <Stack direction="row" spacing={2}>
           <Typography>{post.comments} bình luận</Typography>
-          <Typography>{post.downloads} lượt tải</Typography>
+          <Typography>{post.downloads | 0} lượt tải</Typography>
         </Stack>
       </Stack>
       <Stack direction="row" spacing={1} sx={{ pb: 2 }}>
@@ -79,26 +84,32 @@ export const Post: React.FC<IPost> = (post) => {
           post.tags.map((tag) => <Chip key={tag} label={tag} size="small" />)}
       </Stack>
       <Stack direction="row" spacing={2}>
-        <Button variant="outlined" startIcon={<VisibilityIcon />}>
-          Xem chi tiết
-        </Button>
-        <Button variant="outlined" startIcon={<CommentIcon />}>
-          Bình luận
-        </Button>
         <Button
           variant="contained"
-          sx={{ color: "white" }}
-          startIcon={<DownloadIcon />}
+          color="success"
+          onClick={() => {
+            navigate(`post/${post.id}`);
+          }}
+          startIcon={<VisibilityIcon />}
         >
-          Tải xuống
+          Xem chi tiết
+        </Button>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => {
+            navigate(`post/${post.id}`);
+          }}
+          startIcon={<CommentIcon />}
+        >
+          Bình luận
         </Button>
       </Stack>
     </Paper>
   );
 };
 const PostList = () => {
-  const { data, isLoading, error } = useGetAllPostsQuery();
-  console.log(data);
+  const { data, isLoading } = useGetAllPostsQuery();
   return (
     <Stack>
       {isLoading ? (

@@ -6,6 +6,7 @@ import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
 import { IMDoc } from "../../type/IMDoc";
 import Grid from "@mui/material/Grid2";
+import { logout } from "../../features/auth/authSlice";
 interface PostBodyProps {
   description: string;
   postId: number;
@@ -19,19 +20,25 @@ const MDocProperty = (property: { mkey: string; value: string | number }) => {
         <Typography fontWeight="bold">{property.mkey}</Typography>
       </Grid>
       <Grid size={6}>
-        <Typography fontWeight="bold" color="success">
-          {property.value}
+        <Typography
+          sx={{
+            wordBreak: "break-all",
+          }}
+          fontWeight="bold"
+          color="success"
+        >
+          {property.value || 0}
         </Typography>
       </Grid>
     </Grid>
   );
 };
 export const PostBody: React.FC<PostBodyProps> = ({ description, mdoc }) => {
-  const docs = [{ uri: `http://localhost:8080/api/v1/documents/${mdoc.url}` }];
-
+  const encodeUrl = encodeURIComponent(mdoc.url);
+  const uri = `http://localhost:8080/api/v1/documents/download?uri=${encodeUrl}`;
+  const docs = [{ uri }];
   return (
     <Box sx={{ p: 2 }}>
-      <Typography>{description}</Typography>
       <Stack
         sx={{
           border: "1px solid rgba(0,0,0,0.2)",

@@ -13,7 +13,6 @@ import PostComments from "./PostComments";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DownloadIcon from "@mui/icons-material/Download";
 import FlagIcon from "@mui/icons-material/Flag";
-import { IComment } from "../../type/IComment";
 import { useGetCommentsByPostIdQuery } from "../../api/commentApi";
 import { IPostDetail } from "../../type/IPostDetail";
 
@@ -69,7 +68,6 @@ export const Detail: React.FC<IPostDetail> = (post) => {
           title={post.title}
         />
       </Box>
-
       <Divider variant="middle" />
       <PostBody
         mdoc={post.mdoc}

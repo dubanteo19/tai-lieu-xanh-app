@@ -8,13 +8,32 @@ import {
   Typography,
 } from "@mui/material";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CommentIcon from "@mui/icons-material/Comment";
 import { IPost } from "../type/IPost";
 import { useGetAllPostsQuery } from "../api/postApi";
 import { Link, useNavigate } from "react-router-dom";
+const NoThumb = () => {
+  return (
+    <div
+      style={{
+        width: "600px",
+        height: "400px",
+        backgroundColor: "#f0f0f0",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#888",
+        fontSize: "14px",
+        textAlign: "center",
+      }}
+    >
+      Không có hình xem trước
+    </div>
+  );
+};
 export const Post: React.FC<IPost> = (post) => {
   const navigate = useNavigate();
   const encodeUrl = encodeURIComponent("/" + post.thumb);
@@ -60,7 +79,11 @@ export const Post: React.FC<IPost> = (post) => {
             {post.major}
           </Typography>
         )}
-        <Box component="img" width={600} height={400} src={thumb}></Box>
+        {post.thumb ? (
+          <Box component="img" width={600} height={400} src={thumb}></Box>
+        ) : (
+          <NoThumb />
+        )}
       </Stack>
       <Stack
         direction="row"
@@ -109,14 +132,35 @@ export const Post: React.FC<IPost> = (post) => {
   );
 };
 const PostList = () => {
-  const { data, isLoading } = useGetAllPostsQuery();
+  const [page, setPage] = useState(0); // Tracks current page
+  const [posts, setPosts] = useState<IPost[]>([]); // Tracks all loaded posts
+
+  const { data, isLoading, isSuccess } = useGetAllPostsQuery({ page, size: 6 });
+  useEffect(() => {
+    if (isSuccess && data) {
+      setPosts((prevPosts) => [...prevPosts, ...data]);
+    }
+  }, [data, isSuccess]);
+  const handleShowMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
   return (
     <Stack>
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : (
-        data?.map((post: IPost) => <Post key={post.id} {...post} />)
+        posts?.map((post: IPost) => <Post key={post.id} {...post} />)
       )}
+      <Button
+        onClick={handleShowMore}
+        disabled={isLoading}
+        color="info"
+        variant="contained"
+        sx={{ marginTop: 2 }}
+      >
+        Xem thêm
+      </Button>
     </Stack>
   );
 };

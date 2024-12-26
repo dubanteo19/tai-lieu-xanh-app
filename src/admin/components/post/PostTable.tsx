@@ -1,8 +1,9 @@
 import { Avatar, IconButton, Paper, Stack, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { posts } from "../../../data/posts";
+import { DataGrid, GridColDef, useGridLogger } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PreviewIcon from "@mui/icons-material/Preview";
+import { useGetAllPostsQuery } from "../../../api/postApi";
+import FullLoading from "../../../components/FullLoading";
 export const PostTable = () => {
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
@@ -53,20 +54,24 @@ export const PostTable = () => {
           <IconButton color="success">
             <PreviewIcon />
           </IconButton>
-          <IconButton color="warning">
+          <IconButton
+            color="warning"
+            onClick={() => {
+              deletePost(params.row.id);
+            }}
+          >
             <DeleteIcon />
-          </IconButton>
-          <IconButton color="warning">
-            <PreviewIcon />
           </IconButton>
         </Stack>
       ),
     },
   ];
-
-  const paginationModel = { page: 0, pageSize: 5 };
+  const deletePost = async (id: number) => { };
+  const paginationModel = { page: 0, pageSize: 10 };
+  const { data: posts, isLoading } = useGetAllPostsQuery();
   return (
     <Paper sx={{ height: 400, width: "100", px: 5, py: 2, mt: 2 }}>
+      {isLoading && <FullLoading />}
       <DataGrid
         rows={posts}
         columns={columns}

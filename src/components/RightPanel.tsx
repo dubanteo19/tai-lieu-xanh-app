@@ -16,16 +16,23 @@ export const Banner = () => {
       }}
     >
       <Typography fontSize={20} variant="subtitle1">
-        <strong>Tài liệu xanh</strong>- Nơi cùng nhau kết nối & chia sẽ những
-        tài liệu học tập cùng nhau bước qua những năm tháng học trò!
+        <Typography
+          color="white"
+          variant="h4"
+          textAlign="center"
+          fontWeight={"bold"}
+        >
+          Tài liệu xanh
+        </Typography>
+        Nơi cùng nhau kết nối & chia sẽ những tài liệu học tập cùng nhau bước
+        qua những năm tháng học trò!
       </Typography>
     </Box>
   );
 };
 const RightPanel = () => {
   return (
-    <Stack position="sticky" top="70px" alignSelf="start" spacing={3}>
-      <Banner />
+    <Stack spacing={4} mt={3} position="sticky" top="70px" alignSelf="start">
       <TopDocument />
       <NewDocument />
     </Stack>

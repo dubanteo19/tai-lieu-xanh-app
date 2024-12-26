@@ -25,8 +25,8 @@ export const postApi = createApi({
     getMajorsWithPosts: builder.query<IMajorWithPost[], void>({
       query: () => `posts/hot-majors`,
     }),
-    getAllPosts: builder.query<IPost[], void>({
-      query: () => `posts`,
+    getAllPosts: builder.query<IPost[], { page: number; size: number }>({
+      query: ({ page, size }) => `posts?page=${page}&size=${size}`,
     }),
     createPost: builder.mutation<IPost, IPostCreate>({
       query: (form) => ({

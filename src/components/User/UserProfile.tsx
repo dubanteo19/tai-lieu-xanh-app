@@ -14,13 +14,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArticleIcon from "@mui/icons-material/Article";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import EmailIcon from "@mui/icons-material/Email";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import React from "react";
 import { useGetInfoQuery } from "../../api/userApi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FullLoading from "../FullLoading";
 import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
+import { getThumbUri } from "../../utils/uri";
 const UserProfile: React.FC = () => {
   const userId = useSelector((state: RootState) => state.auth.id);
   const { data, isLoading } = useGetInfoQuery(userId);
@@ -52,16 +52,9 @@ const UserProfile: React.FC = () => {
           }}
         >
           <Box position="relative">
-            <Avatar sx={{ width: 80, height: 80 }} src={data?.avatar || ""} />
-            <CameraAltIcon
-              sx={{
-                position: "absolute",
-                bottom: 1,
-                padding: 0.5,
-                right: 0.5,
-                borderRadius: 100,
-                background: "gray",
-              }}
+            <Avatar
+              sx={{ width: 80, height: 80 }}
+              src={getThumbUri(data?.avatar || "")}
             />
           </Box>
         </Box>

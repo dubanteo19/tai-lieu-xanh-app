@@ -1,17 +1,21 @@
-import { Grid2, Paper, Stack } from "@mui/material";
+import { Grid2, Stack } from "@mui/material";
 import { TopDocument, RelatedDocument } from "../components/TopDocument";
 import { Detail } from "../components/PostDetail/Detail";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setCommentForm } from "../features/comment/commentSlice";
 import { useParams } from "react-router-dom";
-import { useGetPostDetailQuery } from "../api/postApi";
+import { useGetPostDetailQuery, useViewPostMutation } from "../api/postApi";
 import FullLoading from "../components/FullLoading";
 const PostDetail = () => {
   const { postId } = useParams();
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));
+  const [viewPost] = useViewPostMutation();
   const dispatch = useDispatch();
   useEffect(() => {
+    viewPost({
+      postId: Number(postId),
+    });
     dispatch(
       setCommentForm({
         postId,
@@ -33,8 +37,8 @@ const PostDetail = () => {
       <Grid2 size={7}>{data && <Detail {...data} />}</Grid2>
       <Grid2 size={4} position="sticky" top="70px" alignSelf="start">
         <Stack spacing={3}>
+          <RelatedDocument postId={Number(postId)} />
           <TopDocument />
-          <RelatedDocument />
         </Stack>
       </Grid2>
     </Grid2>

@@ -17,29 +17,50 @@ import {
 import React, { useState } from "react";
 import { IMajor } from "../type/IMajor";
 import { useGetAllMajorsQuery, useGetAlltagsQuery } from "../api/majorApi";
-import { useUploadMDocMutation } from "../api/mDocApi";
 import FullLoading from "../components/FullLoading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { useCreatePostMutation } from "../api/postApi";
-import { IMDoc } from "../type/IMDoc";
 import { useNavigate } from "react-router-dom";
+import { bytesToMB } from "../utils/bytesToMB";
+import "@cyntler/react-doc-viewer/dist/index.css";
+import { setSlectedComponent } from "../features/user-menu/userMenuSlice";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+const FilePreview: React.FC<{ file: File | null }> = ({ file }) => {
+  return (
+    <Box>
+      {file && (
+        <Box sx={{ mt: 2 }} textAlign={"left"}>
+          <Typography variant="body2">Tên tài liệu: {file.name}</Typography>
+          <Typography variant="body2">
+            Kích thước: {bytesToMB(file.size)}
+          </Typography>
+          <Typography variant="body2">Loại tài liệu: {file.type}</Typography>
+        </Box>
+      )}
+    </Box>
+  );
+};
 interface FileUploadProps {
-  setMDoc: (Imdoc: IMDoc) => void;
+  setFile: (file: File | null) => void;
 }
-export const FileUpload: React.FC<FileUploadProps> = ({ setMDoc }) => {
-  const [uploadFile, { data, isLoading }] = useUploadMDocMutation();
-  const { id } = useSelector((state: RootState) => state.auth);
+export const FileUpload: React.FC<FileUploadProps> = ({ setFile }) => {
+  const notify = withReactContent(Swal);
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     try {
-      const file = event.target.files![0];
-      const res = await uploadFile({
-        userId: id,
-        file,
-      }).unwrap();
-      setMDoc(res);
+      if (event.target.files?.[0]?.size > 10 * 1024 * 1024) {
+        notify.fire({
+          icon: "error",
+          title: "Thông báo",
+          text: "Tài liệu phải có kích thước nhỏ hơn 10MB",
+          showConfirmButton: true,
+        });
+        return;
+      }
+      setFile(event.target.files?.[0] || null);
     } catch (error) {
       console.log(error);
     }
@@ -56,12 +77,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({ setMDoc }) => {
         "&:hover": { backgroundColor: "#f0f0f0" },
       }}
     >
-      {isLoading && <FullLoading />}
       <Typography variant="body1" color="error">
-        Chi chap nhan file pdf, docx
+        Chỉ chấp nhận tải lên tài liệu có định dạng pdf, docx
       </Typography>
       <Typography variant="body1" color="error" mb={2}>
-        Tep tin phai co kich thuoc nho hon 10MB
+        Tài liệu phải có kích thước nhỏ hơn 10MB
       </Typography>
       <input
         type="file"
@@ -75,41 +95,40 @@ export const FileUpload: React.FC<FileUploadProps> = ({ setMDoc }) => {
           Upload File
         </Button>
       </label>
-      {data && (
-        <Box sx={{ mt: 2 }} textAlign={"left"}>
-          <Typography variant="body2">Tên tệp tin: {data.fileName}</Typography>
-          <Typography variant="body2">Kich thuoc: {data.fileSize}</Typography>
-          <Typography variant="body2">
-            Loai tai lieu: {data.fileType}
-          </Typography>
-          <Typography variant="body2">So trang: {data.pages}</Typography>
-        </Box>
-      )}
     </Box>
   );
 };
+
 export const NewDoc = () => {
   const [major, setMajor] = React.useState<string>("");
   const [title, setTitle] = React.useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [description, setDescription] = React.useState<string>("");
-  const [mDoc, setMDoc] = useState<IMDoc>();
+  const { id } = useSelector((state: RootState) => state.auth);
+  const [file, setFile] = React.useState<File | null>(null);
   const { data: majors } = useGetAllMajorsQuery();
   const { data: tags } = useGetAlltagsQuery();
   const [createPost, { isLoading }] = useCreatePostMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleCreatePost = async () => {
     try {
-      if (mDoc) {
-        const re = await createPost({
-          title,
-          description,
-          majorId: parseInt(major),
-          tags: selectedTags,
-          authorId: 1,
-          mDoc: mDoc,
-        }).unwrap();
-        navigate(`/post/${re.id}`);
+      if (file) {
+        const form = {
+          file,
+          postRequest: {
+            title,
+            description,
+            majorId: parseInt(major),
+            tags: selectedTags,
+            authorId: id,
+          },
+        };
+        const re = await createPost(form).unwrap();
+        if (re) {
+          dispatch(setSlectedComponent("MyPosts"));
+          navigate("/user");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -149,7 +168,8 @@ export const NewDoc = () => {
       </Stack>
       <Paper sx={{ px: 2, py: 2, width: 600, mx: "auto" }}>
         <Stack spacing={2}>
-          <FileUpload setMDoc={setMDoc} />
+          <FileUpload setFile={setFile} />
+          <FilePreview file={file} />
           <TextField
             required
             label="Tiêu đề"
@@ -201,7 +221,7 @@ export const NewDoc = () => {
                     );
                   })
                 }
-                renderInput={(params) => <TextField {...params} label="Nhan" />}
+                renderInput={(params) => <TextField {...params} label="Nhãn" />}
               />
             </Box>
           )}

@@ -6,11 +6,13 @@ import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
 import { IMDoc } from "../../type/IMDoc";
 import Grid from "@mui/material/Grid2";
-import { logout } from "../../features/auth/authSlice";
+import { bytesToMB } from "../../utils/bytesToMB";
+import { useMemo } from "react";
 interface PostBodyProps {
   description: string;
   postId: number;
   mdoc: IMDoc;
+  isLoading: boolean;
 }
 
 const MDocProperty = (property: { mkey: string; value: string | number }) => {
@@ -33,12 +35,34 @@ const MDocProperty = (property: { mkey: string; value: string | number }) => {
     </Grid>
   );
 };
-export const PostBody: React.FC<PostBodyProps> = ({ description, mdoc }) => {
-  const encodeUrl = encodeURIComponent(mdoc.url);
-  const uri = `http://localhost:8080/api/v1/documents/download?uri=${encodeUrl}`;
-  const docs = [{ uri }];
+export const PostBody: React.FC<PostBodyProps> = ({
+  description,
+  mdoc,
+  isLoading,
+}) => {
+  const encodeUrl = useMemo(() => encodeURIComponent(mdoc.url), [mdoc.url]);
+  const docs = useMemo(
+    () => [
+      {
+        uri: `http://192.168.100.167:8080/api/v1/documents/download?uri=${encodeUrl}`,
+      },
+    ],
+    [encodeUrl],
+  );
+  const config = {
+    header: {
+      disableHeader: true,
+      disableFileName: true,
+      retainURLParams: true,
+    },
+    csvDelimiter: ",", // "," as default,
+    pdfZoom: {
+      defaultZoom: 1.1, // 1 as default,
+      zoomJump: 0.2, // 0.1 as default,
+    },
+  };
   return (
-    <Box sx={{ p: 2 }}>
+    <Box>
       <Stack
         sx={{
           border: "1px solid rgba(0,0,0,0.2)",
@@ -48,24 +72,37 @@ export const PostBody: React.FC<PostBodyProps> = ({ description, mdoc }) => {
         }}
       >
         <Typography variant="h5" textAlign="center">
-          Thong tin ve tai lieu
+          Thông tin về tài liệu
         </Typography>
-        <MDocProperty mkey="Ten tai lieu:" value={mdoc.fileName} />
+        <MDocProperty mkey="Tên tài liệu:" value={mdoc.fileName} />
         <MDocProperty mkey="Loại tài liệu: " value={mdoc.fileType} />
-        <MDocProperty mkey="Kich thuoc:" value={mdoc.fileSize} />
-        <MDocProperty mkey="Luot tai" value={mdoc.downloads} />
-        <MDocProperty mkey="So trang" value={mdoc.pages} />
+        <MDocProperty mkey="Kích thước:" value={bytesToMB(mdoc.fileSize)} />
+        <MDocProperty mkey="Lươt tải" value={mdoc.downloads} />
+        <MDocProperty mkey="Số trang" value={mdoc.pages} />
       </Stack>
       <Stack sx={{ mt: 2 }}>
-        <Typography variant="h5">Mieu ta tai lieu</Typography>
+        <Typography variant="h5">Miêu tả tài liệu</Typography>
         <Typography variant="body1">
-          {description || "Tai lieu nay khong co mieu ta "}
+          {description || "Tài liệu này không có phần mô tả "}
         </Typography>
       </Stack>
-      <DocViewer
-        pluginRenderers={DocViewerRenderers}
-        documents={docs}
-      ></DocViewer>
+      {!isLoading && (
+        <Box
+          sx={{
+            overflow: "auto", // Allows scrolling when content exceeds height
+            minHeight: "500px", // Restricts height to 80% of the viewport
+            border: "1px solid rgba(0,0,0,0.2)",
+            borderRadius: 2,
+            mt: 2,
+          }}
+        >
+          <DocViewer
+            config={config}
+            pluginRenderers={DocViewerRenderers}
+            documents={docs}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

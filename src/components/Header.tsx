@@ -1,21 +1,26 @@
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  styled,
   Toolbar,
+  Stack,
+  IconButton,
+  Badge,
+  Button,
+  Avatar,
+  Box,
+  styled,
 } from "@mui/material";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import SeachBar from "./SearchBar";
-import logo from "../assets/logo.png";
+import SearchBar from "./SearchBar"; // Adjust the import path
+import { useGetAllUnreadNotficationsQuery } from "../api/notificationApi";
+import { skipToken } from "@reduxjs/toolkit/query";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
+import { getThumbUri } from "../utils/uri";
+import logo from "../assets/logo.png";
 export const StyledNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
   fontSize: 16,
@@ -37,20 +42,27 @@ export const StyledNavLink = styled(NavLink)(({ theme }) => ({
     fontWeight: "normal",
   },
 }));
-export const Header = () => {
-  const { isLogin, fullName, avatar } = useSelector(
+const Header = () => {
+  const navigate = useNavigate();
+  const { isLogin, id, fullName, avatar } = useSelector(
     (state: RootState) => state.auth,
   );
-  const navigate = useNavigate();
+
+  const favorite = useSelector((state: RootState) => state.favorite);
+  const { data: unRead } = useGetAllUnreadNotficationsQuery(
+    isLogin ? { userId: id } : skipToken, // Pass skipToken if not logged in
+  );
+
   return (
     <AppBar position="fixed">
       <Toolbar>
         <Stack
           direction="row"
+          alignItems="center"
           sx={{
             bgcolor: "primary.main",
             paddingY: 1,
-            paddingX: 30,
+            paddingX: 27,
           }}
         >
           <NavLink to="/">
@@ -63,8 +75,13 @@ export const Header = () => {
               src={logo}
             />
           </NavLink>
-          <SeachBar />
-          {isLogin ? (
+          <SearchBar />
+          <Link to="/favorite">
+            <Badge badgeContent={favorite.length} color="success">
+              <FavoriteIcon color="error" />
+            </Badge>
+          </Link>
+          {isLogin && id !== 0 ? (
             <Stack sx={{ ml: 45 }} direction="row">
               <IconButton
                 sx={{
@@ -82,8 +99,9 @@ export const Header = () => {
                     outline: "none",
                   },
                 }}
+                onClick={() => navigate("user/notification")}
               >
-                <Badge badgeContent={3} color="error">
+                <Badge badgeContent={unRead?.length || 0} color="error">
                   <NotificationsIcon sx={{ color: "white" }} />
                 </Badge>
               </IconButton>
@@ -104,12 +122,16 @@ export const Header = () => {
                     },
                   }}
                   alt={fullName}
-                  src={avatar}
+                  src={getThumbUri(avatar)}
                 />
               </Button>
             </Stack>
           ) : (
-            <Stack sx={{ ml: 35 }} direction="row">
+            <Stack
+              sx={{ ml: 35, alignItems: "center" }}
+              spacing={1}
+              direction="row"
+            >
               <StyledNavLink to={"/register"}>ĐĂNG KÝ</StyledNavLink>
               <StyledNavLink to={"/login"}>ĐĂNG NHẬP</StyledNavLink>
             </Stack>
@@ -119,3 +141,4 @@ export const Header = () => {
     </AppBar>
   );
 };
+export default Header;

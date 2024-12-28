@@ -7,9 +7,10 @@ import {
   Paper,
   Avatar,
   TextField,
+  IconButton,
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import React from "react";
+import React, { useState } from "react";
 import {
   IUserUpdateInfo,
   useGetInfoQuery,
@@ -20,6 +21,7 @@ import { RootState } from "../../app/store";
 import FullLoading from "../FullLoading";
 import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { getThumbUri } from "../../utils/uri";
 const UserProfileUpdate: React.FC = () => {
   const { id } = useSelector((state: RootState) => state.auth);
   const { data: user } = useGetInfoQuery(id);
@@ -28,13 +30,32 @@ const UserProfileUpdate: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IUserUpdateInfo>();
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null | ArrayBuffer>("");
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result); // Preview the image
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [updateInfo, { data, isLoading }] = useUpdateInfoMutation();
   const handleUpdateInfo: SubmitHandler<IUserUpdateInfo> = async (data) => {
     try {
-      const re = await updateInfo({
-        ...data,
-        id: id,
-      }).unwrap();
+      const formData = new FormData();
+      formData.append("fullName", data.fullName);
+      formData.append("bio", data.bio);
+      formData.append("id", id.toString());
+      if (avatarFile) {
+        formData.append("avatar", avatarFile); // Add avatar to the request
+      }
+      const re = await updateInfo(formData).unwrap();
       if (re) {
         dispatch(setSlectedComponent("UserProfile"));
       }
@@ -62,6 +83,7 @@ const UserProfileUpdate: React.FC = () => {
         >
           Cập nhập thông tin tài khoản
         </Typography>
+
         <Box
           sx={{
             display: "flex",
@@ -70,17 +92,36 @@ const UserProfileUpdate: React.FC = () => {
           }}
         >
           <Box position="relative">
-            <Avatar sx={{ width: 80, height: 80 }} src={data?.avatar || ""} />
-            <CameraAltIcon
+            <Avatar
+              sx={{ width: 80, height: 80 }}
+              src={preview || getThumbUri(user?.avatar) || ""}
+            />
+            <Box
               sx={{
                 position: "absolute",
                 bottom: 1,
                 padding: 0.5,
+                width: 30, // Ensure width and height are equal
+                height: 30,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50%", // Makes the box circular
                 right: 0.5,
-                borderRadius: 100,
-                background: "gray",
+                background: "rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
               }}
-            />
+              component={"label"}
+            >
+              <CameraAltIcon />
+              <input
+                type="file"
+                style={{ visibility: "hidden" }}
+                hidden
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Box>
           </Box>
         </Box>
         <Box component={"form"} onSubmit={handleSubmit(handleUpdateInfo)}>

@@ -1,10 +1,13 @@
-import { Badge, Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PolicyIcon from "@mui/icons-material/Policy";
 import FlagIcon from "@mui/icons-material/Flag";
 import SearchBar from "../../components/SearchBar";
 import { PostTable } from "../components/post/PostTable";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router-dom";
 export const PostManager = () => {
+  const navigate = useNavigate();
   return (
     <Stack sx={{ px: 4 }}>
       <Typography fontWeight="bold" variant="h5">
@@ -29,48 +32,31 @@ export const PostManager = () => {
             Tài liệu mới
           </Button>
           <Button
+            onClick={() => navigate("deleted-posts")}
+            sx={{ fontWeight: "bold" }}
+            variant="contained"
+            color="secondary"
+            startIcon={<DeleteIcon />}
+          >
+            Tài liệu bị xóa
+          </Button>
+          <Button
             sx={{ color: "white", position: "relative", fontWeight: "bold" }}
             color="warning"
             variant="contained"
+            onClick={() => navigate("review-posts")}
             startIcon={<PolicyIcon />}
           >
             Duyệt tài liệu
-            <Badge
-              sx={{
-                position: "absolute",
-                right: 0,
-                top: 5,
-                "& .MuiBadge-badge": {
-                  fontSize: 15,
-                  minWidth: 25,
-                  height: 25,
-                },
-              }}
-              color="error"
-              badgeContent={2}
-            />
           </Button>
           <Button
             sx={{ color: "white", position: "relative", fontWeight: "bold" }}
             color="error"
             variant="contained"
+            onClick={() => navigate("report-posts")}
             startIcon={<FlagIcon />}
           >
             Tài liệu bị báo cáo
-            <Badge
-              sx={{
-                position: "absolute",
-                right: 0,
-                top: 5,
-                "& .MuiBadge-badge": {
-                  fontSize: 15,
-                  minWidth: 25,
-                  height: 25,
-                },
-              }}
-              color="warning"
-              badgeContent={9}
-            />
           </Button>
         </Stack>
       </Stack>

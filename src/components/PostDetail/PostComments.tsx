@@ -11,7 +11,7 @@ import {
 import { ICommentRes } from "../../type/ICommentRes";
 import Grid from "@mui/material/Grid2";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useCreateCommentMutation,
   useDeleteCommentMutation,
@@ -28,10 +28,12 @@ import { toast } from "react-toastify";
 
 interface PostCommentsProps {
   comments: ICommentRes[];
+  postId: number;
 }
-const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
+const PostComments: React.FC<PostCommentsProps> = ({ comments, postId }) => {
   return (
     <Paper
+      id="post-comments"
       sx={{
         my: 2,
         p: 3,
@@ -40,11 +42,15 @@ const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
       <Typography fontWeight="bold" variant="h5">
         Bình luận({comments.length})
       </Typography>
-      <CommentBox postId={2}></CommentBox>
+      <CommentBox postId={postId}></CommentBox>
       <Stack spacing={2} sx={{ py: 3 }}>
-        {comments.map((comment) => (
-          <Comment key={comment.id} {...comment} />
-        ))}
+        {comments.length === 0 ? (
+          <Typography variant="body1" textAlign={"center"}>
+            Chưa có bình luận
+          </Typography>
+        ) : (
+          comments.map((comment) => <Comment key={comment.id} {...comment} />)
+        )}
       </Stack>
     </Paper>
   );
@@ -69,7 +75,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ postId }) => {
     }
     try {
       const form = {
-        postId: 1,
+        postId,
         content,
         userId: id,
       };

@@ -46,7 +46,15 @@ export const Login = () => {
         });
         return;
       }
-      console.log(res);
+      if (res.status === "ban") {
+        notify.fire({
+          icon: "error",
+          title: "Thông báo",
+          text: "Tài khoản đã bị đình chỉ",
+          showConfirmButton: true,
+        });
+        return;
+      }
       dispatch(
         setAccessToken({
           ...res,

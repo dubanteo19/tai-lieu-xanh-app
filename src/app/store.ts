@@ -15,6 +15,7 @@ import { reportApi } from "../admin/api/reportApi";
 import { notificationApi } from "../api/notificationApi";
 import { dashboardApi } from "../admin/api/dashboardApi";
 import { adminMajorApi } from "../admin/api/adminMajorApi";
+import { adminUserApi } from "../admin/api/adminUserApi";
 export const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -32,6 +33,7 @@ export const store = configureStore({
     [notificationApi.reducerPath]: notificationApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
     [adminMajorApi.reducerPath]: adminMajorApi.reducer,
+    [adminUserApi.reducerPath]: adminUserApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -46,6 +48,7 @@ export const store = configureStore({
       notificationApi.middleware,
       dashboardApi.middleware,
       adminMajorApi.middleware,
+      adminUserApi.middleware,
       favoriteMiddleware,
     ),
 });

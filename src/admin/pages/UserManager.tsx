@@ -5,7 +5,7 @@ export const UserManager = () => {
   return (
     <Stack sx={{ px: 4 }}>
       <Typography fontWeight="bold" variant="h5">
-        Quản lý nguoi dung
+        Quản lý người dùng
       </Typography>
       <Stack
         direction="row"

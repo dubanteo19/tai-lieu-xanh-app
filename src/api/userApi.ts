@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseApi";
+import { IPost } from "../type/IPost";
 interface IUserInfo {
   fullName: string;
   bio: string;
@@ -21,20 +22,33 @@ export interface IUserUpdateInfo {
 }
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: ["UserInfo"],
+  tagTypes: ["UserInfo", "Post"],
   baseQuery: baseQuery,
   endpoints: (builder) => ({
+    getUserPosts: builder.query<IPost[], number>({
+      query: (id) => `users/${id}/posts`,
+      providesTags: ["Post"],
+    }),
     getInfo: builder.query<IUserInfo, number>({
       query: (id) => `users/${id}/info`,
-      providesTags: (result, error, id) => [{ type: "UserInfo", id }],
+      providesTags: (_, __, id) => [{ type: "UserInfo", id }],
     }),
-    updateInfo: builder.mutation<IUserInfo, IUserUpdateInfo>({
-      query: (info) => ({
-        url: `users/${info.id}/info`,
+    updateInfo: builder.mutation<IUserInfo, FormData>({
+      query: (formData) => ({
+        url: `users/${formData.get("id")}/info`,
         method: "PUT",
-        body: info,
+        body: formData, // FormData object
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "UserInfo", id }],
+      invalidatesTags: (_, __, formData) => [
+        { type: "UserInfo", id: Number(formData.get("id")) },
+      ],
+    }),
+    deletePost: builder.mutation<void, { postId: number; userId: number }>({
+      query: ({ postId }) => ({
+        url: `users/posts/${postId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Post"],
     }),
     updatePassword: builder.mutation<IUserInfo, IUserUpdatePassword>({
       query: (form) => ({
@@ -47,6 +61,8 @@ export const userApi = createApi({
 });
 export const {
   useGetInfoQuery,
+  useGetUserPostsQuery,
+  useDeletePostMutation,
   useUpdateInfoMutation,
   useUpdatePasswordMutation,
 } = userApi;

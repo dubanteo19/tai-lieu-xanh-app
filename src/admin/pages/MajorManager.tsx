@@ -1,29 +1,47 @@
-import { Button, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchBar from "../../components/SearchBar";
 import { MajorTable } from "../components/major/MajorTable";
-export const majors = [
-  {
-    id: 1,
-    name: "Ngôn ngữ tiếng Anh",
-    posts: 10,
-  },
-  {
-    id: 2,
-    posts: 3,
-    name: "Nong hoc",
-  },
-  {
-    id: 3,
-    posts: 3,
-    name: "Cong nghe thong tin",
-  },
-];
+import FullLoading from "../../components/FullLoading";
+import { useState } from "react";
+import { useCreateMajorMutation, useGetMajorsWithPostsQuery } from "../api/adminMajorApi";
+import { toast } from "react-toastify";
 export const MajorManager = () => {
+  const { data: majors, isLoading } = useGetMajorsWithPostsQuery();
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+  const [createMajor, { isLoading: isCreating }] = useCreateMajorMutation();
+  const [majorName, setMajorName] = useState<string>("");
+  const handleCreateMajor = async () => {
+    try {
+      await createMajor({ name: majorName });
+      toast.success("Tạo danh mục ngành tài liệu thành công", {});
+      setMajorName("");
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Stack sx={{ px: 4 }}>
+      {isLoading && <FullLoading />}
       <Typography fontWeight="bold" variant="h5">
-        Quản lý danh mục tài liệu
+        Quản lý danh mục ngành tài liệu
       </Typography>
       <Stack
         direction="row"
@@ -37,15 +55,48 @@ export const MajorManager = () => {
         </Stack>
         <Stack direction="row" spacing={2}>
           <Button
+            onClick={handleClickOpen}
             sx={{ color: "white", fontWeight: "bold" }}
             variant="contained"
             startIcon={<AddIcon />}
           >
-            Danh mục tài liệu mới
+            Danh mục ngành tài liệu mới
           </Button>
+          {/* NewMjaor Dialog */}
+          <Dialog open={openDialog} onClose={handleClose}>
+            <DialogTitle textAlign={"center"}>Tạo danh mục ngành</DialogTitle>
+            <DialogContent sx={{ p: 5, width: "400px" }}>
+              <TextField
+                sx={{ mt: 2 }}
+                value={majorName}
+                onChange={(e) => setMajorName(e.target.value)}
+                fullWidth
+                label="Tên ngành"
+              ></TextField>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Hủy
+              </Button>
+              <Button
+                onClick={() => {
+                  handleCreateMajor();
+                }}
+                color="success"
+                variant="contained"
+                disabled={isCreating}
+              >
+                {isCreating ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Tạo"
+                )}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Stack>
       </Stack>
-      <MajorTable majors={majors} />
+      {majors && <MajorTable majors={majors} />}
     </Stack>
   );
 };

@@ -6,7 +6,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { useLoginMutation } from "../api/authApi";
 import { useDispatch } from "react-redux";
 import { setAccessToken, setRefreshToken } from "../features/auth/authSlice";
@@ -14,19 +13,30 @@ import { useLocation, useNavigate } from "react-router-dom";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import FullLoading from "../components/FullLoading";
-
+import GoogleIcon from "@mui/icons-material/Google";
+import { SubmitHandler, useForm } from "react-hook-form";
 export const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const notify = withReactContent(Swal);
-  const [login, { data, isLoading, error }] = useLoginMutation();
+  interface ILoginReq {
+    email: string;
+    password: string;
+  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILoginReq>();
+  const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   var messgae = location.state?.message;
-  const handleLogin = async () => {
+  const handleLogin: SubmitHandler<ILoginReq> = async (data) => {
     try {
-      const res = await login({ email: email, password: password }).unwrap();
+      const res = await login({
+        email: data.email,
+        password: data.password,
+      }).unwrap();
       if (res.status === "inactive") {
         notify.fire({
           icon: "error",
@@ -36,7 +46,15 @@ export const Login = () => {
         });
         return;
       }
-      console.log(res);
+      if (res.status === "ban") {
+        notify.fire({
+          icon: "error",
+          title: "Thông báo",
+          text: "Tài khoản đã bị đình chỉ",
+          showConfirmButton: true,
+        });
+        return;
+      }
       dispatch(
         setAccessToken({
           ...res,
@@ -49,7 +67,11 @@ export const Login = () => {
     }
   };
   return (
-    <Paper sx={{ pt: 10 }}>
+    <Paper
+      component="form"
+      onSubmit={handleSubmit(handleLogin)}
+      sx={{ pt: 10 }}
+    >
       {isLoading && <FullLoading />}
       <Typography textAlign="center" variant="h4">
         Đăng nhập
@@ -64,22 +86,20 @@ export const Login = () => {
       >
         <Stack width={400} spacing={2}>
           <TextField
-            value={email}
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
+            {...register("email", { required: "Vui lòng nhập email" })}
+            error={!!errors.email}
+            helperText={errors.email?.message || null}
             type="email"
             label="Email"
           />
           <TextField
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
+            {...register("password", { required: "Vui lòng nhập mật khẩu" })}
+            error={!!errors.password}
+            helperText={errors.password?.message || null}
             placeholder="Mật khẩu"
             type="password"
           />
-          <Button variant="contained" color="success" onClick={handleLogin}>
+          <Button variant="contained" color="success" type="submit">
             Đăng nhập
           </Button>
           {error && (
@@ -92,7 +112,30 @@ export const Login = () => {
               {messgae}
             </Typography>
           )}
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<GoogleIcon />}
+            sx={{ flex: 1, ml: 1 }}
+            onClick={() => { }}
+          >
+            Google
+          </Button>
+
           <Typography textAlign="center">Chưa có tài khoản?</Typography>
+          <Typography
+            textAlign="center"
+            sx={{
+              cursor: "pointer",
+            }}
+            variant="subtitle2"
+            color="gray"
+            onClick={() => {
+              navigate("/forgot-password");
+            }}
+          >
+            Quên mật khẩu?
+          </Typography>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               onClick={() => {

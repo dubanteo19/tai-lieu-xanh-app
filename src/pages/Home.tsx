@@ -1,9 +1,7 @@
 import { Box, Grid2 } from "@mui/material";
 import PostList from "../components/PostList";
-import RightPanel from "../components/RightPanel";
+import RightPanel, { Banner } from "../components/RightPanel";
 import { MajorList } from "../components/MajorList";
-import { majors } from "../admin/pages/MajorManager";
-
 const Home = () => {
   return (
     <Box>
@@ -17,11 +15,12 @@ const Home = () => {
         container
         spacing={2}
       >
-        <MajorList majors={majors} />
         <Grid2 size={8}>
+          <MajorList />
           <PostList />
         </Grid2>
         <Grid2 size={4}>
+          <Banner />
           <RightPanel />
         </Grid2>
       </Grid2>

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import { SvgColor } from "./SvgColor";
 import { getColor } from "../utils/getColor";
+import CountUp from "react-countup";
 type Props = CardProps & {
   title: string;
   total: number;
@@ -52,7 +53,11 @@ export function AnalyticsWidgetSummary({
             {title}
           </Box>
           <Box sx={{ typography: "h4" }} fontWeight="bold">
-            {total}
+            <CountUp
+              start={0}
+              end={total}
+              duration={2.5} // Adjust duration for animation speed
+            />
           </Box>
         </Box>
       </Box>

@@ -1,9 +1,20 @@
 import {
   Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -12,19 +23,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import { Major } from "../../../type/Major";
+import { IMajorWithPost } from "../../../api/postApi";
+import { useState } from "react";
+import { useUpdateMajorMutation } from "../../api/adminMajorApi";
+import { toast } from "react-toastify";
 interface Props {
-  majors: Major[];
+  majors: IMajorWithPost[];
 }
 export const MajorTable: React.FC<Props> = ({ majors }) => {
-  const data01 = [
-    { name: "Cong nghe thong tin", value: 400 },
-    { name: "Kinh Te", value: 300 },
-    { name: "Cong nghe hoa hoc", value: 300 },
-    { name: "Thu Y", value: 200 },
-    { name: "Nong hoc", value: 500 },
-  ];
-
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#DA8042"];
   const columns: GridColDef[] = [
     {
@@ -33,7 +39,7 @@ export const MajorTable: React.FC<Props> = ({ majors }) => {
       width: 70,
     },
     {
-      field: "name",
+      field: "majorName",
       headerName: "Tên danh mục",
       width: 240,
     },
@@ -46,9 +52,17 @@ export const MajorTable: React.FC<Props> = ({ majors }) => {
       field: "actions",
       headerName: "Chức năng",
       width: 100,
-      renderCell: () => (
+      renderCell: (param) => (
         <Stack direction="row" spacing={1}>
-          <IconButton size="small" color="primary">
+          <IconButton
+            onClick={() => {
+              handleClickOpen();
+              setMajorName(param.row.majorName);
+              setMajorId(param.row.id);
+            }}
+            size="small"
+            color="primary"
+          >
             <EditIcon />
           </IconButton>
           <Divider orientation="vertical" flexItem />
@@ -59,13 +73,37 @@ export const MajorTable: React.FC<Props> = ({ majors }) => {
       ),
     },
   ];
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+  const handleUpdateMajor = async () => {
+    try {
+      await updateMajor({ majorId, name: majorName });
+      handleClose();
+      toast.success("Cập nhật danh mục ngành thành công", {});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const [updateMajor, { isLoading: isCreating }] = useUpdateMajorMutation();
+  const [majorName, setMajorName] = useState<string>("");
+  const [majorId, setMajorId] = useState<number>(0);
+  const [top, setTop] = useState<number>(5);
+  const data01 = majors.slice(0, top).map((major) => ({
+    name: major.majorName,
+    value: major.posts,
+  }));
   return (
     <Paper sx={{ px: 5, py: 2, mt: 2, height: 600 }}>
       <Stack direction="row" spacing={5}>
         <Box sx={{ height: 500, width: "45%" }}>
           <Stack direction={"row"} sx={{ mb: 2 }} alignItems="center">
             <Typography fontWeight="bold" variant="h5">
-              Danh mục dang hoat dong
+              Danh sách danh mục tài liệu
             </Typography>
             <CheckCircleIcon sx={{ color: "green" }} />
           </Stack>
@@ -79,10 +117,26 @@ export const MajorTable: React.FC<Props> = ({ majors }) => {
         >
           <Stack direction={"row"} sx={{ mb: 2 }} alignItems="center">
             <Typography fontWeight="bold" variant="h5">
-              Thong ke so luot tai lieu theo danh muc
+              Thống kê số lượt tài liệu theo danh mục ngành
             </Typography>
-            <BarChartIcon sx={{ color: "green" }} />
           </Stack>
+          <FormControl>
+            <InputLabel id="report-reason-label">Top ngành</InputLabel>
+            <Select
+              label="Top ngành"
+              labelId="top-major-label"
+              sx={{ width: 100 }}
+              value={top}
+              onChange={(e) => setTop(Number(e.target.value))}
+            >
+              <MenuItem key={10} value={10}>
+                10
+              </MenuItem>
+              <MenuItem key={5} value={5}>
+                5
+              </MenuItem>
+            </Select>
+          </FormControl>
           <Box
             sx={{
               display: "flex",
@@ -105,6 +159,37 @@ export const MajorTable: React.FC<Props> = ({ majors }) => {
           </Box>
         </Box>
       </Stack>
+      <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle textAlign={"center"}>Cập nhập danh mục ngành</DialogTitle>
+        <DialogContent sx={{ p: 5, width: "400px" }}>
+          <TextField
+            sx={{ mt: 2 }}
+            value={majorName}
+            onChange={(e) => setMajorName(e.target.value)}
+            fullWidth
+            label="Tên ngành"
+          ></TextField>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Hủy
+          </Button>
+          <Button
+            onClick={() => {
+              handleUpdateMajor();
+            }}
+            color="success"
+            variant="contained"
+            disabled={isCreating}
+          >
+            {isCreating ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Lưu"
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

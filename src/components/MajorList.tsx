@@ -1,24 +1,28 @@
 import { Badge, Box, Chip, Stack, Typography } from "@mui/material";
-import { IMajor } from "../type/IMajor";
+import { useGetMajorsWithPostsQuery } from "../api/postApi";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-  majors: IMajor[];
-}
-export const MajorList: React.FC<Props> = ({ majors }) => {
+export const MajorList: React.FC = () => {
+  const { data: majorsWithPosts } = useGetMajorsWithPostsQuery();
+  const navigate = useNavigate();
   return (
     <Box>
-      <Stack direction="row" spacing={2}>
-        {majors.map((major) => (
-          <Badge key={major.id} badgeContent={major.posts} color="success">
-            <Chip
-              sx={{
-                fontWeight: "bold",
-              }}
-              key={major.id}
-              label={major.name}
-            ></Chip>
-          </Badge>
-        ))}
+      <Stack direction="row" sx={{ width: "100%" }} spacing={2}>
+        {majorsWithPosts &&
+          majorsWithPosts.map((major) => (
+            <Badge key={major.id} badgeContent={major.posts} color="success">
+              <Chip
+                onClick={() => {
+                  navigate(`/search?major=${major.id}`);
+                }}
+                sx={{
+                  fontWeight: "bold",
+                }}
+                key={major.id}
+                label={major.majorName}
+              ></Chip>
+            </Badge>
+          ))}
       </Stack>
     </Box>
   );

@@ -7,54 +7,63 @@ import {
   Paper,
   Avatar,
   TextField,
+  IconButton,
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import React, { useEffect } from "react";
-import { IUserUpdateInfo, useUpdateInfoMutation } from "../../api/userApi";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  IUserUpdateInfo,
+  useGetInfoQuery,
+  useUpdateInfoMutation,
+} from "../../api/userApi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FullLoading from "../FullLoading";
 import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
 import { SubmitHandler, useForm } from "react-hook-form";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
+import { getThumbUri } from "../../utils/uri";
 const UserProfileUpdate: React.FC = () => {
-  const notify = withReactContent(Swal);
-  const { fullName, bio, id, isLogin } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const { id } = useSelector((state: RootState) => state.auth);
+  const { data: user } = useGetInfoQuery(id);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IUserUpdateInfo>();
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null | ArrayBuffer>("");
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result); // Preview the image
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [updateInfo, { data, isLoading }] = useUpdateInfoMutation();
   const handleUpdateInfo: SubmitHandler<IUserUpdateInfo> = async (data) => {
     try {
-      const re = await updateInfo({
-        ...data,
-        id: id,
-      }).unwrap();
+      const formData = new FormData();
+      formData.append("fullName", data.fullName);
+      formData.append("bio", data.bio);
+      formData.append("id", id.toString());
+      if (avatarFile) {
+        formData.append("avatar", avatarFile); // Add avatar to the request
+      }
+      const re = await updateInfo(formData).unwrap();
       if (re) {
-        notify.fire({
-          icon: "success",
-          title: "Thông báo",
-          text: "Cập nhật thông tin tài khoản thành công",
-          showConfirmButton: true,
-        });
+        dispatch(setSlectedComponent("UserProfile"));
       }
     } catch (error) {
       console.log(error);
     }
   };
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isLogin) {
-      navigate("/login");
-    }
-  }, [data]);
   return (
     <Box
       sx={{
@@ -72,8 +81,9 @@ const UserProfileUpdate: React.FC = () => {
             position: "relative",
           }}
         >
-          Cap nhap Thông tin tài khoản
+          Cập nhập thông tin tài khoản
         </Typography>
+
         <Box
           sx={{
             display: "flex",
@@ -82,17 +92,36 @@ const UserProfileUpdate: React.FC = () => {
           }}
         >
           <Box position="relative">
-            <Avatar sx={{ width: 80, height: 80 }} src={data?.avatar || ""} />
-            <CameraAltIcon
+            <Avatar
+              sx={{ width: 80, height: 80 }}
+              src={preview || getThumbUri(user?.avatar) || ""}
+            />
+            <Box
               sx={{
                 position: "absolute",
                 bottom: 1,
                 padding: 0.5,
+                width: 30, // Ensure width and height are equal
+                height: 30,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50%", // Makes the box circular
                 right: 0.5,
-                borderRadius: 100,
-                background: "gray",
+                background: "rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
               }}
-            />
+              component={"label"}
+            >
+              <CameraAltIcon />
+              <input
+                type="file"
+                style={{ visibility: "hidden" }}
+                hidden
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Box>
           </Box>
         </Box>
         <Box component={"form"} onSubmit={handleSubmit(handleUpdateInfo)}>
@@ -108,18 +137,18 @@ const UserProfileUpdate: React.FC = () => {
                 error={!!errors.fullName}
                 helperText={errors.fullName?.message || null}
                 label="Họ tên"
-                defaultValue={fullName}
+                defaultValue={user?.fullName}
               ></TextField>
             </ListItem>
             <ListItem sx={{ px: 20 }}>
               <TextField
                 id="name"
                 multiline
-                label="Giới thiệu"
+                label="Tiểu sử"
                 {...register("bio")}
                 rows={7}
                 fullWidth
-                defaultValue={bio}
+                defaultValue={user?.bio}
               ></TextField>
             </ListItem>
           </List>

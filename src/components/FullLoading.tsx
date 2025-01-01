@@ -14,7 +14,7 @@ const FullLoading: React.FC = () => {
         backgroundColor: "rgba(0, 0, 0, 0.4)",
       }}
     >
-      <ReactLoading type="spin" color="green" width={50} height={50} />
+      <ReactLoading type="spin" color="green" width={50} height={50} /> 
     </Box>
   );
 };

@@ -1,6 +1,5 @@
 import { Box, ListItem, ListItemButton, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
 interface NavContentProps {
   data: {
     title: string;
@@ -29,7 +28,7 @@ export const NavContent: React.FC<NavContentProps> = ({ data }) => {
           Tài liệu xanh
         </Typography>
         {data.map((item) => {
-          const isActived = item.path === pathname;
+          const isActived = pathname.startsWith(item.path);
           return (
             <ListItem disableGutters disablePadding key={item.title}>
               <ListItemButton

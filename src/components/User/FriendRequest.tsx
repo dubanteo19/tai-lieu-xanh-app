@@ -8,7 +8,10 @@ interface FriendRequestCardItemProps {
 }
 const FriendRequestCardItem: React.FC<FriendRequestCardItemProps> = (props) => {
   return (
-    <Stack sx={{ padding: 2 }} spacing={1}>
+    <Stack
+      sx={{ padding: 2, border: "1px solid #ccc", borderRadius: 2 }}
+      spacing={1}
+    >
       <Box
         component="img"
         src={props.avatar}

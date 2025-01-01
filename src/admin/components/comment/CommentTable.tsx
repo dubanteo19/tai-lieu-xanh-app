@@ -1,17 +1,22 @@
 import {
-  Avatar,
-  Divider,
   IconButton,
   Paper,
-  Stack,
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { statusColors } from "../user/UserTable";
+import { ICommentRes } from "../../../type/ICommentRes";
+import { CenterCell } from "../post/ReviewPosts";
+import { getVNStatusName } from "../../../utils/statusTranslator";
+import {
+  useDeleteCommentMutation,
+} from "../../api/adminCommentApi";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 interface Props {
-  comments: Comment[];
+  comments: ICommentRes[];
 }
 export const CommentTable: React.FC<Props> = ({ comments }) => {
   const columns: GridColDef[] = [
@@ -21,39 +26,24 @@ export const CommentTable: React.FC<Props> = ({ comments }) => {
       width: 60,
     },
     {
-      field: "author ",
+      field: "author",
       headerName: "Tác giả",
       width: 200,
       renderCell: (params) => (
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Avatar
-            src={params.row.author.avatar}
-            alt={params.row.author.fullName}
-            sx={{ width: 30, height: 30 }}
-          />
+        <CenterCell>
           <Typography variant="body2">{params.row.author.fullName}</Typography>
-        </Stack>
+        </CenterCell>
       ),
     },
     {
-      field: "postTitle",
-      headerName: "Tai lieu",
+      field: "content",
+      headerName: "Bình luận",
       width: 250,
     },
     {
-      field: "comment",
-      headerName: "Binh luan",
-      width: 150,
-    },
-    {
-      field: "parentComment",
-      headerName: "Phan hoi binh luan",
-      width: 150,
-    },
-    {
-      field: "createdAt",
-      headerName: "Ngay tao",
-      width: 85,
+      field: "createdDate",
+      headerName: "Ngày bình luận",
+      width: 205,
     },
     {
       field: "status",
@@ -69,7 +59,7 @@ export const CommentTable: React.FC<Props> = ({ comments }) => {
             fontWeight: "bold",
           }}
         >
-          {params.row.status}
+          {getVNStatusName(params.row.status)}
         </Typography>
       ),
       width: 110,
@@ -78,21 +68,51 @@ export const CommentTable: React.FC<Props> = ({ comments }) => {
       field: "actions",
       headerName: "Chức năng",
       width: 100,
-      renderCell: () => (
-        <Stack direction="row" spacing={1}>
-          <IconButton size="small" color="primary">
-            <EditIcon />
-          </IconButton>
-          <Divider orientation="vertical" flexItem />
-          <IconButton size="small" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </Stack>
+      renderCell: (params) => (
+        <IconButton
+          onClick={() => {
+            handleDeleteComment(params.row.id);
+          }}
+          size="small"
+          color="error"
+        >
+          <DeleteIcon />
+        </IconButton>
       ),
     },
   ];
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      notify
+        .fire({
+          title: "Bạn có muốn xóa bình luận này?",
+          showCancelButton: true,
+          confirmButtonText: "Xóa",
+          cancelButtonText: `Quay lại`,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            try {
+              deleteComment({ commentId });
+              toast.success("Xóa bình luận thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+      await deleteComment({ commentId });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const notify = withReactContent(Swal);
+  const [deleteComment] = useDeleteCommentMutation();
   return (
-    <Paper sx={{ px: 5, py: 2, mt: 2, height: 600 }}>
+    <Paper sx={{ px: 15, py: 2, mt: 2, height: 600 }}>
       <DataGrid rows={comments} columns={columns} />
     </Paper>
   );

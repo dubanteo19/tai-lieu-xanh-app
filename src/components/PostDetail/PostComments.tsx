@@ -11,26 +11,31 @@ import {
 import { ICommentRes } from "../../type/ICommentRes";
 import Grid from "@mui/material/Grid2";
 import EditIcon from "@mui/icons-material/Edit";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useCreateCommentMutation,
   useDeleteCommentMutation,
+  useUpdateCommentMutation,
 } from "../../api/commentApi";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FullLoading from "../FullLoading";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import React from "react";
 import { toast } from "react-toastify";
+import { setCommentForm } from "../../features/comment/commentSlice";
 
 interface PostCommentsProps {
   comments: ICommentRes[];
   postId: number;
 }
-const PostComments: React.FC<PostCommentsProps> = ({ comments, postId }) => {
+const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
+  const dispatch = useDispatch();
+  const { id } = useSelector((state: RootState) => state.auth);
+  dispatch(setCommentForm({ userId: id }));
   return (
     <Paper
       id="post-comments"
@@ -42,7 +47,7 @@ const PostComments: React.FC<PostCommentsProps> = ({ comments, postId }) => {
       <Typography fontWeight="bold" variant="h5">
         Bình luận({comments.length})
       </Typography>
-      <CommentBox postId={postId}></CommentBox>
+      <CommentBox />
       <Stack spacing={2} sx={{ py: 3 }}>
         {comments.length === 0 ? (
           <Typography variant="body1" textAlign={"center"}>
@@ -55,15 +60,16 @@ const PostComments: React.FC<PostCommentsProps> = ({ comments, postId }) => {
     </Paper>
   );
 };
-interface CommentBoxProps {
-  postId: number;
-}
-const CommentBox: React.FC<CommentBoxProps> = ({ postId }) => {
+const CommentBox: React.FC = () => {
   const [createComment, { isLoading }] = useCreateCommentMutation();
-  const { id, isLogin } = useSelector((state: RootState) => state.auth);
-  const [content, setContent] = useState("");
+  const [updateComment] = useUpdateCommentMutation();
+  const commentForm = useSelector((state: RootState) => state.comment);
+  const dispatch = useDispatch();
+  const { isLogin, id } = useSelector((state: RootState) => state.auth);
+  const { content, action } = useSelector((state: RootState) => state.comment);
   const notify = withReactContent(Swal);
-  const handleSaveComment = async () => {
+  const handleSaveComment = async (e) => {
+    e.preventDefault();
     if (!isLogin) {
       notify.fire({
         icon: "error",
@@ -74,31 +80,46 @@ const CommentBox: React.FC<CommentBoxProps> = ({ postId }) => {
       return;
     }
     try {
-      const form = {
-        postId,
-        content,
-        userId: id,
-      };
-      await createComment(form);
+      if (action === "create") {
+        await createComment({
+          content: commentForm.content,
+          postId: commentForm.postId,
+          userId: commentForm.userId,
+        });
+        dispatch(setCommentForm({ content: "", action: "create" }));
+        toast.success("Bình luận thành công", {});
+      } else {
+        await updateComment({
+          content: commentForm.content,
+          postId: commentForm.postId,
+          userId: commentForm.userId,
+          commentId: commentForm.commentId,
+        });
+        toast.success("Cập nhật bình luận thành công", {});
+        dispatch(setCommentForm({ content: "", action: "create" }));
+      }
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <Stack>
+    <Stack component="form" onSubmit={handleSaveComment} spacing={2}>
       {isLoading && <FullLoading />}
       <TextareaAutosize
         value={content}
+        required
         minRows={5}
-        onChange={(event) => setContent(event.target.value)}
+        onChange={(event) =>
+          dispatch(setCommentForm({ content: event.target.value }))
+        }
         cols={65}
       ></TextareaAutosize>
       <Button
+        type="submit"
         sx={{ color: "white", width: 200, mt: 1, mx: "auto" }}
-        onClick={() => handleSaveComment()}
         variant="contained"
       >
-        Gửi bình luận
+        Lưu bình luận
       </Button>
     </Stack>
   );
@@ -116,6 +137,7 @@ const Comment: React.FC<ICommentRes> = (comment) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const dispatch = useDispatch();
   const { id } = useSelector((state: RootState) => state.auth);
   const { postId } = useSelector((state: RootState) => state.comment);
   const notify = withReactContent(Swal);
@@ -147,6 +169,17 @@ const Comment: React.FC<ICommentRes> = (comment) => {
         }
       });
   };
+  const handleUpdate = () => {
+    dispatch(
+      setCommentForm({
+        postId: postId,
+        userId: id,
+        commentId: comment.id,
+        content: comment.content,
+        action: "update",
+      }),
+    );
+  };
   const isMine = comment.author.id === id;
   const open = Boolean(anchorEl);
   return (
@@ -159,7 +192,11 @@ const Comment: React.FC<ICommentRes> = (comment) => {
         <Stack>
           <Stack sx={{ p: 1, borderRadius: 5, bgcolor: "rgba(0, 0, 0, 0.05)" }}>
             <Typography fontWeight="bold">{comment.author.fullName}</Typography>
-            <Typography>{comment.content}</Typography>
+            {comment.status === "DELETED" ? (
+              <Typography color="error">Bình luận đã bị xóa</Typography>
+            ) : (
+              <Typography>{comment.content}</Typography>
+            )}
           </Stack>
           <Typography variant="subtitle1" color="text.secondary">
             {comment.createdDate}
@@ -181,7 +218,7 @@ const Comment: React.FC<ICommentRes> = (comment) => {
             onClose={handleClose}
           >
             <Stack>
-              <IconButton color="info">
+              <IconButton onClick={handleUpdate} color="info">
                 <EditIcon />
               </IconButton>
               <IconButton onClick={handleDelete} color="error">

@@ -8,6 +8,7 @@ import { IMDoc } from "../../type/IMDoc";
 import Grid from "@mui/material/Grid2";
 import { bytesToMB } from "../../utils/bytesToMB";
 import { useMemo } from "react";
+import { getFileUri } from "../../utils/uri";
 interface PostBodyProps {
   description: string;
   postId: number;
@@ -44,7 +45,7 @@ export const PostBody: React.FC<PostBodyProps> = ({
   const docs = useMemo(
     () => [
       {
-        uri: `http://192.168.100.167:8080/api/v1/documents/download?uri=${encodeUrl}`,
+        uri: getFileUri(mdoc.url),
       },
     ],
     [encodeUrl],

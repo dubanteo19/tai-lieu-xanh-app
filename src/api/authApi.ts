@@ -29,6 +29,12 @@ export const authApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
+    forgot: builder.mutation<void, { email: string }>({
+      query: ({ email }) => ({
+        url: `auth/forgot-password?email=${email}`,
+        method: "POST",
+      }),
+    }),
     login: builder.mutation<ILoginRes, ILoginReq>({
       query: (credentials) => ({
         url: "auth/login",

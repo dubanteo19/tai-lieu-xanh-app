@@ -26,6 +26,7 @@ const UserPostList: React.FC<{ userId: number }> = ({ userId }) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<IPost[]>([]);
   const { data, isLoading, isSuccess } = useGetUserPostsQuery(userId);
+   
   useEffect(() => {
     if (isSuccess && data) {
       setPosts((prevPosts) => [...prevPosts, ...data]);

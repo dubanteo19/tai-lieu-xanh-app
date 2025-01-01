@@ -10,6 +10,7 @@ interface ICommentReq {
   content: string;
   postId: number;
   userId: number;
+  commentId?: number;
 }
 export const commentApi = createApi({
   reducerPath: "commentApi",
@@ -18,7 +19,15 @@ export const commentApi = createApi({
   endpoints: (builder) => ({
     getCommentsByPostId: builder.query<ICommentRes[], number>({
       query: (postId) => `comments/post/${postId}`,
-      providesTags: (result, error, postId) => [{ type: "Comment", postId }],
+      providesTags: (_, __, postId) => [{ type: "Comment", postId }],
+    }),
+    updateComment: builder.mutation<ICommentRes, ICommentReq>({
+      query: (request) => ({
+        url: `comments/post/${request.postId}`,
+        method: "PUT",
+        body: request,
+      }),
+      invalidatesTags: (_, __, { userId }) => [{ type: "Comment", userId }],
     }),
     createComment: builder.mutation<ICommentRes, ICommentReq>({
       query: (request) => ({
@@ -26,9 +35,7 @@ export const commentApi = createApi({
         method: "POST",
         body: request,
       }),
-      invalidatesTags: (result, error, { userId }) => [
-        { type: "Comment", userId },
-      ],
+      invalidatesTags: (_, __, { userId }) => [{ type: "Comment", userId }],
     }),
     deleteComment: builder.mutation<ICommentRes, ICommentDeleteReq>({
       query: (request) => ({
@@ -36,7 +43,7 @@ export const commentApi = createApi({
         method: "DELETE",
         body: request,
       }),
-      invalidatesTags: (result, error, { commentId }) => [
+      invalidatesTags: (_, __, { commentId }) => [
         { type: "Comment", commentId },
       ],
     }),
@@ -46,4 +53,5 @@ export const {
   useDeleteCommentMutation,
   useGetCommentsByPostIdQuery,
   useCreateCommentMutation,
+  useUpdateCommentMutation,
 } = commentApi;

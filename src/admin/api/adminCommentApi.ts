@@ -1,21 +1,26 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import BASE_URL from "../../api/url";
-export interface IDashboardInfo {
-  totalPosts: number;
-  totalUsers: number;
-  totalComments: number;
-  totalDownloads: number;
-}
-export const dashboardApi = createApi({
-  reducerPath: "dashboardApi",
+import { ICommentRes } from "../../type/ICommentRes";
+export const adminCommentApi = createApi({
+  reducerPath: "adminCommentApi",
+  tagTypes: ["Comment"],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    getDashboardInfo: builder.query<IDashboardInfo, void>({
-      query: () => `dashboard/info`,
+    getAllComments: builder.query<ICommentRes, void>({
+      query: () => `comments`,
+      providesTags: ["Comment"],
+    }),
+    deleteComment: builder.mutation<ICommentRes, { commentId: number }>({
+      query: ({ commentId }) => ({
+        url: `comments/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Comment"],
     }),
   }),
 });
 
-export const { useGetDashboardInfoQuery } = dashboardApi;
+export const { useGetAllCommentsQuery, useDeleteCommentMutation } =
+  adminCommentApi;

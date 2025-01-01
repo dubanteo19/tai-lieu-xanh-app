@@ -3,17 +3,19 @@ interface InitialState {
   postId: number;
   commentId: number;
   content: string;
+  userId: number;
   action: string;
 }
 
 const initialState: InitialState = {
   postId: 0,
   commentId: 0,
+  userId: 0,
   content: "",
   action: "create",
 };
 const commentSlice = createSlice({
-  name: "userMenu",
+  name: "comment",
   initialState,
   reducers: {
     setCommentForm: (state, action) => {

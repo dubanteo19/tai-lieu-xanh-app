@@ -40,6 +40,7 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
   useEffect(() => {
     onComponentChange(selectedComponent);
   }, [selectedComponent, onComponentChange]);
+  const { fullName } = useSelector((state: RootState) => state.auth);
   return (
     <Box className="UserProfile">
       <div className="left">
@@ -47,10 +48,10 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
           <nav aria-label="main mailbox folders">
             <List>
               <ListItem disablePadding sx={{ my: 2 }}>
-                Xin chào Du Ban Teo
+                Xin chào {fullName}{" "}
                 <Typography sx={{ mx: 1, color: "red" }}> !</Typography>
               </ListItem>
-              <ListItem disablePadding>
+              <List disablePadding>
                 <ListItemButton
                   onClick={() => handleItemClick("UserProfile")}
                   selected={
@@ -70,7 +71,7 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
                   </ListItemIcon>
                   <ListItemText primary="Thông tin" />
                 </ListItemButton>
-              </ListItem>
+              </List>
               <ListItem disablePadding>
                 <ListItemButton
                   onClick={() => handleItemClick("MyPosts")}

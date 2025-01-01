@@ -101,6 +101,7 @@ const SearchSelectList: React.FC<{
               {major.majorName}
             </MenuItem>
           ))}
+          <MenuItem value="ALL">All</MenuItem>
         </Select>
       </FormControl>
       {tags && (

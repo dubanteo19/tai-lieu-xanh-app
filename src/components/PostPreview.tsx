@@ -11,7 +11,6 @@ import {
 import { PostInfo } from "./PostDetail/PostInfo";
 import { PostBody } from "./PostDetail/PostBody";
 import { useGetPostDetailQuery } from "../api/postApi";
-import { Link } from "react-router-dom";
 
 export const PostPreview: React.FC<{ postId: number }> = ({ postId }) => {
   const { data: post, isLoading, isError } = useGetPostDetailQuery(postId);

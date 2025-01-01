@@ -3,7 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { IRegisterReq, useRegisterMutation } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
 import FullLoading from "../components/FullLoading";
-
+import GoogleIcon from "@mui/icons-material/Google";
+import { useGoogleLogin } from "@react-oauth/google";
 export const Register = () => {
   const {
     register,
@@ -28,6 +29,27 @@ export const Register = () => {
       console.log(error);
     }
   };
+     const handleLoginWithGoole = useGoogleLogin({
+        onSuccess: async credentialResponse => {
+            const token = credentialResponse.access_token;
+            const userInfo = await axios
+                .get('https://www.googleapis.com/oauth2/v3/userinfo',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                .then(res => res.data)
+            const email: string = userInfo.email;
+            const fullName: string = userInfo.name;
+            await googleLogin({
+                email: email,
+                fullName: fullName,
+                password: ""
+            }).unwrap();
+        },
+    });
+ 
   const password = watch("password");
   return (
     <Stack sx={{ pt: 2 }}>
@@ -51,7 +73,6 @@ export const Register = () => {
           <TextField
             label="Địa chỉ email"
             type="email"
-            {...register("email", { required: "Vui lòng nhập email" })}
             error={!!errors.email}
             helperText={errors.email?.message || null}
           />
@@ -95,6 +116,18 @@ export const Register = () => {
             Đăng ký
           </Button>
           {isLoading && <FullLoading />}
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              handleLoginWithGoogle(); 
+            }}
+            startIcon={<GoogleIcon />}
+            sx={{ flex: 1, ml: 1 }}
+          >
+            Google
+          </Button>
+
           <Typography textAlign="center">Đã có tài khoản?</Typography>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button

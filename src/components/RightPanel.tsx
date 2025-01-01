@@ -32,6 +32,7 @@ export const Banner = () => {
         height: 200,
         display: "flex",
         justifyContent: "center",
+        flexFlow: "column",
         alignItems: "center",
         borderRadius: 3,
         padding: 5,
@@ -44,6 +45,17 @@ export const Banner = () => {
       }}
     >
       <Typography
+        color="white"
+        variant="h4"
+        textAlign="center"
+        fontWeight={"bold"}
+        sx={{
+          animation: `${textEntrance} 1.5s ease both`,
+        }}
+      >
+        Tài liệu xanh
+      </Typography>
+      <Typography
         fontSize={20}
         variant="subtitle1"
         sx={{
@@ -51,17 +63,6 @@ export const Banner = () => {
           textAlign: "center",
         }}
       >
-        <Typography
-          color="white"
-          variant="h4"
-          textAlign="center"
-          fontWeight={"bold"}
-          sx={{
-            animation: `${textEntrance} 1.5s ease both`,
-          }}
-        >
-          Tài liệu xanh
-        </Typography>
         Nơi cùng nhau kết nối & chia sẽ những tài liệu học tập cùng nhau bước
         qua những năm tháng học trò!
       </Typography>

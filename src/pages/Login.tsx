@@ -13,7 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import FullLoading from "../components/FullLoading";
-
+import GoogleIcon from "@mui/icons-material/Google";
 import { SubmitHandler, useForm } from "react-hook-form";
 export const Login = () => {
   const notify = withReactContent(Swal);
@@ -112,7 +112,30 @@ export const Login = () => {
               {messgae}
             </Typography>
           )}
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<GoogleIcon />}
+            sx={{ flex: 1, ml: 1 }}
+            onClick={() => { }}
+          >
+            Google
+          </Button>
+
           <Typography textAlign="center">Chưa có tài khoản?</Typography>
+          <Typography
+            textAlign="center"
+            sx={{
+              cursor: "pointer",
+            }}
+            variant="subtitle2"
+            color="gray"
+            onClick={() => {
+              navigate("/forgot-password");
+            }}
+          >
+            Quên mật khẩu?
+          </Typography>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               onClick={() => {

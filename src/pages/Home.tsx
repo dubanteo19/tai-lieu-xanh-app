@@ -2,7 +2,6 @@ import { Box, Grid2 } from "@mui/material";
 import PostList from "../components/PostList";
 import RightPanel, { Banner } from "../components/RightPanel";
 import { MajorList } from "../components/MajorList";
-
 const Home = () => {
   return (
     <Box>

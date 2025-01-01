@@ -1,17 +1,11 @@
-import {
-  IconButton,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { IconButton, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { statusColors } from "../user/UserTable";
 import { ICommentRes } from "../../../type/ICommentRes";
 import { CenterCell } from "../post/ReviewPosts";
 import { getVNStatusName } from "../../../utils/statusTranslator";
-import {
-  useDeleteCommentMutation,
-} from "../../api/adminCommentApi";
+import { useDeleteCommentMutation } from "../../api/adminCommentApi";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -111,9 +105,14 @@ export const CommentTable: React.FC<Props> = ({ comments }) => {
 
   const notify = withReactContent(Swal);
   const [deleteComment] = useDeleteCommentMutation();
+  const paginationModel = { page: 0, pageSize: 10 };
   return (
     <Paper sx={{ px: 15, py: 2, mt: 2, height: 600 }}>
-      <DataGrid rows={comments} columns={columns} />
+      <DataGrid
+        initialState={{ pagination: { paginationModel } }}
+        rows={comments}
+        columns={columns}
+      />
     </Paper>
   );
 };

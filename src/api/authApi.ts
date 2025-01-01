@@ -29,10 +29,18 @@ export const authApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    forgot: builder.mutation<void, { email: string }>({
+    forgot: builder.mutation<string, { email: string }>({
       query: ({ email }) => ({
         url: `auth/forgot-password?email=${email}`,
         method: "POST",
+        responseHandler: "text",
+      }),
+    }),
+    reset: builder.mutation<void, { token: string; password: string }>({
+      query: (resetForm) => ({
+        url: `auth/reset-password`,
+        method: "POST",
+        params: resetForm,
       }),
     }),
     login: builder.mutation<ILoginRes, ILoginReq>({
@@ -57,5 +65,10 @@ export const authApi = createApi({
     }),
   }),
 });
-export const { useLoginMutation, useRegisterMutation, useVerifyMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useVerifyMutation,
+  useForgotMutation,
+  useResetMutation,
+} = authApi;

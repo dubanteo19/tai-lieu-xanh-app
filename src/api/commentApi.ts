@@ -21,6 +21,10 @@ export const commentApi = createApi({
       query: (postId) => `comments/post/${postId}`,
       providesTags: (_, __, postId) => [{ type: "Comment", postId }],
     }),
+    getCommentsByUserId: builder.query<ICommentRes[], number>({
+      query: (userId) => `comments/user/${userId}`,
+      providesTags: (_, __, postId) => [{ type: "Comment", postId }],
+    }),
     updateComment: builder.mutation<ICommentRes, ICommentReq>({
       query: (request) => ({
         url: `comments/post/${request.postId}`,
@@ -54,4 +58,5 @@ export const {
   useGetCommentsByPostIdQuery,
   useCreateCommentMutation,
   useUpdateCommentMutation,
+  useGetCommentsByUserIdQuery,
 } = commentApi;

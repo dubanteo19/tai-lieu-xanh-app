@@ -9,22 +9,21 @@ import {
 } from "recharts";
 import {
   StatsCount,
-  useGetPostCountsLastNDaysQuery,
+  useGetCommentsCountsLastNDaysQuery,
 } from "../../api/dashboardApi";
 
 interface AnalyticsPostPublishsProps {
   title: string;
   subheader: string;
 }
-export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
-  title,
-  subheader,
-}) => {
-  const { data: postCounts } = useGetPostCountsLastNDaysQuery(10);
-  const data = postCounts?.map((res: StatsCount) => {
+export const AnalyticsCommentsPublishs: React.FC<
+  AnalyticsPostPublishsProps
+> = ({ title, subheader }) => {
+  const { data: commentsCounts } = useGetCommentsCountsLastNDaysQuery(10);
+  const data = commentsCounts?.map((res: StatsCount) => {
     return {
       name: res.date,
-      posts: res.count,
+      comments: res.count,
     };
   });
   return (
@@ -45,12 +44,7 @@ export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
         <XAxis dataKey="name" />
         <Tooltip />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="posts"
-          name="Tài liệu"
-          stroke="#88884d"
-        />
+        <Line type="monotone" dataKey="comments" name="Bình luận" stroke="#5445d2" />
       </LineChart>
     </Paper>
   );

@@ -24,6 +24,7 @@ import { ReportPostPage } from "./admin/components/post/ReportPostPage";
 import { TagManager } from "./admin/pages/TagManager";
 import UserProfilePage from "./pages/UserProfile";
 import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
 const AppRoutes: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
   return (
     <Routes>
@@ -49,6 +50,7 @@ const AppRoutes: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
         <Route path="favorite" element={<Favorite />} />
         <Route path="login" element={<Login />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route path="profile">
           <Route path=":userId" element={<UserProfilePage />} />
         </Route>

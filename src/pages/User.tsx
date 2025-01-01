@@ -12,6 +12,7 @@ import UserProfileUpdate from "../components/User/UserProfileUpdate";
 import { RootState } from "../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setSlectedComponent } from "../features/user-menu/userMenuSlice";
+import MyComments from "../components/User/MyComments";
 const User = () => {
   const selectedComponent = useSelector(
     (state: RootState) => state.userMenu.selectedComponent,
@@ -58,6 +59,7 @@ const User = () => {
             {selectedComponent === "MyFriends" && <MyFriends />}
             {selectedComponent === "FriendRequest" && <FriendRequest />}
             {selectedComponent === "ChangePassword" && <ChangePassword />}
+            {selectedComponent === "MyComments" && <MyComments />}
           </Box>
         </Box>
       </Box>

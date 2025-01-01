@@ -15,7 +15,7 @@ export const adminUserApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    getAllUser: builder.query<IUser, void>({
+    getAllUser: builder.query<IUser[], void>({
       query: () => `users`,
       providesTags: ["User"],
     }),

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import CommentIcon from "@mui/icons-material/Comment";
 import PeopleIcon from "@mui/icons-material/People";
 import PasswordIcon from "@mui/icons-material/Password";
 import Typography from "@mui/material/Typography";
@@ -92,6 +93,25 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton
+                  onClick={() => handleItemClick("MyComments")}
+                  selected={selectedComponent === "MyComments"}
+                  sx={{
+                    "&.Mui-selected": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      "& .MuiListItemIcon-root": { color: "white" },
+                    },
+                  }}
+                >
+                  <ListItemIcon>
+                    <CommentIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Bình luận" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  disabled
                   onClick={() => handleItemClick("Friends")}
                   selected={selectedComponent === "Friends"}
                   sx={{
@@ -105,7 +125,7 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
                   <ListItemIcon>
                     <PeopleIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Bạn bè" />
+                  <ListItemText primary="Bạn bè - Đang phát triển" />
                 </ListItemButton>
               </ListItem>
               <Collapse in={openSubmenu} timeout="auto" unmountOnExit>

@@ -28,7 +28,7 @@ const Verify = () => {
         </Typography>
       )}
       {data && (
-        <Box>
+        <Box sx={{ textAlign: "center" }}>
           <Typography variant="h5" color="info">
             Kích hoạt tài khoản thành công
           </Typography>

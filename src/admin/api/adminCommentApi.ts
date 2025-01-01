@@ -8,7 +8,7 @@ export const adminCommentApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    getAllComments: builder.query<ICommentRes, void>({
+    getAllComments: builder.query<ICommentRes[], void>({
       query: () => `comments`,
       providesTags: ["Comment"],
     }),

@@ -29,27 +29,7 @@ export const Register = () => {
       console.log(error);
     }
   };
-     const handleLoginWithGoole = useGoogleLogin({
-        onSuccess: async credentialResponse => {
-            const token = credentialResponse.access_token;
-            const userInfo = await axios
-                .get('https://www.googleapis.com/oauth2/v3/userinfo',
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                .then(res => res.data)
-            const email: string = userInfo.email;
-            const fullName: string = userInfo.name;
-            await googleLogin({
-                email: email,
-                fullName: fullName,
-                password: ""
-            }).unwrap();
-        },
-    });
- 
+
   const password = watch("password");
   return (
     <Stack sx={{ pt: 2 }}>
@@ -72,6 +52,13 @@ export const Register = () => {
         >
           <TextField
             label="Địa chỉ email"
+            {...register("email", {
+              required: "Vui lòng nhập email",
+              minLength: {
+                value: 4,
+                message: "email phải nhất 6 ký tự",
+              },
+            })}
             type="email"
             error={!!errors.email}
             helperText={errors.email?.message || null}
@@ -120,7 +107,7 @@ export const Register = () => {
             variant="contained"
             color="error"
             onClick={() => {
-              handleLoginWithGoogle(); 
+              handleLoginWithGoogle();
             }}
             startIcon={<GoogleIcon />}
             sx={{ flex: 1, ml: 1 }}

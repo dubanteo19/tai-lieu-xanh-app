@@ -23,7 +23,9 @@ export const CommentManager = () => {
         <Stack direction="row" spacing={2}></Stack>
       </Stack>
       {isLoading && <FullLoading />}
-      {comments && <CommentTable comments={comments} />}
+      {comments && <CommentTable
+        comments={comments}
+      />}
     </Stack>
   );
 };

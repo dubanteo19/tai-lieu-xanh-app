@@ -9,22 +9,21 @@ import {
 } from "recharts";
 import {
   StatsCount,
-  useGetPostCountsLastNDaysQuery,
+  useGetDownloadsCountsLastNDaysQuery,
 } from "../../api/dashboardApi";
 
 interface AnalyticsPostPublishsProps {
   title: string;
   subheader: string;
 }
-export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
-  title,
-  subheader,
-}) => {
-  const { data: postCounts } = useGetPostCountsLastNDaysQuery(10);
-  const data = postCounts?.map((res: StatsCount) => {
+export const AnalyticsDownloadsPublishs: React.FC<
+  AnalyticsPostPublishsProps
+> = ({ title, subheader }) => {
+  const { data: downloadCounts } = useGetDownloadsCountsLastNDaysQuery(10);
+  const data = downloadCounts?.map((res: StatsCount) => {
     return {
       name: res.date,
-      posts: res.count,
+      downloads: res.count,
     };
   });
   return (
@@ -47,9 +46,9 @@ export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
         <Legend />
         <Line
           type="monotone"
-          dataKey="posts"
-          name="Tài liệu"
-          stroke="#88884d"
+          dataKey="downloads"
+          name="Lượt tải"
+          stroke="#8884d8"
         />
       </LineChart>
     </Paper>

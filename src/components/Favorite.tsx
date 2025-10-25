@@ -1,34 +1,33 @@
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useGetPostsByPostIdQuery } from "../api/postApi";
 import { RootState } from "../app/store";
 import { IFavoriteState } from "../features/favorite/favoriteSlice";
 import { FavoriteList } from "./favofite/FavoriteList";
+import FullLoading from "./FullLoading";
 export const FavoritePage = () => {
   const postIdList: IFavoriteState[] = useSelector(
     (state: RootState) => state.favorite,
   );
-  const { data: favorites } = useGetPostsByPostIdQuery(
+  const { data: favorites, isLoading } = useGetPostsByPostIdQuery(
     postIdList.map((p) => p.postId).join("-"),
   );
+  if (isLoading) return <FullLoading />;
   if (favorites)
     return (
-      <Box sx={{ my: 10 }}>
-        <Typography textAlign="center" variant="h3">
-          Danh sách tài liệu yêu thích
-        </Typography>
+      <div className="my-5">
+        <h3 className="text-center">Danh sách tài liệu yêu thích</h3>
         <FavoriteList favorites={favorites} />
-      </Box>
+      </div>
     );
   return (
-    <Box sx={{ my: 10 }}>
-      <Typography textAlign="center" variant="h3">
+    <div className="my-5">
+      <h3 className="text-center">
         Chưa có tài liệu nào trong danh sách yêu thích
-      </Typography>
-      <Box textAlign="center">
+      </h3>
+      <div>
         <SentimentVeryDissatisfiedIcon color="primary" sx={{ fontSize: 100 }} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };

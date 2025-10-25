@@ -1,20 +1,20 @@
 import { useGetAllUnreadNotficationsQuery } from "@/api/notificationApi";
-import { RootState } from "@/app/store";
 import SearchBar from "@/components/SearchBar";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { ROUTES } from "@/routes/routes";
 import { getThumbUri } from "@/utils/uri";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 const Header = () => {
   const navigate = useNavigate();
-  const { isLogin, id, fullName, avatar } = useSelector(
-    (state: RootState) => state.auth,
+  const { isLogin, id, fullName, avatar } = useAppSelector(
+    (state) => state.auth,
   );
-  const favorite = useSelector((state: RootState) => state.favorite);
+  const favorite = useAppSelector((state) => state.favorite);
   const { data: unRead } = useGetAllUnreadNotficationsQuery(
     isLogin ? { userId: id } : skipToken,
   );
@@ -50,8 +50,12 @@ const Header = () => {
         </div>
       ) : (
         <div className="flex gap-1 ">
-          <Button variant="secondary">ĐĂNG KÝ</Button>
-          <Button variant="outline">ĐĂNG NHẬP</Button>
+          <Link to={ROUTES.REGISTER}>
+            <Button variant="secondary">ĐĂNG KÝ</Button>
+          </Link>
+          <Link to={ROUTES.LOGIN}>
+            <Button variant="outline">ĐĂNG NHẬP</Button>
+          </Link>
         </div>
       )}
     </div>

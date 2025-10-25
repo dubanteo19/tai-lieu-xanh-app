@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useVerifyMutation } from "../api/authApi";
 import { NavLink } from "react-router-dom";
-export const Verify = () => {
+export const VerifyPage = () => {
   const [verify, { data, error, isLoading }] = useVerifyMutation();
   useEffect(() => {
     const verifyEmail = async () => {

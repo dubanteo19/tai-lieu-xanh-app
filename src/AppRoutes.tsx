@@ -11,7 +11,6 @@ import {
   UserManager,
 } from "@/admin/pages";
 import { ROUTES } from "@/routes/routes";
-import Favorite from "./components/Favorite";
 import {
   ResetPassword,
   PostDetail,
@@ -19,16 +18,19 @@ import {
   NewDocPage,
   ForgotPassword,
   Home,
-  Verify,
   Register,
   User,
+  FavoritePage,
+  Login,
+  SearchPage,
+  VerifyPage,
+  UserProfilePage,
 } from "@/pages";
-import { Layout } from "./pages/Layout";
-import { Login } from "./pages/Login";
-import { Search } from "./pages/Search";
+import { Layout } from "@/pages/Layout";
 import SecureRoute from "./SecureRoute";
+import { RouteObject, useRoutes } from "react-router-dom";
 
-export const appRoutes = (isLogin: boolean) => [
+const appRoutes: RouteObject[] = [
   {
     path: ROUTES.ADMIN,
     element: <AdminLayout />,
@@ -52,7 +54,6 @@ export const appRoutes = (isLogin: boolean) => [
       { path: "comment", element: <CommentManager /> },
     ],
   },
-
   {
     path: ROUTES.HOME,
     element: <Layout />,
@@ -68,15 +69,14 @@ export const appRoutes = (isLogin: boolean) => [
         path: ROUTES.RESET_PASSWORD,
         element: <ResetPassword />,
       },
-      { path: ROUTES.VERIFY, element: <Verify /> },
-      { path: ROUTES.SEARCH, element: <Search /> },
-      { path: ROUTES.FAVORITE, element: <Favorite /> },
+      { path: ROUTES.VERIFY, element: <VerifyPage /> },
+      { path: ROUTES.SEARCH, element: <SearchPage /> },
+      { path: ROUTES.FAVORITE, element: <FavoritePage /> },
 
       { path: "profile/:userId", element: <UserProfilePage /> },
-
       {
         path: ROUTES.USER_ROOT,
-        element: <SecureRoute isLogin={isLogin} />,
+        element: <SecureRoute />,
         children: [
           { index: true, element: <User /> },
           { path: ROUTES.USER_NEW_DOC, element: <NewDocPage /> },
@@ -88,3 +88,6 @@ export const appRoutes = (isLogin: boolean) => [
     ],
   },
 ];
+export const AppRoutes = () => {
+  return useRoutes(appRoutes);
+};

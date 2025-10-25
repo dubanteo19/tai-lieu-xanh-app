@@ -1,9 +1,7 @@
-import "./App.css";
-import { BrowserRouter } from "react-router-dom";
 import { colors, createTheme, ThemeProvider } from "@mui/material";
-import AppRoutes from "./AppRoutes";
-import { useSelector } from "react-redux";
-import { RootState } from "./app/store";
+import { BrowserRouter } from "react-router-dom";
+import "./App.css";
+import { AppRoutes } from "@/AppRoutes";
 const theme = createTheme({
   palette: {
     primary: {
@@ -30,11 +28,10 @@ const theme = createTheme({
   },
 });
 function App() {
-  const { isLogin } = useSelector((state: RootState) => state.auth);
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <AppRoutes isLogin={isLogin} />
+        <AppRoutes />
       </BrowserRouter>
     </ThemeProvider>
   );

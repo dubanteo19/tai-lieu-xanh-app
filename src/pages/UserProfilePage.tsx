@@ -62,7 +62,7 @@ export const UserPostList: FC<{ userId: number }> = ({ userId }) => {
     </Stack>
   );
 };
-const UserProfilePage: React.FC = () => {
+export const UserProfilePage: React.FC = () => {
   const { userId } = useParams();
   const { data } = useGetInfoQuery(Number(userId));
   return (

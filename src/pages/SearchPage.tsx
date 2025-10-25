@@ -233,7 +233,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ posts, isLoading }) => {
     </Grid>
   );
 };
-export const Search = () => {
+export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = React.useState<ISearchFilters>({
     major: searchParams.get("major") || "",

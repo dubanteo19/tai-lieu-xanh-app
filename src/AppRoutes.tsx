@@ -1,70 +1,90 @@
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import { Layout } from "./pages/Layout";
-import Home from "./pages/Home";
-import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
-import PostDetail from "./pages/PostDetail";
-import User from "./pages/User";
-import { NewDoc } from "./pages/NewDoc";
-import { AdminLayout } from "./admin/AdminLayout";
-import { MDashboard } from "./admin/pages/MDashboard";
-import { PostManager } from "./admin/pages/PostManager";
-import { MajorManager } from "./admin/pages/MajorManager";
-import { UserManager } from "./admin/pages/UserManager";
-import { CommentManager } from "./admin/pages/CommentManager";
-import { Search } from "./pages/Search";
-import Verify from "./pages/Verify";
-import SecureRoute from "./SecureRoute";
+import { AdminLayout } from "@/admin/AdminLayout";
+import { DeletedPosts } from "@/admin/components/post/DeletedPosts";
+import { ReportPostPage } from "@/admin/components/post/ReportPostPage";
+import { ReviewPosts } from "@/admin/components/post/ReviewPosts";
+import {
+  MajorManager,
+  MDashboard,
+  PostManager,
+  TagManager,
+  CommentManager,
+  UserManager,
+} from "@/admin/pages";
+import { ROUTES } from "@/routes/routes";
 import Favorite from "./components/Favorite";
-import { DeletedPosts } from "./admin/components/post/DeletedPosts";
-import { ReviewPosts } from "./admin/components/post/ReviewPosts";
-import NotificationPage from "./pages/Notification";
-import { ReportPostPage } from "./admin/components/post/ReportPostPage";
-import { TagManager } from "./admin/pages/TagManager";
-import UserProfilePage from "./pages/UserProfile";
-import { ForgotPassword } from "./pages/ForgotPassword";
-import { ResetPassword } from "./pages/ResetPassword";
-const AppRoutes: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
-  return (
-    <Routes>
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="dashboard" element={<MDashboard />} />
-        <Route path="posts">
-          <Route index element={<PostManager />} />
-          <Route path="deleted-posts" element={<DeletedPosts />} />
-          <Route path="review-posts" element={<ReviewPosts />} />
-          <Route path="report-posts" element={<ReportPostPage />} />
-        </Route>
-        <Route path="major" element={<MajorManager />} />
-        <Route path="tag" element={<TagManager />} />
-        <Route path="user" element={<UserManager />} />
-        <Route path="comment" element={<CommentManager />} />
-      </Route>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="home" element={<Home />} />
-        <Route path="register" element={<Register />} />
-        <Route path="verify" element={<Verify />} />
-        <Route path="search" element={<Search />} />
-        <Route path="favorite" element={<Favorite />} />
-        <Route path="login" element={<Login />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-        <Route path="profile">
-          <Route path=":userId" element={<UserProfilePage />} />
-        </Route>
-        <Route path="user" element={<SecureRoute isLogin={isLogin} />}>
-          <Route index element={<User />} />
-          <Route path="new-doc" element={<NewDoc />} />
-          <Route path="notification" element={<NotificationPage />} />
-        </Route>
-        <Route path="post">
-          <Route path=":postId" element={<PostDetail />} />
-        </Route>
-      </Route>
-    </Routes>
-  );
-};
+import {
+  ResetPassword,
+  PostDetail,
+  NotificationPage,
+  NewDocPage,
+  ForgotPassword,
+  Home,
+  Verify,
+  Register,
+  User,
+} from "@/pages";
+import { Layout } from "./pages/Layout";
+import { Login } from "./pages/Login";
+import { Search } from "./pages/Search";
+import SecureRoute from "./SecureRoute";
 
-export default AppRoutes;
+export const appRoutes = (isLogin: boolean) => [
+  {
+    path: ROUTES.ADMIN,
+    element: <AdminLayout />,
+    children: [
+      {
+        path: ROUTES.ADMIN_DASHBOARD.replace("/admin/", ""),
+        element: <MDashboard />,
+      },
+      {
+        path: "posts",
+        children: [
+          { index: true, element: <PostManager /> },
+          { path: "deleted-posts", element: <DeletedPosts /> },
+          { path: "review-posts", element: <ReviewPosts /> },
+          { path: "report-posts", element: <ReportPostPage /> },
+        ],
+      },
+      { path: "major", element: <MajorManager /> },
+      { path: "tag", element: <TagManager /> },
+      { path: "user", element: <UserManager /> },
+      { path: "comment", element: <CommentManager /> },
+    ],
+  },
+
+  {
+    path: ROUTES.HOME,
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: ROUTES.REGISTER, element: <Register /> },
+      { path: ROUTES.LOGIN, element: <Login /> },
+      {
+        path: ROUTES.FORGOT_PASSWORD,
+        element: <ForgotPassword />,
+      },
+      {
+        path: ROUTES.RESET_PASSWORD,
+        element: <ResetPassword />,
+      },
+      { path: ROUTES.VERIFY, element: <Verify /> },
+      { path: ROUTES.SEARCH, element: <Search /> },
+      { path: ROUTES.FAVORITE, element: <Favorite /> },
+
+      { path: "profile/:userId", element: <UserProfilePage /> },
+
+      {
+        path: ROUTES.USER_ROOT,
+        element: <SecureRoute isLogin={isLogin} />,
+        children: [
+          { index: true, element: <User /> },
+          { path: ROUTES.USER_NEW_DOC, element: <NewDocPage /> },
+          { path: ROUTES.USER_NOTIFICATION, element: <NotificationPage /> },
+        ],
+      },
+
+      { path: ROUTES.POST_DETAIL, element: <PostDetail /> },
+    ],
+  },
+];

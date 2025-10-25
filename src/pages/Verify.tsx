@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useVerifyMutation } from "../api/authApi";
 import { NavLink } from "react-router-dom";
-const Verify = () => {
+export const Verify = () => {
   const [verify, { data, error, isLoading }] = useVerifyMutation();
   useEffect(() => {
     const verifyEmail = async () => {
@@ -50,4 +50,3 @@ const Verify = () => {
     </Box>
   );
 };
-export default Verify;

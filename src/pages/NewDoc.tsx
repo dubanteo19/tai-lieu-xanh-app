@@ -99,7 +99,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ setFile }) => {
   );
 };
 
-export const NewDoc = () => {
+export const NewDocPage = () => {
   const [major, setMajor] = React.useState<string>("");
   const [title, setTitle] = React.useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);

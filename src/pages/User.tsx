@@ -13,7 +13,7 @@ import { RootState } from "../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setSlectedComponent } from "../features/user-menu/userMenuSlice";
 import MyComments from "../components/User/MyComments";
-const User = () => {
+export const User = () => {
   const selectedComponent = useSelector(
     (state: RootState) => state.userMenu.selectedComponent,
   );
@@ -67,4 +67,3 @@ const User = () => {
   );
 };
 
-export default User;

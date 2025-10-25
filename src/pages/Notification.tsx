@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import FullLoading from "../components/FullLoading";
 
-const NotificationPage = () => {
+export const NotificationPage = () => {
   const { id: userId } = useSelector((state: RootState) => state.auth);
   const [markAsRead] = useMarkReadNotificaitonMutation();
   const handleMarkAsRead = async (notificationId: number) => {
@@ -104,5 +104,3 @@ const NotificationPage = () => {
     </Box>
   );
 };
-
-export default NotificationPage;

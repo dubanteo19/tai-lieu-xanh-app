@@ -7,7 +7,7 @@ import { setCommentForm } from "../features/comment/commentSlice";
 import { useParams } from "react-router-dom";
 import { useGetPostDetailQuery, useViewPostMutation } from "../api/postApi";
 import FullLoading from "../components/FullLoading";
-const PostDetail = () => {
+export const PostDetail = () => {
   const { postId } = useParams();
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));
   const [viewPost] = useViewPostMutation();
@@ -45,4 +45,3 @@ const PostDetail = () => {
   );
 };
 
-export default PostDetail;

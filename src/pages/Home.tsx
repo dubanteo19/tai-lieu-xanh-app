@@ -1,30 +1,18 @@
-import { Box, Grid2 } from "@mui/material";
+import { MajorList } from "../components/MajorList";
 import PostList from "../components/PostList";
 import RightPanel, { Banner } from "../components/RightPanel";
-import { MajorList } from "../components/MajorList";
 const Home = () => {
   return (
-    <Box>
-      <Grid2
-        sx={{
-          bgcolor: "secondary.main",
-          paddingY: 3,
-          paddingX: 30,
-          direction: "row",
-        }}
-        container
-        spacing={2}
-      >
-        <Grid2 size={8}>
-          <MajorList />
-          <PostList />
-        </Grid2>
-        <Grid2 size={4}>
-          <Banner />
-          <RightPanel />
-        </Grid2>
-      </Grid2>
-    </Box>
+    <div className="grid grid-cols-3">
+      <div className="col-span-2 flex gap-4 w-full grow">
+        <MajorList />
+        <PostList />
+      </div>
+      <div className="col-span-1 flex flex-col gap-2">
+        <Banner />
+        <RightPanel />
+      </div>
+    </div>
   );
 };
 export default Home;

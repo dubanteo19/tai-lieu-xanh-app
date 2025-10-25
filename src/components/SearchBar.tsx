@@ -1,7 +1,8 @@
-import { Box, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+
 const SeachBar = ({ color = "white" }) => {
   const [keyword, setKeyword] = useState<string>("");
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -11,40 +12,23 @@ const SeachBar = ({ color = "white" }) => {
   };
   const navigate = useNavigate();
   return (
-    <Box
-      sx={{
-        marginX: 2,
-        border: `1px solid `,
-        borderColor: color,
-        borderRadius: 2,
-        height: 40,
-        paddingX: 2,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <InputBase
+    <div className="center px-2 rounded-2xl border-white border-2">
+      <Input
         onChange={(e) => setKeyword(e.target.value)}
         onKeyDown={handleKeyDown}
+        className="outline-none border-none  text-white
+        focus-visible:ring-0 focus-visible:border-none
+        placeholder:text-white"
         value={keyword}
-        sx={{
-          width: 250,
-          color: color,
-          "input::placeholder": {
-            color: color,
-            opacity: 1,
-          },
-        }}
         placeholder="Bạn cần tìm gì?"
-      />
+      ></Input>
       <SearchIcon
         sx={{ mr: 2, color: color }}
         onClick={() => {
           navigate("/search?keyword=" + keyword);
         }}
       />
-    </Box>
+    </div>
   );
 };
 

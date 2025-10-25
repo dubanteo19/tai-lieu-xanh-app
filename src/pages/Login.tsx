@@ -30,7 +30,7 @@ export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  var messgae = location.state?.message;
+  const messgae = location.state?.message;
   const handleLogin: SubmitHandler<ILoginReq> = async (data) => {
     try {
       const res = await login({
@@ -117,7 +117,7 @@ export const Login = () => {
             color="error"
             startIcon={<GoogleIcon />}
             sx={{ flex: 1, ml: 1 }}
-            onClick={() => { }}
+            onClick={() => {}}
           >
             Google
           </Button>

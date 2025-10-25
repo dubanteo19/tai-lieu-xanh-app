@@ -34,9 +34,11 @@ const Header = () => {
       </div>
       {isLogin && id !== 0 ? (
         <div className="flex">
-          <Button>
-            <FileUploadIcon sx={{ color: "white" }} />
-          </Button>
+          <Link to={ROUTES.USER_NEW_DOC}>
+            <Button>
+              <FileUploadIcon sx={{ color: "white" }} />
+            </Button>
+          </Link>
           <Button>
             <NotificationsIcon sx={{ color: "white" }} />
           </Button>
@@ -45,7 +47,7 @@ const Header = () => {
               navigate("/user");
             }}
           >
-            <img alt={fullName} src={getThumbUri(avatar)} />
+            <img alt={fullName} className="w-20 " src={getThumbUri(avatar)} />
           </Button>
         </div>
       ) : (

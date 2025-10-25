@@ -12,7 +12,7 @@ export const ROUTES = {
   USER_NEW_DOC: "/user/new-doc",
   USER_NOTIFICATION: "/user/notification",
 
-  POST_DETAIL: "/post",
+  POST_DETAIL: "/post/:postId",
 
   // Admin
   ADMIN: "/admin",

@@ -1,12 +1,8 @@
-import { IMajor } from "./IMajor";
-
+import { IAuthor } from "@/type/IAuthor";
+import { IMajor } from "@/type/IMajor";
 export interface IPost {
   id: number;
-  author: {
-    avatar: string;
-    fullName: string;
-    id: number;
-  };
+  author: IAuthor;
   createdDate: string;
   title: string;
   status: string;

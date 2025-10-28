@@ -20,8 +20,8 @@ import { useParams } from "react-router-dom";
 import { useGetInfoQuery, useGetUserPostsQuery } from "../api/userApi";
 import { getThumbUri } from "../utils/uri";
 import FullLoading from "../components/FullLoading";
-import { Post } from "../components/PostList";
 import { IPost } from "../type/IPost";
+import { Post } from "@/components/post/Post";
 export const UserPostList: FC<{ userId: number }> = ({ userId }) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -44,7 +44,7 @@ export const UserPostList: FC<{ userId: number }> = ({ userId }) => {
         <FullLoading />
       ) : (
         posts?.map((post: IPost) => (
-          <Post key={post.id} handleHidePost={handleHidePost} {...post} />
+          <Post key={post.id} handleHidePost={handleHidePost} post={post} />
         ))
       )}
       <Button

@@ -1,13 +1,15 @@
-import { Badge, Box, Chip, Stack, Typography } from "@mui/material";
-import { useGetMajorsWithPostsQuery } from "../api/postApi";
+import { Badge, Chip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useGetMajorsWithPostsQuery } from "../api/postApi";
+import { Divider } from "@/components/ui/divider";
 
 export const MajorList: React.FC = () => {
   const { data: majorsWithPosts } = useGetMajorsWithPostsQuery();
   const navigate = useNavigate();
   return (
-    <Box>
-      <Stack direction="row" sx={{ width: "100%" }} spacing={2}>
+    <div className="my-2 mx-4">
+      <h3 className="text-base text-gray-500">Danh sách chuyên ngành</h3>
+      <div className="flex gap-2 my-2 ">
         {majorsWithPosts &&
           majorsWithPosts.map((major) => (
             <Badge key={major.id} badgeContent={major.posts} color="success">
@@ -23,7 +25,8 @@ export const MajorList: React.FC = () => {
               ></Chip>
             </Badge>
           ))}
-      </Stack>
-    </Box>
+      </div>
+      <Divider size={2} />
+    </div>
   );
 };

@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.VITE_BASE_URL;
-const NO_IMAGE = "assets/no-image.svg";
+export const NO_IMAGE = "assets/no-image.svg";
 export const getThumbUri = (uri: string) => {
   if (uri) {
     const encodeUrl = encodeURIComponent("/" + uri);

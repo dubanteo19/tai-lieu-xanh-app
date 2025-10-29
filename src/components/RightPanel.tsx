@@ -2,11 +2,10 @@ import { NewDocument, TopDocument } from "./TopDocument";
 
 export const Banner = () => {
   return (
-    <div className="flex center flex-col rounded-2xl border-white bg-primary p-5">
-      <h2 className="text-2xl">Tài liệu xanh</h2>
-      <p className="text-center -5">
-        Nơi cùng nhau kết nối & chia sẽ những tài liệu học tập cùng nhau bước
-        qua những năm tháng học trò!
+    <div className="flex text-center  flex-col rounded border-white bg-primary p-2 md:p-5">
+      <h2 className="text-sm md:text-2xl font-bold">Tài liệu xanh</h2>
+      <p className="text-center text-xs md:text-base mt-4">
+        Nơi cùng nhau kết nối & chia sẽ những tài liệu học tập{" "}
       </p>
     </div>
   );

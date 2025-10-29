@@ -4,8 +4,7 @@ export const PostFooter = () => {
   return (
     <div className="flex gap-2">
       <div className="flex items-center">
-        <h4>Yêu thích</h4>
-        <Button>
+        <Button variant={"ghost"}>
           <FavoriteIcon color="error" />
         </Button>
       </div>

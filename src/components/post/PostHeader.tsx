@@ -13,23 +13,25 @@ interface PostHeaderProps {
 export const PostHeader: FC<PostHeaderProps> = (props) => {
   const { author, postCreatedDate, handleHidePost } = props;
   return (
-    <div className="flex justify-center">
-      <Avatar src={getThumbUri(author.avatar || "")} />
-      <div>
-        <Link style={{ color: "black" }} to={`/profile/${author.id}`}>
-          {author.fullName}
-        </Link>
-        <p>{postCreatedDate}</p>
+    <div className="flex items-center justify-between bg-gray-100 px-4 rounded-xl">
+      <div className="flex gap-4">
+        <Avatar src={getThumbUri(author.avatar || "")} />
+        <div>
+          <Link style={{ color: "black" }} to={`/profile/${author.id}`}>
+            {author.fullName}
+          </Link>
+          <p className="text-gray-500 text-sm">{postCreatedDate}</p>
+        </div>
       </div>
-      <div className="flex gap-2">
-        <Button
-          onClick={() => {
-            handleHidePost(author.id);
-          }}
-        >
-          <GridCloseIcon />
-        </Button>
-      </div>
+      <Button
+        className="rounded-full md:size-8 size-5 "
+        variant={"ghost"}
+        onClick={() => {
+          handleHidePost(author.id);
+        }}
+      >
+        <GridCloseIcon fontSize="small" />
+      </Button>
     </div>
   );
 };

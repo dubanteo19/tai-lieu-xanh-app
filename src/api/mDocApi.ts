@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import BASE_URL from "./url";
-import { IMDoc } from "../type/IMDoc";
+import { IMDoc, IPresignedUrl } from "../type/IMDoc";
 
 export const mDocApi = createApi({
   reducerPath: "mDoc",
@@ -8,7 +8,7 @@ export const mDocApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    uploadMDoc: builder.mutation<IMDoc, {userId:number,file:File}>({
+    uploadMDoc: builder.mutation<IMDoc, { userId: number; file: File }>({
       query: (form) => {
         const formData = new FormData();
         formData.append("file", form.file);
@@ -20,6 +20,10 @@ export const mDocApi = createApi({
         };
       },
     }),
+    getDocumentPresignedUrl: builder.query<IPresignedUrl, number>({
+      query: (id) => `posts/${id}/download`,
+    }),
   }),
 });
-export const { useUploadMDocMutation } = mDocApi;
+export const { useUploadMDocMutation, useLazyGetDocumentPresignedUrlQuery } =
+  mDocApi;

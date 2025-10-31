@@ -7,3 +7,6 @@ export interface IMDoc {
   fileSize: number;
   url: string;
 }
+export interface IPresignedUrl {
+  url: string;
+}

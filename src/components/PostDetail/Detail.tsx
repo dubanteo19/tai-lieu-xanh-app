@@ -1,3 +1,8 @@
+import { useLazyGetDocumentPresignedUrlQuery } from "@/api/mDocApi";
+import DownloadIcon from "@mui/icons-material/Download";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FlagIcon from "@mui/icons-material/Flag";
 import {
   Box,
   Button,
@@ -17,32 +22,23 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { PostInfo } from "./PostInfo";
-import { PostBody } from "./PostBody";
-import PostComments from "./PostComments";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import DownloadIcon from "@mui/icons-material/Download";
-import FlagIcon from "@mui/icons-material/Flag";
-import { useGetCommentsByPostIdQuery } from "../../api/commentApi";
-import { IPostDetail } from "../../type/IPostDetail";
-import { Link, useNavigate } from "react-router-dom";
-import BASE_URL from "../../api/url";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  favoriteAdd,
-  favoriteRemove,
-} from "../../features/favorite/favoriteSlice";
-import { RootState } from "../../app/store";
-import { toast } from "react-toastify";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import {
   useGetAllReasonsQuery,
   useReportPostMutation,
 } from "../../admin/api/reportApi";
+import { useGetCommentsByPostIdQuery } from "../../api/commentApi";
+import { RootState } from "../../app/store";
+import { IPostDetail } from "../../type/IPostDetail";
 import { getVNReason } from "../../utils/statusTranslator";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
+import { PostBody } from "./PostBody";
+import PostComments from "./PostComments";
+import { PostInfo } from "./PostInfo";
 
 const PostButtons: React.FC<{ postId: number }> = ({ postId }) => {
   const dispatch = useDispatch();
@@ -84,31 +80,19 @@ const PostButtons: React.FC<{ postId: number }> = ({ postId }) => {
       console.log(error);
     }
   };
+  const [triggerGetPresignedUrl, { data: presignedUrl, isFetching }] =
+    useLazyGetDocumentPresignedUrlQuery();
+  const [openDownloadPopup, setOpenDownloadPopup] = useState<boolean>(false);
+  const handleOpenDownloadPopup = () => {
+    setOpenDownloadPopup(true);
+    triggerGetPresignedUrl(postId);
+  };
   return (
     <Stack direction="row" justifyContent="space-between">
       <Stack direction="row" ml={5} spacing={2}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography>Yêu thích</Typography>
-          <IconButton
-            sx={{
-              alignItems: "end",
-              "&:focus": {
-                outline: "none",
-              },
-            }}
-            onClick={() => {
-              !isInFavorite
-                ? dispatch(favoriteAdd({ postId }))
-                : dispatch(favoriteRemove({ postId }));
-              const message = isInFavorite
-                ? "Xóa khỏi danh sách yêu thích thành công"
-                : "Thêm vào danh sách yêu thích thành công";
-              toast.success(message, {
-                autoClose: 1000,
-                position: "bottom-left",
-              });
-            }}
-          >
+          <IconButton>
             {isInFavorite ? (
               <FavoriteIcon color="error" />
             ) : (
@@ -116,15 +100,9 @@ const PostButtons: React.FC<{ postId: number }> = ({ postId }) => {
             )}
           </IconButton>
         </Box>
-
         <Button
           startIcon={<DownloadIcon />}
-          href={BASE_URL + `posts/${postId}/download`}
-          sx={{
-            "&:hover": {
-              bgcolor: "white",
-            },
-          }}
+          onClick={handleOpenDownloadPopup}
           color="warning"
           variant="contained"
         >
@@ -139,6 +117,27 @@ const PostButtons: React.FC<{ postId: number }> = ({ postId }) => {
       >
         Báo cáo
       </Button>
+      {/* Download popup */}
+      <Dialog open={openDownloadPopup} onClose={setOpenDownloadPopup}>
+        <DialogTitle textAlign={"center"}>Download document</DialogTitle>
+        <DialogContent sx={{ p: 5, width: "400px" }}>
+          <h2></h2>
+          {isFetching ? (
+            <CircularProgress />
+          ) : (
+            <h2>
+              Thank you for download please click the button below to download
+            </h2>
+          )}
+        </DialogContent>
+        <DialogActions>
+          {presignedUrl && (
+            <Button variant="contained" color="primary">
+              <a href={presignedUrl.url}>Download</a>
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
       {/* Report Dialog */}
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle textAlign={"center"}>Báo cáo tài liệu</DialogTitle>

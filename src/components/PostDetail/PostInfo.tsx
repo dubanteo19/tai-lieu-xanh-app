@@ -1,6 +1,7 @@
-import { Avatar,  Stack, Typography } from "@mui/material";
+import { Avatar, Stack, Typography } from "@mui/material";
 import { getThumbUri } from "../../utils/uri";
 import { Link } from "react-router-dom";
+import { FC } from "react";
 
 interface PostInfoProps {
   avatar: string;
@@ -9,22 +10,19 @@ interface PostInfoProps {
   title: string;
   id: number;
 }
-
-export const PostInfo: React.FC<PostInfoProps> = (info) => {
+export const PostInfo: FC<PostInfoProps> = (info) => {
   return (
-    <Stack sx={{ p: 2 }}>
-      <Stack direction="row" sx={{ alignItems: "center" }}>
+    <div className="p-2">
+      <div className="flex flex-row gap-4 items-center">
         <Avatar src={getThumbUri(info.avatar)} />
-        <Stack sx={{ flexBasis: "80%", ml: 2 }}>
+        <div>
           <Link style={{ color: "black" }} to={`/profile/${info.id}`}>
-            <Typography>{info.fullName}</Typography>
+            {info.fullName}
           </Link>
-          <Typography>{info.date}</Typography>
-        </Stack>
-      </Stack>
-      <Typography fontWeight="bold" variant="h5">
-        {info.title}
-      </Typography>
-    </Stack>
+          <p className="text-sm">{info.date}</p>
+        </div>
+      </div>
+      <h4 className="font-bold text-2xl">{info.title}</h4>
+    </div>
   );
 };

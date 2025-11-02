@@ -22,25 +22,16 @@ export const PostDetail = () => {
       }),
     );
   }, [postId]);
+  if (isLoading) return <FullLoading />;
   return (
-    <Grid2
-      sx={{
-        bgcolor: "secondary.main",
-        paddingY: 5,
-        paddingX: 30,
-        direction: "row",
-      }}
-      container
-      spacing={2}
-    >
-      {isLoading && <FullLoading />}
-      <Grid2 size={7}>{data && <Detail {...data} />}</Grid2>
-      <Grid2 size={4} position="sticky" top="70px" alignSelf="start">
-        <Stack spacing={3}>
+    <div className="grid grid-cols-12 gap-4 mt-2">
+      <div className="col-span-8">{data && <Detail {...data} />}</div>
+      <div className="col-span-4">
+        <div className="flex flex-col gap-2">
           <RelatedDocument postId={Number(postId)} />
           <TopDocument />
-        </Stack>
-      </Grid2>
-    </Grid2>
+        </div>
+      </div>
+    </div>
   );
 };

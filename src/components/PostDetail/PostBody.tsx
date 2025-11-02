@@ -67,7 +67,6 @@ export const PostBody: React.FC<PostBodyProps> = ({
       <Stack
         sx={{
           border: "1px solid rgba(0,0,0,0.2)",
-          bgcolor: "secondary.main",
           borderRadius: 2,
           p: 2,
         }}

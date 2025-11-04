@@ -1,17 +1,13 @@
-import { Button, Stack } from "@mui/material";
-
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useGetAllPublishedPostsQuery } from "../api/postApi";
-import { RootState } from "../app/store";
 import { IPost } from "../type/IPost";
 import FullLoading from "./FullLoading";
 import { Post } from "./post/Post";
+import { Button } from "./ui/button";
 
 export const PostList = () => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<IPost[]>([]);
-  const favorite = useSelector((state: RootState) => state.favorite);
   const { data, isLoading, isSuccess } = useGetAllPublishedPostsQuery({
     page,
     size: 4,
@@ -30,22 +26,13 @@ export const PostList = () => {
   if (isLoading) return <FullLoading />;
 
   return (
-    <Stack>
+    <div className="flex gap-4 flex-col">
       {posts?.map((post: IPost) => (
         <Post key={post.id} handleHidePost={handleHidePost} post={post} />
       ))}
-      <Button
-        onClick={handleShowMore}
-        disabled={isLoading}
-        variant="contained"
-        sx={{
-          marginTop: 2,
-          bgcolor: "primary.main",
-          color: "white",
-        }}
-      >
+      <Button onClick={handleShowMore} disabled={isLoading}>
         Xem thêm
       </Button>
-    </Stack>
+    </div>
   );
 };

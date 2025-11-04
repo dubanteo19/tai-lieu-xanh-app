@@ -1,108 +1,56 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
-import "lightgallery/css/lightgallery.css";
-import "lightgallery/css/lg-zoom.css";
-import "lightgallery/css/lg-thumbnail.css";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lightgallery.css";
+import { FC } from "react";
 import { IMDoc } from "../../type/IMDoc";
-import Grid from "@mui/material/Grid2";
 import { bytesToMB } from "../../utils/bytesToMB";
-import { useMemo } from "react";
-import { getFileUri } from "../../utils/uri";
+import { useGetPreviewUrlsQuery } from "@/api/mDocApi";
+import { ImageHolder } from "../ui/image-holder";
+const MDocProperty = (property: { mkey: string; value: string | number }) => {
+  return (
+    <div className="grid grid-cols-2">
+      <p className="font-bold">{property.mkey}</p>
+      <p className="break-all font-bold">{property.value || 0}</p>
+    </div>
+  );
+};
 interface PostBodyProps {
   description: string;
   postId: number;
   mdoc: IMDoc;
   isLoading: boolean;
 }
-
-const MDocProperty = (property: { mkey: string; value: string | number }) => {
+export const PostBody: FC<PostBodyProps> = ({ description, mdoc }) => {
+  const { data: previewUrls, isLoading } = useGetPreviewUrlsQuery(mdoc.id);
   return (
-    <Grid container>
-      <Grid size={6}>
-        <Typography fontWeight="bold">{property.mkey}</Typography>
-      </Grid>
-      <Grid size={6}>
-        <Typography
-          sx={{
-            wordBreak: "break-all",
-          }}
-          fontWeight="bold"
-          color="success"
-        >
-          {property.value || 0}
-        </Typography>
-      </Grid>
-    </Grid>
-  );
-};
-export const PostBody: React.FC<PostBodyProps> = ({
-  description,
-  mdoc,
-  isLoading,
-}) => {
-  const encodeUrl = useMemo(() => encodeURIComponent(mdoc.url), [mdoc.url]);
-  const docs = useMemo(
-    () => [
-      {
-        uri: getFileUri(mdoc.url),
-      },
-    ],
-    [encodeUrl],
-  );
-  const config = {
-    header: {
-      disableHeader: true,
-      disableFileName: true,
-      retainURLParams: true,
-    },
-    csvDelimiter: ",", // "," as default,
-    pdfZoom: {
-      defaultZoom: 1.1, // 1 as default,
-      zoomJump: 0.2, // 0.1 as default,
-    },
-  };
-  return (
-    <Box>
-      <Stack
-        sx={{
-          border: "1px solid rgba(0,0,0,0.2)",
-          borderRadius: 2,
-          p: 2,
-        }}
-      >
-        <Typography variant="h5" textAlign="center">
-          Thông tin về tài liệu
-        </Typography>
+    <div>
+      <div className="p-2">
+        <h5>Thông tin về tài liệu</h5>
         <MDocProperty mkey="Tên tài liệu:" value={mdoc.fileName} />
         <MDocProperty mkey="Loại tài liệu: " value={mdoc.fileType} />
         <MDocProperty mkey="Kích thước:" value={bytesToMB(mdoc.fileSize)} />
         <MDocProperty mkey="Lươt tải" value={mdoc.downloads} />
         <MDocProperty mkey="Số trang" value={mdoc.pages} />
-      </Stack>
-      <Stack sx={{ mt: 2 }}>
-        <Typography variant="h5">Miêu tả tài liệu</Typography>
-        <Typography variant="body1">
-          {description || "Tài liệu này không có phần mô tả "}
-        </Typography>
-      </Stack>
-      {!isLoading && (
-        <Box
-          sx={{
-            overflow: "auto", // Allows scrolling when content exceeds height
-            minHeight: "500px", // Restricts height to 80% of the viewport
-            border: "1px solid rgba(0,0,0,0.2)",
-            borderRadius: 2,
-            mt: 2,
-          }}
-        >
-          <DocViewer
-            config={config}
-            pluginRenderers={DocViewerRenderers}
-            documents={docs}
-          />
-        </Box>
+      </div>
+      <div className="flex flex-col">
+        <h4>Miêu tả tài liệu</h4>
+        <p>{description || "Tài liệu này không có phần mô tả "}</p>
+      </div>
+      {!isLoading && previewUrls && (
+        <div className="flex gap-2 flex-col">
+          {previewUrls.map((url) => (
+            <ImageHolder src={url} key={url} />
+          ))}
+        </div>
       )}
-    </Box>
+      {/* {!isLoading && (
+         <DocViewer
+          config={config}
+          pluginRenderers={DocViewerRenderers}
+          documents={docs}
+        /> 
+      )} */}
+    </div>
   );
 };

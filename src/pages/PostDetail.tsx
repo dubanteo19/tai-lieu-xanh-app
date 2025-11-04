@@ -1,12 +1,11 @@
-import { Grid2, Stack } from "@mui/material";
-import { TopDocument, RelatedDocument } from "../components/TopDocument";
-import { Detail } from "../components/PostDetail/Detail";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { setCommentForm } from "../features/comment/commentSlice";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useGetPostDetailQuery, useViewPostMutation } from "../api/postApi";
 import FullLoading from "../components/FullLoading";
+import { Detail } from "../components/PostDetail/Detail";
+import { RelatedDocument, TopDocument } from "../components/TopDocument";
+import { setCommentForm } from "../features/comment/commentSlice";
 export const PostDetail = () => {
   const { postId } = useParams();
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));

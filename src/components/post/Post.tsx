@@ -16,7 +16,7 @@ export const Post: FC<PostProps> = (props) => {
   const { handleHidePost, post } = props;
   const navigate = useNavigate();
   return (
-    <div className="p-4 bg-gray-100 rounded shadow-xl">
+    <div className="p-4  rounded-2xl border border-primary">
       <PostHeader
         author={post.author}
         postCreatedDate={post.createdDate}

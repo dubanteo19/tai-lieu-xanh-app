@@ -4,9 +4,13 @@ import {
 } from "@/admin/api/reportApi";
 import { useLazyGetDocumentPresignedUrlQuery } from "@/api/mDocApi";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { FC, useState } from "react";
+import { useDialog } from "@/hooks/useDialog";
+import { downloadFileFromUrl } from "@/utils/downloadFile";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from "../ui/button";
+import { DownloadDialog } from "./dialogs/DownloadDialog";
+import { ReportDialog } from "./dialogs/ReportDialog";
 
 interface PostActionButtonGroupProps {
   postId: number;
@@ -18,34 +22,45 @@ export const PostActionButtonGroup: FC<PostActionButtonGroupProps> = ({
   const favorite = useAppSelector((state) => state.favorite);
   const { id: userId } = useAppSelector((state) => state.auth);
   const isInFavorite = favorite.some((p) => p.postId === postId);
-  const [reason, setReason] = useState<string>("SPAM");
-  const { data: reasons } = useGetAllReasonsQuery();
-  const [reportPost, { isLoading, isSuccess, isError }] =
-    useReportPostMutation();
-  const handleClickOpen = () => {};
-
-  const handleReportPost = async (postId: number) => {
+  const { data: reasons, isFetching: isFetchingReasons } =
+    useGetAllReasonsQuery();
+  const [reportPost, { isLoading, isError }] = useReportPostMutation();
+  const handleReportPost = (reason: string) => {
     try {
-      await reportPost({
-        postId,
-        userId,
-        reason,
-      });
-      handleClose();
+      reportPost({ postId, userId, reason });
     } catch (error) {
       console.log(error);
     }
   };
-  const handleClose = () => {};
-  const [triggerGetPresignedUrl, { data: presignedUrl, isFetching }] =
+  const [triggerGetPresignedUrl, { isFetching }] =
     useLazyGetDocumentPresignedUrlQuery();
-  const [openDownloadPopup, setOpenDownloadPopup] = useState<boolean>(false);
-  const handleOpenDownloadPopup = () => {
-    setOpenDownloadPopup(true);
-    triggerGetPresignedUrl(postId);
+  const { openDialog, closeDialog } = useDialog();
+  const handleDownload = async () => {
+    const presignedUrl = await triggerGetPresignedUrl(postId).unwrap();
+    downloadFileFromUrl(presignedUrl.url);
+  };
+  const handleOpenDownloadPopup = async () => {
+    openDialog(
+      <DownloadDialog
+        handleDownload={handleDownload}
+        isFetching={isFetching}
+        closeDialog={closeDialog}
+      />,
+    );
+  };
+  const handleOpenReportPopup = () => {
+    if (reasons)
+      openDialog(
+        <ReportDialog
+          reasons={reasons}
+          isFetching={isFetchingReasons}
+          closeDialog={closeDialog}
+          handleReport={handleReportPost}
+        />,
+      );
   };
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between border p-2">
       <div className="flex gap-2">
         <div>
           <Button>Love</Button>
@@ -54,7 +69,7 @@ export const PostActionButtonGroup: FC<PostActionButtonGroupProps> = ({
           Tải tải liệu
         </Button>
       </div>
-      <Button color="error" onClick={handleClickOpen} variant="default">
+      <Button color="error" onClick={handleOpenReportPopup} variant="default">
         Báo cáo
       </Button>
     </div>

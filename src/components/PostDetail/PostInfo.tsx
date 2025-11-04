@@ -1,7 +1,6 @@
-import { Avatar, Stack, Typography } from "@mui/material";
-import { getThumbUri } from "../../utils/uri";
-import { Link } from "react-router-dom";
 import { FC } from "react";
+import { Link } from "react-router-dom";
+import { ImageHolder } from "../ui/image-holder";
 
 interface PostInfoProps {
   avatar: string;
@@ -14,7 +13,7 @@ export const PostInfo: FC<PostInfoProps> = (info) => {
   return (
     <div className="p-2">
       <div className="flex flex-row gap-4 items-center">
-        <Avatar src={getThumbUri(info.avatar)} />
+        <ImageHolder src={info.avatar} />
         <div>
           <Link style={{ color: "black" }} to={`/profile/${info.id}`}>
             {info.fullName}

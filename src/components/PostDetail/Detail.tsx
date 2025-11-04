@@ -1,15 +1,15 @@
-import { Box, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Divider } from "@mui/material";
+import { Link } from "react-router-dom";
 import { useGetCommentsByPostIdQuery } from "../../api/commentApi";
 import { IPostDetail } from "../../type/IPostDetail";
+import { PostActionButtonGroup } from "./PostActionButtonGroup";
 import { PostBody } from "./PostBody";
 import PostComments from "./PostComments";
 import { PostInfo } from "./PostInfo";
-import { PostActionButtonGroup } from "./PostActionButtonGroup";
+import { PostTags } from "./PostTags";
 
 export const Detail: React.FC<IPostDetail> = (post) => {
   const { data, isLoading } = useGetCommentsByPostIdQuery(post.id);
-  const navigate = useNavigate();
   return (
     <div className="shadow">
       <div className="relative">
@@ -28,26 +28,13 @@ export const Detail: React.FC<IPostDetail> = (post) => {
           title={post.title}
         />
       </div>
-      <Divider variant="middle" />
       <PostBody
         mdoc={post.mdoc}
         isLoading={isLoading}
         description={post.description}
         postId={post.id}
       />
-      <Stack direction="row" spacing={1} sx={{ my: 2 }}>
-        <Typography variant="h5">Nhãn:</Typography>
-        {post.tags &&
-          post.tags.map((tag) => (
-            <Chip
-              key={tag.tagName}
-              onClick={() => {
-                navigate(`/search?tags=${tag.tagName}`);
-              }}
-              label={tag.tagName}
-            />
-          ))}
-      </Stack>
+      <PostTags tags={post.tags} />
       <PostActionButtonGroup postId={post.id} />
       {data && <PostComments postId={post.id} comments={data} />}
     </div>

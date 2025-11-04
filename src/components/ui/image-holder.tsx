@@ -14,7 +14,7 @@ export const ImageHolder: FC<ImageHolderProps> = ({
   ...props
 }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [imgSrc] = useState<string>(src || NO_IMAGE );
+  const [imgSrc] = useState<string>(src || NO_IMAGE);
   return (
     <div className={cn(className, "relative  overflow-hidden")}>
       {!loaded && (

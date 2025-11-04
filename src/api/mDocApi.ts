@@ -20,10 +20,16 @@ export const mDocApi = createApi({
         };
       },
     }),
+    getPreviewUrls: builder.query<string[], number>({
+      query: (id) => `documents/${id}/previews`,
+    }),
     getDocumentPresignedUrl: builder.query<IPresignedUrl, number>({
       query: (id) => `posts/${id}/download`,
     }),
   }),
 });
-export const { useUploadMDocMutation, useLazyGetDocumentPresignedUrlQuery } =
-  mDocApi;
+export const {
+  useUploadMDocMutation,
+  useLazyGetDocumentPresignedUrlQuery,
+  useGetPreviewUrlsQuery,
+} = mDocApi;

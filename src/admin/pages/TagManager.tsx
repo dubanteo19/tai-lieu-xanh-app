@@ -1,7 +1,7 @@
+import FullLoading from "@/shared/components/FullLoading";
+import SearchBar from "@/shared/components/SearchBar";
 import { Stack, Typography } from "@mui/material";
-import SearchBar from "../../components/SearchBar";
-import FullLoading from "../../components/FullLoading";
-import { useGetMajorsWithPostsQuery, useGetTagsWithPostsQuery } from "../api/adminMajorApi";
+import { useGetTagsWithPostsQuery } from "../api/adminMajorApi";
 import { TagTable } from "../components/tag/TagTable";
 export const TagManager = () => {
   const { data: tags, isLoading } = useGetTagsWithPostsQuery();

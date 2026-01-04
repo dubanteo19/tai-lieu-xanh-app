@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import BASE_URL from "../../api/url";
 import { ICommentRes } from "../../type/ICommentRes";
+import BASE_URL from "@/shared/constants/url";
 export const adminCommentApi = createApi({
   reducerPath: "adminCommentApi",
   tagTypes: ["Comment"],

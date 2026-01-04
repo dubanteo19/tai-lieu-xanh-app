@@ -7,9 +7,9 @@ import CommentIcon from "@mui/icons-material/Comment";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { AnalyticsPostPublishs } from "../components/chart/AnalyticsPostPublishs";
 import { useGetDashboardInfoQuery } from "../api/dashboardApi";
-import FullLoading from "../../components/FullLoading";
 import { AnalyticsDownloadsPublishs } from "../components/chart/AnalyticsDownloads";
 import { AnalyticsCommentsPublishs } from "../components/chart/AnalyticsComments";
+import FullLoading from "@/shared/components/FullLoading";
 export const MDashboard = () => {
   const { data: dashboardInfo, isLoading } = useGetDashboardInfoQuery();
   return (
@@ -22,7 +22,7 @@ export const MDashboard = () => {
       }}
     >
       {isLoading && <FullLoading />}
-      <Typography variant="h5" sx={{ mb: 3 }} fontWeight="bold">
+      <Typography vargant="h5" sx={{ mb: 3 }} fontWeight="bold">
         Hi, Welcome back 👋
       </Typography>
       {dashboardInfo && (

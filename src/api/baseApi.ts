@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import BASE_URL from "./url";
+import BASE_URL from "@/shared/constants/url";
 import { RootState } from "../app/store";
 export const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,

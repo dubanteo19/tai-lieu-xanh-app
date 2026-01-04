@@ -1,4 +1,3 @@
-import { AdminLayout } from "@/admin/AdminLayout";
 import { DeletedPosts } from "@/admin/components/post/DeletedPosts";
 import { ReportPostPage } from "@/admin/components/post/ReportPostPage";
 import { ReviewPosts } from "@/admin/components/post/ReviewPosts";
@@ -10,7 +9,6 @@ import {
   CommentManager,
   UserManager,
 } from "@/admin/pages";
-import { ROUTES } from "@/routes/routes";
 import {
   ResetPassword,
   PostDetail,
@@ -26,9 +24,11 @@ import {
   VerifyPage,
   UserProfilePage,
 } from "@/pages";
-import { Layout } from "@/pages/Layout";
-import SecureRoute from "./SecureRoute";
 import { RouteObject, useRoutes } from "react-router-dom";
+import { ROUTES } from "./routes";
+import SecureRoute from "./rotected-route";
+import { Layout } from "../layouts/main-layout";
+import { AdminLayout } from "@/admin/AdminLayout";
 
 const appRoutes: RouteObject[] = [
   {
@@ -88,6 +88,7 @@ const appRoutes: RouteObject[] = [
     ],
   },
 ];
-export const AppRoutes = () => {
+const AppRoutes = () => {
   return useRoutes(appRoutes);
 };
+export default AppRoutes;

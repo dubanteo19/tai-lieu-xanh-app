@@ -24,8 +24,7 @@ import { ISearchFilters } from "../type/ISearchFilters";
 import ReactLoading from "react-loading";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import { TrendingUp, AccessTime } from "@mui/icons-material";
-import FullLoading from "../components/FullLoading";
-import { getThumbUri } from "../utils/uri";
+import FullLoading from "@/shared/components/FullLoading";
 const SearchSelectList: React.FC<{
   filters: ISearchFilters;
   onFiltersChange: (newFilters: ISearchFilters) => void;

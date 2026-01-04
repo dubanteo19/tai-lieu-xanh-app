@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import BASE_URL from "../../api/url";
+import BASE_URL from "@/shared/constants/url";
 import { IMajorWithPost } from "../../api/postApi";
 interface IMajorCreate {
   name: string;

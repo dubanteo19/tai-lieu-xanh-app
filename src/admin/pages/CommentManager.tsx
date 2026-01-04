@@ -1,8 +1,8 @@
 import { Stack, Typography } from "@mui/material";
-import SearchBar from "../../components/SearchBar";
+import SearchBar from "@/shared/components/SearchBar";
 import { CommentTable } from "../components/comment/CommentTable";
 import { useGetAllCommentsQuery } from "../api/adminCommentApi";
-import FullLoading from "../../components/FullLoading";
+import FullLoading from "@/shared/components/FullLoading";
 export const CommentManager = () => {
   const { data: comments, isLoading } = useGetAllCommentsQuery();
   return (
@@ -23,9 +23,7 @@ export const CommentManager = () => {
         <Stack direction="row" spacing={2}></Stack>
       </Stack>
       {isLoading && <FullLoading />}
-      {comments && <CommentTable
-        comments={comments}
-      />}
+      {comments && <CommentTable comments={comments} />}
     </Stack>
   );
 };

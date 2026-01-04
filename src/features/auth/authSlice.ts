@@ -11,7 +11,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  accessToken: null,
+  accessToken: localStorage.getItem("accessToken") || null,
   refreshToken: localStorage.getItem("refreshToken") || null,
   fullName: "",
   bio: "",
@@ -31,9 +31,11 @@ const authSlice = createSlice({
         isLogin: true,
       };
     },
-    setRefreshToken: (state, action) => {
-      state.refreshToken = action.payload;
+    setAuthToken: (state, action) => {
+      state.refreshToken = action.payload.accessToken;
+      state.accessToken = action.payload.accessToken;
       localStorage.setItem("refreshToken", action.payload);
+      localStorage.setItem("accessToken", action.payload);
     },
     logout: (state) => {
       state.accessToken = null;
@@ -43,5 +45,5 @@ const authSlice = createSlice({
     },
   },
 });
-export const { setAccessToken, setRefreshToken, logout } = authSlice.actions;
+export const { setAuthToken, logout } = authSlice.actions;
 export default authSlice.reducer;

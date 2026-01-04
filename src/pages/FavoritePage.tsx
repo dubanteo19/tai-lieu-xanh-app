@@ -13,8 +13,8 @@ import {
   IFavoriteState,
 } from "../features/favorite/favoriteSlice";
 import { IPost } from "../type/IPost";
-import { getThumbUri } from "../utils/uri";
 import { FC } from "react";
+import { getThumbUri } from "@/shared/utils/uri";
 interface FavoriteListProps {
   favorites: IPost[];
 }

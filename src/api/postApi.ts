@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import BASE_URL from "./url";
+import BASE_URL from "@/shared/constants/url";
 import { IPost } from "../type/IPost";
 import { IPostDetail } from "../type/IPostDetail";
 import { ISearchFilters } from "../type/ISearchFilters";

@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PolicyIcon from "@mui/icons-material/Policy";
 import FlagIcon from "@mui/icons-material/Flag";
-import SearchBar from "../../components/SearchBar";
+import SearchBar from "@/shared/components/SearchBar";
 import { PostTable } from "../components/post/PostTable";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";

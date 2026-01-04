@@ -15,9 +15,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import SearchBar from "../../../components/SearchBar";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import FullLoading from "../../../components/FullLoading";
 import DoneIcon from "@mui/icons-material/Done";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import PreviewIcon from "@mui/icons-material/Preview";
@@ -31,7 +29,8 @@ import { PostPreview } from "../../../components/PostPreview";
 import { useState } from "react";
 import { useSendNotificationMutation } from "../../../api/notificationApi";
 import { useGetAllReasonsQuery } from "../../api/reportApi";
-import { getVNReason } from "../../../utils/statusTranslator";
+import FullLoading from "@/shared/components/FullLoading";
+import SearchBar from "@/shared/components/SearchBar";
 export const CenterCell = ({ children }: { children: React.ReactNode }) => {
   return (
     <Stack

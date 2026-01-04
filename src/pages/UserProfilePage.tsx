@@ -1,27 +1,26 @@
+import { Post } from "@/components/post/Post";
+import FullLoading from "@/shared/components/FullLoading";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ArticleIcon from "@mui/icons-material/Article";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import EmailIcon from "@mui/icons-material/Email";
 import {
+  Avatar,
   Box,
+  Button,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
   Paper,
-  Avatar,
   Stack,
-  Button,
+  Typography,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ArticleIcon from "@mui/icons-material/Article";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import EmailIcon from "@mui/icons-material/Email";
 import React, { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetInfoQuery, useGetUserPostsQuery } from "../api/userApi";
-import { getThumbUri } from "../utils/uri";
-import FullLoading from "../components/FullLoading";
 import { IPost } from "../type/IPost";
-import { Post } from "@/components/post/Post";
 export const UserPostList: FC<{ userId: number }> = ({ userId }) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<IPost[]>([]);

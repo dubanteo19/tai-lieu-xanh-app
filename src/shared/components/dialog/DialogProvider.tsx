@@ -1,6 +1,6 @@
-import { DialogContext } from "@/context/DialogContext";
-import { FC, ReactNode, useContext, useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { DialogContext } from "@/shared/context/DialogContext";
+import { Dialog, DialogContent } from "@/shared/ui/dialog";
+import { FC, ReactNode, useState } from "react";
 
 interface DialogProviderProps {
   children: ReactNode;

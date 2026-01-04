@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { postApi } from "../api/postApi";
 import authSlice from "../features/auth/authSlice";
-import { authApi } from "../api/authApi";
 import { userApi } from "../api/userApi";
 import userMenuSlice from "../features/user-menu/userMenuSlice";
 import { commentApi } from "../api/commentApi";
@@ -17,6 +16,7 @@ import { dashboardApi } from "../admin/api/dashboardApi";
 import { adminMajorApi } from "../admin/api/adminMajorApi";
 import { adminUserApi } from "../admin/api/adminUserApi";
 import { adminCommentApi } from "../admin/api/adminCommentApi";
+import { authApi } from "@/features/auth/api/authApi";
 export const store = configureStore({
   reducer: {
     auth: authSlice,

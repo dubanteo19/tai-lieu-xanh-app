@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
-import SearchBar from "../../components/SearchBar";
 import { UserTable } from "../components/user/UserTable";
+import SearchBar from "@/shared/components/SearchBar";
 export const UserManager = () => {
   return (
     <Stack sx={{ px: 4 }}>

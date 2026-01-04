@@ -19,7 +19,7 @@ const Header = () => {
     isLogin ? { userId: id } : skipToken,
   );
   return (
-    <div
+    <header
       className="flex px-5 md:px-10 py-2 items-center bg-primary 
       justify-between border-b-white border-b-2"
     >
@@ -60,7 +60,7 @@ const Header = () => {
           </Link>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 export default Header;

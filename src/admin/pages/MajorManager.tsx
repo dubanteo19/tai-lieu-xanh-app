@@ -10,12 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import SearchBar from "../../components/SearchBar";
 import { MajorTable } from "../components/major/MajorTable";
-import FullLoading from "../../components/FullLoading";
 import { useState } from "react";
-import { useCreateMajorMutation, useGetMajorsWithPostsQuery } from "../api/adminMajorApi";
+import {
+  useCreateMajorMutation,
+  useGetMajorsWithPostsQuery,
+} from "../api/adminMajorApi";
 import { toast } from "react-toastify";
+import SearchBar from "@/shared/components/SearchBar";
+import FullLoading from "@/shared/components/FullLoading";
 export const MajorManager = () => {
   const { data: majors, isLoading } = useGetMajorsWithPostsQuery();
   const [openDialog, setOpenDialog] = useState(false);

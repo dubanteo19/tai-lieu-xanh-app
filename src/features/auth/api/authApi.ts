@@ -1,5 +1,5 @@
+import BASE_URL from "@/shared/constants/url";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import BASE_URL from "./url";
 export interface IRegisterRes {
   messgae: string;
   email: string;

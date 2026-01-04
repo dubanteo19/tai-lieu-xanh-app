@@ -1,3 +1,6 @@
+import AutoModeIcon from "@mui/icons-material/AutoMode";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import PreviewIcon from "@mui/icons-material/Preview";
 import {
   Button,
   Dialog,
@@ -7,24 +10,21 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import SearchBar from "../../../components/SearchBar";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import FullLoading from "../../../components/FullLoading";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import PreviewIcon from "@mui/icons-material/Preview";
-import AutoModeIcon from "@mui/icons-material/AutoMode";
-import { CenterCell } from "./ReviewPosts";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
 import { useState } from "react";
-import { PostPreview } from "../../../components/PostPreview";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { PostPreview } from "../../../components/PostPreview";
 import {
   useApprovePostMutation,
   useDeepDeletePostMutation,
   useGetAllDeletedPostsQuery,
 } from "../../api/adminPostApi";
+import { CenterCell } from "./ReviewPosts";
+import FullLoading from "@/shared/components/FullLoading";
+import SearchBar from "@/shared/components/SearchBar";
 export const DeletedPostsTable = () => {
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },

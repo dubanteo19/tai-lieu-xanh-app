@@ -1,5 +1,5 @@
 export { Home } from "./Home";
-export { Login } from "./Login";
+export { LoginPage } from "./auth/login.page";
 export { Register } from "./Register";
 export { VerifyPage } from "./VerifyPage";
 export { ForgotPassword } from "./ForgotPassword";

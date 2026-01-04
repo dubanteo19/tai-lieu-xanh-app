@@ -1,7 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@/components/ui/input";
+import { Input } from "../ui/input";
 
 const SeachBar = ({ color = "white" }) => {
   const [keyword, setKeyword] = useState<string>("");
@@ -12,7 +12,7 @@ const SeachBar = ({ color = "white" }) => {
   };
   const navigate = useNavigate();
   return (
-    <div className="center px-2 rounded-2xl border-white border-2">
+    <div className="flex-center px-2 rounded-2xl border-white border-2">
       <Input
         onChange={(e) => setKeyword(e.target.value)}
         onKeyDown={handleKeyDown}

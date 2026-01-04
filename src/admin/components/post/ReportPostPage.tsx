@@ -1,3 +1,7 @@
+import FullLoading from "@/shared/components/FullLoading";
+import SearchBar from "@/shared/components/SearchBar";
+import DehazeIcon from "@mui/icons-material/Dehaze";
+import PreviewIcon from "@mui/icons-material/Preview";
 import {
   Button,
   Chip,
@@ -15,21 +19,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import SearchBar from "../../../components/SearchBar";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import FullLoading from "../../../components/FullLoading";
-import DehazeIcon from "@mui/icons-material/Dehaze";
-import PreviewIcon from "@mui/icons-material/Preview";
-import { useNavigate } from "react-router-dom";
-import { PostPreview } from "../../../components/PostPreview";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSendNotificationMutation } from "../../../api/notificationApi";
+import { PostPreview } from "../../../components/PostPreview";
+import { useBanPostMutation } from "../../api/adminPostApi";
 import {
   useGetAllReportPostQuery,
   useUpdateReportMutation,
 } from "../../api/reportApi";
-import { getVNReason } from "../../../utils/statusTranslator";
-import { useBanPostMutation } from "../../api/adminPostApi";
 const ReportPostsTable = () => {
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },

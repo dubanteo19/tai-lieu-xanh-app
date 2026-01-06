@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useGetPostDetailQuery, useViewPostMutation } from "../api/postApi";
-import FullLoading from "../components/FullLoading";
+import FullLoading from "@/shared/components/FullLoading";
 import { Detail } from "../components/PostDetail/Detail";
 import { RelatedDocument, TopDocument } from "../components/TopDocument";
 import { setCommentForm } from "../features/comment/commentSlice";

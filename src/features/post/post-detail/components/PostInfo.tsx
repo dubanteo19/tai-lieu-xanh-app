@@ -1,6 +1,5 @@
-import { FC } from "react";
+import { ImageHolder } from "@/shared/ui/image-holder";
 import { Link } from "react-router-dom";
-import { ImageHolder } from "../ui/image-holder";
 
 interface PostInfoProps {
   avatar: string;
@@ -9,7 +8,7 @@ interface PostInfoProps {
   title: string;
   id: number;
 }
-export const PostInfo: FC<PostInfoProps> = (info) => {
+export const PostInfo = (info: PostInfoProps) => {
   return (
     <div className="p-2">
       <div className="flex flex-row gap-4 items-center">

@@ -1,23 +1,41 @@
-import { useGetAllUnreadNotficationsQuery } from "@/api/notificationApi";
-import SearchBar from "@/components/SearchBar";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { ROUTES } from "@/routes/routes";
-import { getThumbUri } from "@/utils/uri";
+import { ROUTES } from "@/app/router/routes";
+import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { skipToken } from "@reduxjs/toolkit/query";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
+import { getThumbUri } from "../utils/uri";
+import { LinkButton } from "./link-button";
+import SearchBar from "./SearchBar";
 const Header = () => {
-  const navigate = useNavigate();
-  const { isLogin, id, fullName, avatar } = useAppSelector(
-    (state) => state.auth,
-  );
-  const favorite = useAppSelector((state) => state.favorite);
-  const { data: unRead } = useGetAllUnreadNotficationsQuery(
-    isLogin ? { userId: id } : skipToken,
-  );
+  const { isLogin, fullName, avatar } = useAppSelector((state) => state.auth);
+  const renderLinks = () => {
+    if (isLogin) {
+      return (
+        <div>
+          <LinkButton to={ROUTES.USER_NEW_DOC}>
+            <FileUploadIcon sx={{ color: "white" }} />
+          </LinkButton>
+          <Button>
+            <NotificationsIcon sx={{ color: "white" }} />
+          </Button>
+          <LinkButton to="/user">
+            <img alt={fullName} className="w-20 " src={getThumbUri(avatar)} />
+          </LinkButton>
+        </div>
+      );
+    } else {
+      <div className="flex gap-1 ">
+        <Link to={ROUTES.REGISTER}>
+          <Button variant="secondary">ĐĂNG KÝ</Button>
+        </Link>
+        <Link to={ROUTES.LOGIN}>
+          <Button variant="outline">ĐĂNG NHẬP</Button>
+        </Link>
+      </div>;
+    }
+  };
   return (
     <header
       className="flex px-5 md:px-10 py-2 items-center bg-primary 
@@ -32,34 +50,7 @@ const Header = () => {
           <FavoriteIcon color="error" />
         </Link>
       </div>
-      {isLogin && id !== 0 ? (
-        <div className="flex">
-          <Link to={ROUTES.USER_NEW_DOC}>
-            <Button>
-              <FileUploadIcon sx={{ color: "white" }} />
-            </Button>
-          </Link>
-          <Button>
-            <NotificationsIcon sx={{ color: "white" }} />
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/user");
-            }}
-          >
-            <img alt={fullName} className="w-20 " src={getThumbUri(avatar)} />
-          </Button>
-        </div>
-      ) : (
-        <div className="flex gap-1 ">
-          <Link to={ROUTES.REGISTER}>
-            <Button variant="secondary">ĐĂNG KÝ</Button>
-          </Link>
-          <Link to={ROUTES.LOGIN}>
-            <Button variant="outline">ĐĂNG NHẬP</Button>
-          </Link>
-        </div>
-      )}
+      {renderLinks()}
     </header>
   );
 };

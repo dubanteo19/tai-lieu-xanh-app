@@ -10,4 +10,4 @@ export { PostDetail } from "./PostDetail";
 export { User } from "./User";
 export { UserProfilePage } from "./UserProfilePage";
 export { FavoritePage } from "./FavoritePage";
-export { SearchPage } from "./SearchPage";
+export { SearchPage } from "";

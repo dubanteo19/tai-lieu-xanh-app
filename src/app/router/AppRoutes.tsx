@@ -19,16 +19,16 @@ import {
   Register,
   User,
   FavoritePage,
-  Login,
   SearchPage,
   VerifyPage,
   UserProfilePage,
+  LoginPage,
 } from "@/pages";
 import { RouteObject, useRoutes } from "react-router-dom";
 import { ROUTES } from "./routes";
-import SecureRoute from "./rotected-route";
 import { Layout } from "../layouts/main-layout";
 import { AdminLayout } from "@/admin/AdminLayout";
+import SecureRoute from "./protected-route";
 
 const appRoutes: RouteObject[] = [
   {
@@ -60,7 +60,7 @@ const appRoutes: RouteObject[] = [
     children: [
       { index: true, element: <Home /> },
       { path: ROUTES.REGISTER, element: <Register /> },
-      { path: ROUTES.LOGIN, element: <Login /> },
+      { path: ROUTES.LOGIN, element: <LoginPage /> },
       {
         path: ROUTES.FORGOT_PASSWORD,
         element: <ForgotPassword />,

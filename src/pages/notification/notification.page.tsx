@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import {
   Box,
   Button,
@@ -11,18 +12,17 @@ import {
   useGetAllNotficationsQuery,
   useMarkReadNotificaitonMutation,
 } from "../api/notificationApi";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import FullLoading from "../components/FullLoading";
+import FullLoading from "@/shared/components/FullLoading";
 
 export const NotificationPage = () => {
-  const { id: userId } = useSelector((state: RootState) => state.auth);
+  const { id: userId } = useAppSelector((state) => state.auth);
   const [markAsRead] = useMarkReadNotificaitonMutation();
   const handleMarkAsRead = async (notificationId: number) => {
     try {
       await markAsRead({ notificationId });
-    } catch (error) {}
-    console.log(notificationId);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const {
     data: notifications,
@@ -30,12 +30,12 @@ export const NotificationPage = () => {
     refetch,
     isFetching,
   } = useGetAllNotficationsQuery({ userId });
+  if (loading) return <FullLoading />;
   return (
-    <Box sx={{ p: 10 }}>
-      {loading && <FullLoading />}
-      <Typography variant="h4" gutterBottom textAlign={"center"}>
+    <div>
+      <h3 variant="h4" gutterBottom textAlign={"center"}>
         Trung tâm thông báo
-      </Typography>
+      </h3>
       <Button
         variant="contained"
         sx={{ color: "white", fontWeight: "bold" }}
@@ -101,6 +101,6 @@ export const NotificationPage = () => {
           </ListItem>
         ))}
       </List>
-    </Box>
+    </div>
   );
 };

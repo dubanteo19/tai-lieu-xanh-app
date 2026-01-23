@@ -1,8 +1,7 @@
-import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
-import { useVerifyMutation } from "../api/authApi";
 import { NavLink } from "react-router-dom";
-export const VerifyPage = () => {
+import { useVerifyMutation } from "../api/auth.api";
+export const VerifyForm = () => {
   const [verify, { data, error, isLoading }] = useVerifyMutation();
   useEffect(() => {
     const verifyEmail = async () => {
@@ -13,40 +12,22 @@ export const VerifyPage = () => {
       }
     };
     verifyEmail();
-  }, []);
+  }, [verify]);
   return (
-    <Box sx={{ p: 10 }}>
-      <Typography textAlign={"center"} color="success" variant="h3">
-        Kích hoạt tài khoản
-      </Typography>
-      {isLoading && (
-        <Typography variant="h6">Đang kích hoạt tài khoản</Typography>
-      )}
-      {error && (
-        <Typography variant="h6" color="error">
-          Đã xảy ra lới khi kích hoạt tài khoản
-        </Typography>
-      )}
+    <div>
+      <p>Kích hoạt tài khoản</p>
+      {isLoading && <p>Đang kích hoạt tài khoản</p>}
+      {error && <h6>Đã xảy ra lới khi kích hoạt tài khoản</h6>}
       {data && (
-        <Box sx={{ textAlign: "center" }}>
-          <Typography variant="h5" color="info">
-            Kích hoạt tài khoản thành công
-          </Typography>
-          <Typography variant="h6">
+        <div>
+          <h5>Kích hoạt tài khoản thành công</h5>
+          <h6>
             Vui lòng đăng nhập vào hệ thống hoặc nhấn vào
-            <NavLink
-              to="/login"
-              style={{
-                color: "green",
-              }}
-            >
-              {" "}
-              liên kết này
-            </NavLink>{" "}
-            để chuyển hướng đến trang đăng nhập
-          </Typography>
-        </Box>
+            <NavLink to="/login"> liên kết này</NavLink> để chuyển hướng đến
+            trang đăng nhập
+          </h6>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };

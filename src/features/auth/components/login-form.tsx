@@ -6,23 +6,24 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormLabel } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../api/authApi";
-import { LoginFormValues, loginSchema } from "../schemas/login.schema";
 import { setAuthToken } from "../authSlice";
+import { loginSchema } from "../schemas/login.schema";
+import { LoginRequest } from "../types/auth.request";
 export const LoginForm = () => {
-  const form = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
+  const form = useForm<LoginRequest>({ resolver: zodResolver(loginSchema) });
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogin: SubmitHandler<LoginFormValues> = async (data) => {
+  const handleLogin: SubmitHandler<LoginRequest> = async (data) => {
     try {
       const res = await login(data).unwrap();
       dispatch(setAuthToken(res));

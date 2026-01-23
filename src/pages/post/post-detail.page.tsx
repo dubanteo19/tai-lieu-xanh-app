@@ -1,26 +1,14 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useGetPostDetailQuery, useViewPostMutation } from "../api/postApi";
+import { Detail } from "@/features/post/post-detail/components/Detail";
+import { useGetPostDetailQuery } from "@/features/post/post-list/api/post.api";
+import {
+  RelatedDocument,
+  TopDocument,
+} from "@/features/post/post-list/components/TopDocument";
 import FullLoading from "@/shared/components/FullLoading";
-import { Detail } from "../components/PostDetail/Detail";
-import { RelatedDocument, TopDocument } from "../components/TopDocument";
-import { setCommentForm } from "../features/comment/commentSlice";
+import { useParams } from "react-router-dom";
 export const PostDetail = () => {
   const { postId } = useParams();
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));
-  const [viewPost] = useViewPostMutation();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    viewPost({
-      postId: Number(postId),
-    });
-    dispatch(
-      setCommentForm({
-        postId,
-      }),
-    );
-  }, [postId]);
   if (isLoading) return <FullLoading />;
   return (
     <div className="grid grid-cols-12 gap-4 mt-2">

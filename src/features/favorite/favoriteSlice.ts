@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IPost } from "../../type/IPost";
 const loadFavoriteFromLocalStorage = (): IFavoriteState[] => {
   const savedFavirite = localStorage.getItem("favorite");
   return savedFavirite ? JSON.parse(savedFavirite) : [];

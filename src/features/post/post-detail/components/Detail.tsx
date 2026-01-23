@@ -1,14 +1,13 @@
-import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useGetCommentsByPostIdQuery } from "../../api/commentApi";
-import { IPostDetail } from "../../type/IPostDetail";
 import { PostActionButtonGroup } from "./PostActionButtonGroup";
 import { PostBody } from "./PostBody";
 import PostComments from "./PostComments";
 import { PostInfo } from "./PostInfo";
 import { PostTags } from "./PostTags";
+import { PostDetail } from "../../types/post.type";
+import { useGetCommentsByPostIdQuery } from "@/features/comment/api/comment.api";
 
-export const Detail: React.FC<IPostDetail> = (post) => {
+export const Detail = (post: PostDetail) => {
   const { data, isLoading } = useGetCommentsByPostIdQuery(post.id);
   return (
     <div className="shadow">
@@ -18,12 +17,12 @@ export const Detail: React.FC<IPostDetail> = (post) => {
           text-primary "
           to={`/search?major=${post.major.id}`}
         >
-          {post.major.majorName}
+          {post.major.name}
         </Link>
         <PostInfo
           id={post.author.id}
           fullName={post.author.fullName}
-          avatar={post.author.avatar}
+          avatar={post.author.avatarUrl}
           date={post.createdDate}
           title={post.title}
         />

@@ -1,19 +1,28 @@
-import GoogleIcon from "@mui/icons-material/Google";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { ROUTES } from "@/app/router/routes";
+import FullLoading from "@/shared/components/FullLoading";
+import { Button } from "@/shared/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/ui/form";
+import { Input } from "@/shared/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { IRegisterReq, useRegisterMutation } from "../api/authApi";
-import FullLoading from "../components/FullLoading";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../api/authApi";
+import { registerSchema } from "../schemas/register.schema";
+import { RegisterRequest } from "../types/auth.request";
 export const RegisterForm = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IRegisterReq & { confirmPassword: string }>();
-  const [registerAccount, { isLoading, error }] = useRegisterMutation();
+  const form = useForm<RegisterRequest>({
+    resolver: zodResolver(registerSchema),
+  });
+  const [registerAccount, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
-  const handleRegister: SubmitHandler<IRegisterReq> = async (data) => {
+  const handleRegister: SubmitHandler<RegisterRequest> = async (data) => {
     try {
       const res = await registerAccount(data).unwrap();
       if (res.email) {
@@ -29,106 +38,72 @@ export const RegisterForm = () => {
     }
   };
 
-  const password = watch("password");
+  if (isLoading) return <FullLoading />;
   return (
-    <Stack sx={{ pt: 2 }}>
-      <Typography></Typography>
-      <Typography textAlign="center" variant="h4">
-        Đăng ký tài khoản
-      </Typography>
-      <Stack
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Stack
-          width={400}
-          spacing={2}
-          component="form"
-          onSubmit={handleSubmit(handleRegister)}
-        >
-          <TextField
-            label="Địa chỉ email"
-            {...register("email", {
-              required: "Vui lòng nhập email",
-              minLength: {
-                value: 4,
-                message: "email phải nhất 6 ký tự",
-              },
-            })}
-            type="email"
-            error={!!errors.email}
-            helperText={errors.email?.message || null}
-          />
-          <TextField
-            label="Họ và tên"
-            {...register("fullName", {
-              required: "Vui lòng nhập họ và tên",
-              minLength: {
-                value: 4,
-                message: "Họ và tên phải nhất 4 ký tự",
-              },
-            })}
-            error={!!errors.fullName}
-            helperText={errors.fullName?.message || null}
-          />
-          <TextField
-            {...register("password", {
-              required: "Vui lòng nhập mật khẩu ",
-              minLength: {
-                value: 6,
-                message: "Mật khẩu phải nhất 6 ký tự",
-              },
-            })}
-            error={!!errors.password}
-            helperText={errors.password?.message || null}
-            placeholder="Mật khẩu"
-            type="password"
-          />
-          <TextField
-            {...register("confirmPassword", {
-              required: "Vui lòng xác nhận mật khẩu ",
-              validate: (value) => value === password || "Mật khẩu không khợp",
-            })}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword?.message || null}
-            type="password"
-            placeholder="Xác nhận mật khẩu"
-          />
-          {error && <Typography color="error">Email này đã tồn tại</Typography>}
-          <Button type="submit" variant="contained" color="success">
-            Đăng ký
-          </Button>
-          {isLoading && <FullLoading />}
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleLoginWithGoogle();
-            }}
-            startIcon={<GoogleIcon />}
-            sx={{ flex: 1, ml: 1 }}
-          >
-            Google
-          </Button>
-
-          <Typography textAlign="center">Đã có tài khoản?</Typography>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              onClick={() => {
-                navigate("/login");
-              }}
-              sx={{ width: "50%", color: "white" }}
-              color="info"
-              variant="contained"
-            >
-              Đăng nhập
-            </Button>
-          </Box>
-        </Stack>
-      </Stack>
-    </Stack>
+    <div>
+      <p>Đăng ký tài khoản</p>
+      <div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleRegister)}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ho va ten</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ho va ten" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mat khau</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nhap lai mat khau</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Đăng ký</Button>
+          </form>
+        </Form>
+        <Button>Google</Button>
+        <p>Đã có tài khoản?</p>
+        <NavLink to={ROUTES.LOGIN}>Đăng nhập</NavLink>
+      </div>
+    </div>
   );
 };

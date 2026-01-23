@@ -1,19 +1,19 @@
-import { Box, Chip, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import { TitleBar } from "./TitleBar";
-import React from "react";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { Box, Chip, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useGetHotPostsQuery,
   useGetNewPostsQuery,
   useGetRelatedPostsQuery,
 } from "../api/postApi";
-import { getThumbUri } from "../utils/uri";
 import { IPost } from "../type/IPost";
 import { shortText } from "../utils/shortText";
-import { Link, useNavigate } from "react-router-dom";
+import { getThumbUri } from "../utils/uri";
+import { TitleBar } from "./TitleBar";
 
 const DocumentItem: React.FC<IPost> = (post) => {
   const navigate = useNavigate();

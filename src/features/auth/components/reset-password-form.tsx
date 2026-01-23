@@ -2,8 +2,8 @@ import { Button, Paper, Stack, TextField, Typography } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useResetMutation } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
-import FullLoading from "../components/FullLoading";
-export const ResetPassword = () => {
+import FullLoading from "@/shared/components/FullLoading";
+export const ResetPasswordForm = () => {
   interface IRestPassword {
     password: string;
     token: string;
@@ -36,13 +36,13 @@ export const ResetPassword = () => {
       console.error(error);
     }
   };
+  if (isLoading) return <FullLoading />;
   return (
     <Paper
       component="form"
       onSubmit={handleSubmit(handleResetPassword)}
       sx={{ pt: 10 }}
     >
-      {isLoading && <FullLoading />}
       <Typography textAlign="center" variant="h4">
         Khôi phục mật khẩu
       </Typography>

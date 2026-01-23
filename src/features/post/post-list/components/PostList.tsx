@@ -1,13 +1,13 @@
+import FullLoading from "@/shared/components/FullLoading";
+import { Button } from "@/shared/ui/button";
 import { useEffect, useState } from "react";
-import { useGetAllPublishedPostsQuery } from "../api/postApi";
-import { IPost } from "../type/IPost";
-import FullLoading from "./FullLoading";
-import { Post } from "./post/Post";
-import { Button } from "./ui/button";
+import { PostSummary } from "../../types/post.type";
+import { PostCardItem } from "./post-card/PostCardItem";
+import { useGetAllPublishedPostsQuery } from "../api/post.api";
 
 export const PostList = () => {
   const [page, setPage] = useState(0);
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<PostSummary[]>([]);
   const { data, isLoading, isSuccess } = useGetAllPublishedPostsQuery({
     page,
     size: 4,
@@ -27,9 +27,14 @@ export const PostList = () => {
 
   return (
     <div className="flex gap-4 flex-col">
-      {posts?.map((post: IPost) => (
-        <Post key={post.id} handleHidePost={handleHidePost} post={post} />
-      ))}
+      {posts.length &&
+        posts.map((post) => (
+          <PostCardItem
+            key={post.id}
+            handleHidePost={handleHidePost}
+            post={post}
+          />
+        ))}
       <Button onClick={handleShowMore} disabled={isLoading}>
         Xem thêm
       </Button>

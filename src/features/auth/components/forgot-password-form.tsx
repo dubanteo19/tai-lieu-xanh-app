@@ -1,78 +1,57 @@
-import { Button, Paper, Stack, TextField, Typography } from "@mui/material";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
+import FullLoading from "@/shared/components/FullLoading";
+import { Button } from "@/shared/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/ui/form";
+import { Input } from "@/shared/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useForgotMutation } from "../api/authApi";
-import FullLoading from "../components/FullLoading";
-export const ForgotPassword = () => {
-  const notify = withReactContent(Swal);
-  interface IForgotReq {
-    email: string;
-  }
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IForgotReq>();
-  const [forgotPassword, { isLoading, isError }] = useForgotMutation();
-  const handleForgotPassword: SubmitHandler<IForgotReq> = async (data) => {
+import { forgotPasswordSchema } from "../schemas/forgot-password.schema";
+import { ForgotPasswordRequest } from "../types/auth.request";
+export const ForgotPasswordForm = () => {
+  const [forgotPassword, { isLoading }] = useForgotMutation();
+  const form = useForm<ForgotPasswordRequest>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+  const handleForgotPassword: SubmitHandler<ForgotPasswordRequest> = async (
+    data,
+  ) => {
     try {
       await forgotPassword({ email: data.email }).unwrap();
-      notify.fire({
-        icon: "success",
-        title: "Thông báo",
-        text: "Vui lòng kiểm tra email để khôi phục mật khẩu",
-        showConfirmButton: true,
-      });
-      reset();
     } catch (error) {
       console.error(error);
     }
   };
+  if (isLoading) return <FullLoading />;
   return (
-    <Paper
-      component="form"
-      onSubmit={handleSubmit(handleForgotPassword)}
-      sx={{ pt: 10 }}
-    >
-      {isLoading && <FullLoading />}
-      <Typography textAlign="center" variant="h4">
-        Quên mật khẩu
-      </Typography>
-
-      <Typography textAlign="center" color="text.secondary" variant="subtitle1">
-        Nếu như bạn quên mật khẩu đăng nhập!
-      </Typography>
-      <Typography textAlign="center" color="text.secondary" variant="subtitle1">
-        Vui lòng email đã đăng ký để thực hiện khôi phục mật khẩu
-      </Typography>
-      <Paper
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          py: 4,
-        }}
-      >
-        <Stack width={400} spacing={2}>
-          <TextField
-            {...register("email", { required: "Vui lòng nhập email" })}
-            error={!!errors.email}
-            helperText={errors.email?.message || null}
-            type="email"
-            label="Email"
+    <div>
+      <h4>Quên mật khẩu</h4>
+      <p>Nếu như bạn quên mật khẩu đăng nhập!</p>
+      <p>Vui lòng email đã đăng ký để thực hiện khôi phục mật khẩu</p>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleForgotPassword)}>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {isError && (
-            <Typography color="error">
-              Email không tồn tại
-            </Typography>
-          )}
-          <Button variant="contained" color="success" type="submit">
-            Khôi phục mật khẩu
-          </Button>
-        </Stack>
-      </Paper>
-    </Paper>
+          <Button>Khôi phục mật khẩu</Button>
+        </form>
+      </Form>
+    </div>
   );
 };

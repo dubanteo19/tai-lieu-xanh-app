@@ -1,22 +1,22 @@
+import { authApi } from "@/features/auth/api/authApi";
 import { configureStore } from "@reduxjs/toolkit";
-import { postApi } from "../api/postApi";
-import authSlice from "../features/auth/authSlice";
-import { userApi } from "../api/userApi";
-import userMenuSlice from "../features/user-menu/userMenuSlice";
+import { adminCommentApi } from "../admin/api/adminCommentApi";
+import { adminMajorApi } from "../admin/api/adminMajorApi";
+import { adminPostApi } from "../admin/api/adminPostApi";
+import { adminUserApi } from "../admin/api/adminUserApi";
+import { dashboardApi } from "../admin/api/dashboardApi";
+import { reportApi } from "../admin/api/reportApi";
 import { commentApi } from "../api/commentApi";
-import commentSlice from "../features/comment/commentSlice";
 import { majorApi } from "../api/majorApi";
 import { mDocApi } from "../api/mDocApi";
+import { notificationApi } from "../api/notificationApi";
+import { postApi } from "../api/postApi";
+import { userApi } from "../api/userApi";
+import authSlice from "../features/auth/authSlice";
+import commentSlice from "../features/comment/commentSlice";
 import favoriteSlice from "../features/favorite/favoriteSlice";
 import favoriteMiddleware from "../features/middlewares/favoriteMiddleware";
-import { adminPostApi } from "../admin/api/adminPostApi";
-import { reportApi } from "../admin/api/reportApi";
-import { notificationApi } from "../api/notificationApi";
-import { dashboardApi } from "../admin/api/dashboardApi";
-import { adminMajorApi } from "../admin/api/adminMajorApi";
-import { adminUserApi } from "../admin/api/adminUserApi";
-import { adminCommentApi } from "../admin/api/adminCommentApi";
-import { authApi } from "@/features/auth/api/authApi";
+import userMenuSlice from "../features/user-menu/userMenuSlice";
 export const store = configureStore({
   reducer: {
     auth: authSlice,

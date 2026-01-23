@@ -1,18 +1,10 @@
-import { useAppSelector } from "@/shared/hooks/useAppSelector";
-import {
-  Box,
-  Button,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
 import {
   useGetAllNotficationsQuery,
   useMarkReadNotificaitonMutation,
-} from "../api/notificationApi";
+} from "@/features/notification/api/notification.api";
 import FullLoading from "@/shared/components/FullLoading";
+import { useAppSelector } from "@/shared/hooks/useAppSelector";
+import { Button } from "@/shared/ui/button";
 
 export const NotificationPage = () => {
   const { id: userId } = useAppSelector((state) => state.auth);
@@ -31,76 +23,32 @@ export const NotificationPage = () => {
     isFetching,
   } = useGetAllNotficationsQuery({ userId });
   if (loading) return <FullLoading />;
+  if (!notifications?.length) return;
+  <h5>Không có thông báo </h5>;
   return (
     <div>
-      <h3 variant="h4" gutterBottom textAlign={"center"}>
-        Trung tâm thông báo
-      </h3>
+      <h3>Trung tâm thông báo</h3>
       <Button
-        variant="contained"
-        sx={{ color: "white", fontWeight: "bold" }}
         onClick={refetch}
-        disabled={isFetching} // Disable button while fetching
+        disabled={isFetching}
         style={{ marginBottom: "1rem" }}
       >
         {isFetching ? "Đang làm mới dữ liệu..." : "Làm mới"}
       </Button>
-      {notifications?.length === 0 && (
-        <Typography
-          variant="h5"
-          textAlign={"center"}
-          color="text.secondary"
-          mt={15}
-        >
-          Không có thông báo :(
-        </Typography>
-      )}
-      <List>
+      <div className="flex">
         {notifications?.map((notification) => (
-          <ListItem
-            key={notification.id}
-            sx={{
-              borderRadius: 3,
-              backgroundColor:
-                notification.status === "UNREAD" ? "#ffecb3" : "#e0e0e0",
-              padding: "16px",
-              mb: 1,
-              borderBottom: "1px solid #e0e0e0",
-            }}
-          >
-            <Grid container alignItems="center" spacing={2}>
-              {/* ID Column */}
-              <Grid item xs={2}>
-                <Typography variant="body2" color="text.secondary">
-                  {notification.createdDate}
-                </Typography>
-              </Grid>
-              {/* Content Column */}
-              <Grid item xs={8}>
-                <ListItemText
-                  primary={notification.content}
-                  secondary={
-                    notification.status === "UNREAD" ? "Chưa đọc" : "Đã đọc"
-                  }
-                />
-              </Grid>
-              {/* Action Column */}
-              {notification.status === "UNREAD" && (
-                <Grid item xs={2}>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => handleMarkAsRead(notification.id)}
-                    size="small"
-                  >
-                    Đánh dấu đã đọc
-                  </Button>
-                </Grid>
-              )}
-            </Grid>
-          </ListItem>
+          <div>
+            <div>
+              <div>
+                <div>{notification.createdDate}</div>
+              </div>
+              <div>
+                <div>{notification.content}</div>
+              </div>
+            </div>
+          </div>
         ))}
-      </List>
+      </div>
     </div>
   );
 };

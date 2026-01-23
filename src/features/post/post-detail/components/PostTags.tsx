@@ -1,20 +1,18 @@
-import { ITag } from "@/type/ITag";
-import { FC } from "react";
-import { Badge } from "../ui/badge";
+import { Tag } from "@/features/tag/types/tag.type";
+import { Badge } from "@/shared/ui/badge";
 import { Link } from "react-router-dom";
 interface PostTagsProps {
-  tags: ITag[];
+  tags: Tag[];
 }
-export const PostTags: FC<PostTagsProps> = ({ tags }) => {
+export const PostTags = ({ tags }: PostTagsProps) => {
   return (
     <div className="flex my-2 gap-2">
       <p>Nhãn:</p>
-      {tags &&
-        tags.map((tag) => (
-          <Link key={tag.tagName} to={`/search?tags=${tag.tagName}`}>
-            <Badge variant="outline">{tag.tagName}</Badge>
-          </Link>
-        ))}
+      {tags.map((tag) => (
+        <Link key={tag.name} to={`/search?tags=${tag.name}`}>
+          <Badge variant="outline">{tag.name}</Badge>
+        </Link>
+      ))}
     </div>
   );
 };

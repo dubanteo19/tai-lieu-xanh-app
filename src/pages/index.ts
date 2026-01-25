@@ -1,9 +1,9 @@
 export { SearchPage } from "./discovery/search-page";
 export { LoginPage } from "./auth/login.page";
 export { RegisterPage } from "./auth/register.page";
-export { RestPasswordPage } from "./auth/reset-password.page";
+export { ResetPasswordPage } from "./auth/reset-password.page";
 export { ForgotPasswordPage } from "./auth/forgot-password.page";
-export { VerfifyPage } from "./auth/verify.page";
+export { VerifyPage } from "./auth/verify.page";
 export { FavoritePage } from "./favorite/favorite.page";
 export { HomePage } from "./home.page";
 export { NewDocPage } from "./mdoc/new-mdoc.page";

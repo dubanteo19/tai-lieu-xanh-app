@@ -1,29 +1,20 @@
-import { Post } from "@/components/post/Post";
-import FullLoading from "@/shared/components/FullLoading";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ArticleIcon from "@mui/icons-material/Article";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import EmailIcon from "@mui/icons-material/Email";
+import { PostCardItem } from "@/features/post/post-list/components/post-card/PostCardItem";
+import { PostSummary } from "@/features/post/types/post.type";
 import {
-  Avatar,
-  Box,
-  Button,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+  useGetInfoQuery,
+  useGetUserPostsQuery,
+} from "@/features/user/api/user.api";
+import FullLoading from "@/shared/components/FullLoading";
+import { ImageHolder } from "@/shared/ui/image-holder";
+import { getThumbUri } from "@/shared/utils/uri";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetInfoQuery, useGetUserPostsQuery } from "../api/userApi";
-import { IPost } from "../type/IPost";
-export const UserPostList: FC<{ userId: number }> = ({ userId }) => {
+interface UserPostListProps {
+  userId: number;
+}
+export const UserPostList = ({ userId }: UserPostListProps) => {
   const [page, setPage] = useState(0);
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<PostSummary[]>([]);
   const { data, isLoading, isSuccess } = useGetUserPostsQuery(userId);
 
   useEffect(() => {
@@ -37,140 +28,42 @@ export const UserPostList: FC<{ userId: number }> = ({ userId }) => {
   const handleHidePost = (id: number) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
   };
+  if (isLoading) return <FullLoading />;
   return (
-    <Stack sx={{ mt: 2 }}>
-      {isLoading ? (
-        <FullLoading />
-      ) : (
-        posts?.map((post: IPost) => (
-          <Post key={post.id} handleHidePost={handleHidePost} post={post} />
-        ))
-      )}
-      <Button
-        onClick={handleShowMore}
-        disabled={isLoading}
-        variant="contained"
-        sx={{
-          my: 2,
-          bgcolor: "primary.main",
-          color: "white",
-        }}
-      >
+    <div>
+      {posts?.map((post) => (
+        <PostCardItem
+          key={post.id}
+          handleHidePost={handleHidePost}
+          post={post}
+        />
+      ))}
+      <button onClick={handleShowMore} disabled={isLoading}>
         Xem thêm
-      </Button>
-    </Stack>
+      </button>
+    </div>
   );
 };
-export const UserProfilePage: React.FC = () => {
+export const UserProfilePage = () => {
   const { userId } = useParams();
   const { data } = useGetInfoQuery(Number(userId));
   return (
-    <Stack
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Paper sx={{ minHeight: 320, width: 800, py: 2, px: 5 }}>
-        <Typography
-          variant="h3"
-          sx={{
-            textAlign: "center",
-            position: "relative",
-          }}
-        >
-          Thông tin tài khoản
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        >
-          <Box position="relative">
-            <Avatar
-              sx={{ width: 80, height: 80 }}
-              src={getThumbUri(data?.avatar || "")}
-            />
-          </Box>
-        </Box>
-        <Box>
-          <Paper
-            sx={{ p: 2, width: 500, my: 2, mx: "auto", position: "relative" }}
-          >
-            <Typography
-              sx={{ position: "absolute", top: -10, fontStyle: "italic" }}
-              variant="body1"
-            >
-              Tiểu sử:
-            </Typography>
-            <Typography>{data?.bio || "Chưa có tiểu sử"}</Typography>
-          </Paper>
-        </Box>
-        <List
-          sx={{ width: "100%", maxWidth: 800, bgcolor: "background.paper" }}
-          aria-label="contacts"
-        >
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Tên người dùng" />
-              <ListItemText
-                sx={{ textAlign: "right" }}
-                primary={data?.fullName}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <EmailIcon />
-              </ListItemIcon>
-              <ListItemText primary="Email:" />
-              <ListItemText
-                sx={{ textAlign: "right" }}
-                primary={data?.email || "Chưa có email"}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Diversity3Icon />
-              </ListItemIcon>
-              <ListItemText primary="Bạn bè" />
-              <ListItemText
-                sx={{ textAlign: "right" }}
-                primary={data?.friends || 0}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <ArticleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Bài viết" />
-              <ListItemText
-                sx={{ textAlign: "right" }}
-                primary={data?.posts || 0}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignContent: "center",
-          }}
-        ></Box>
-      </Paper>
+    <div>
+      <div>
+        <h3>Thông tin tài khoản</h3>
+        <div>
+          <div>
+            <ImageHolder src={getThumbUri(data?.avatar || "")} />
+          </div>
+        </div>
+        <div>
+          <div>
+            <p>Tiểu sử:</p>
+            <p>{data?.bio || "Chưa có tiểu sử"}</p>
+          </div>
+        </div>
+      </div>
       {userId && <UserPostList userId={Number(userId)} />}
-    </Stack>
+    </div>
   );
 };

@@ -1,18 +1,18 @@
 import { cn } from "@/lib/utils";
-import { NO_IMAGE } from "@/utils/uri";
-import { FC, useState } from "react";
+import { useState } from "react";
+import { NO_IMAGE } from "../utils/uri";
 
 interface ImageHolderProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
   className?: string;
   alt?: string;
 }
-export const ImageHolder: FC<ImageHolderProps> = ({
+export const ImageHolder = ({
   src,
   alt,
   className,
   ...props
-}) => {
+}: ImageHolderProps) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [imgSrc] = useState<string>(src || NO_IMAGE);
   return (

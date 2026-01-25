@@ -1,12 +1,7 @@
-import "@cyntler/react-doc-viewer/dist/index.css";
-import "lightgallery/css/lg-thumbnail.css";
-import "lightgallery/css/lg-zoom.css";
-import "lightgallery/css/lightgallery.css";
-import { FC } from "react";
-import { IMDoc } from "../../type/IMDoc";
-import { bytesToMB } from "../../utils/bytesToMB";
-import { useGetPreviewUrlsQuery } from "@/api/mDocApi";
-import { ImageHolder } from "../ui/image-holder";
+import { useGetPreviewUrlsQuery } from "@/features/mdoc/api/mDoc.api";
+import { MDoc } from "@/features/mdoc/types/mdoc.type";
+import { ImageHolder } from "@/shared/ui/image-holder";
+import { bytesToMB } from "@/shared/utils/bytesToMB";
 const MDocProperty = (property: { mkey: string; value: string | number }) => {
   return (
     <div className="grid grid-cols-2">
@@ -18,10 +13,10 @@ const MDocProperty = (property: { mkey: string; value: string | number }) => {
 interface PostBodyProps {
   description: string;
   postId: number;
-  mdoc: IMDoc;
+  mdoc: MDoc;
   isLoading: boolean;
 }
-export const PostBody: FC<PostBodyProps> = ({ description, mdoc }) => {
+export const PostBody = ({ description, mdoc }: PostBodyProps) => {
   const { data: previewUrls, isLoading } = useGetPreviewUrlsQuery(mdoc.id);
   return (
     <div>
@@ -44,13 +39,6 @@ export const PostBody: FC<PostBodyProps> = ({ description, mdoc }) => {
           ))}
         </div>
       )}
-      {/* {!isLoading && (
-         <DocViewer
-          config={config}
-          pluginRenderers={DocViewerRenderers}
-          documents={docs}
-        /> 
-      )} */}
     </div>
   );
 };

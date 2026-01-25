@@ -1,36 +1,28 @@
-import { DialogBaseProps } from "@/components/dialog/DialogBaseProps";
-import { Button } from "@/components/ui/button";
-import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { DialogBaseProps } from "@/shared/components/dialog/DialogBaseProps";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, useForm } from "react-hook-form";
+import { formSchema, ReportFormData } from "./report-dialog.schema";
+import { DialogHeader, DialogTitle } from "@/shared/ui/dialog";
+import { FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import {
   Select,
   SelectContent,
-  SelectTrigger,
   SelectItem,
+  SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { getVNReason } from "@/utils/statusTranslator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CircularProgress } from "@mui/material";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import { formSchema, ReportFormData } from "./report-dialog.schema";
+} from "@/shared/ui/select";
+import { getVNReason } from "@/shared/utils/statusTranslator";
+import { Button } from "@/shared/ui/button";
 interface ReportDialogProps extends DialogBaseProps {
   handleReport: (reason: string) => void;
   reasons: string[];
 }
-export const ReportDialog: FC<ReportDialogProps> = ({
+export const ReportDialog = ({
   isFetching,
   closeDialog,
   handleReport,
   reasons,
-}) => {
+}: ReportDialogProps) => {
   const form = useForm<ReportFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { reason: "SPAM" },
@@ -74,11 +66,7 @@ export const ReportDialog: FC<ReportDialogProps> = ({
           />
           <div className="flex gap-2 justify-between mt-2">
             <Button type="submit" variant={"default"} disabled={isFetching}>
-              {isFetching ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Gửi báo cáo"
-              )}
+              {isFetching ? <p>CircularProgress</p> : "Gửi báo cáo"}
             </Button>
             <Button onClick={closeDialog} variant="destructive">
               Hủy

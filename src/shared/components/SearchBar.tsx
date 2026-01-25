@@ -1,4 +1,3 @@
-import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../ui/input";
@@ -22,12 +21,7 @@ const SeachBar = ({ color = "white" }) => {
         value={keyword}
         placeholder="Bạn cần tìm gì?"
       ></Input>
-      <SearchIcon
-        sx={{ mr: 2, color: color }}
-        onClick={() => {
-          navigate("/search?keyword=" + keyword);
-        }}
-      />
+      <p>Search Icon</p>
     </div>
   );
 };

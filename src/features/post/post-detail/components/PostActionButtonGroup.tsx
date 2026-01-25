@@ -2,26 +2,21 @@ import {
   useGetAllReasonsQuery,
   useReportPostMutation,
 } from "@/admin/api/reportApi";
-import { useLazyGetDocumentPresignedUrlQuery } from "@/api/mDocApi";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { useDialog } from "@/hooks/useDialog";
-import { downloadFileFromUrl } from "@/utils/downloadFile";
-import { FC } from "react";
-import { useDispatch } from "react-redux";
-import { Button } from "../ui/button";
-import { DownloadDialog } from "./dialogs/DownloadDialog";
-import { ReportDialog } from "./dialogs/ReportDialog";
+import { useLazyGetDocumentPresignedUrlQuery } from "@/features/mdoc/api/mDoc.api";
+import { useAppSelector } from "@/shared/hooks/useAppSelector";
+import { useDialog } from "@/shared/hooks/useDialog";
+import { Button } from "@/shared/ui/button";
+import { downloadFileFromUrl } from "@/shared/utils/downloadFile";
+import { ReportDialog } from "../../report-post/ReportDialog";
+import { DownloadDialog } from "../dialogs/download-dialog";
 
 interface PostActionButtonGroupProps {
   postId: number;
 }
-export const PostActionButtonGroup: FC<PostActionButtonGroupProps> = ({
+export const PostActionButtonGroup = ({
   postId,
-}) => {
-  const dispatch = useDispatch();
-  const favorite = useAppSelector((state) => state.favorite);
+}: PostActionButtonGroupProps) => {
   const { id: userId } = useAppSelector((state) => state.auth);
-  const isInFavorite = favorite.some((p) => p.postId === postId);
   const { data: reasons, isFetching: isFetchingReasons } =
     useGetAllReasonsQuery();
   const [reportPost, { isLoading, isError }] = useReportPostMutation();

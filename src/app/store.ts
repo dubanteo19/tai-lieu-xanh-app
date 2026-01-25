@@ -1,4 +1,3 @@
-import { authApi } from "@/features/auth/api/authApi";
 import { configureStore } from "@reduxjs/toolkit";
 import { adminCommentApi } from "../admin/api/adminCommentApi";
 import { adminMajorApi } from "../admin/api/adminMajorApi";
@@ -6,22 +5,22 @@ import { adminPostApi } from "../admin/api/adminPostApi";
 import { adminUserApi } from "../admin/api/adminUserApi";
 import { dashboardApi } from "../admin/api/dashboardApi";
 import { reportApi } from "../admin/api/reportApi";
-import { commentApi } from "../api/commentApi";
-import { majorApi } from "../api/majorApi";
-import { mDocApi } from "../api/mDocApi";
-import { notificationApi } from "../api/notificationApi";
-import { postApi } from "../api/postApi";
-import { userApi } from "../api/userApi";
 import authSlice from "../features/auth/authSlice";
-import commentSlice from "../features/comment/commentSlice";
 import favoriteSlice from "../features/favorite/favoriteSlice";
 import favoriteMiddleware from "../features/middlewares/favoriteMiddleware";
 import userMenuSlice from "../features/user-menu/userMenuSlice";
+import { postApi } from "@/features/post/post-list/api/post.api";
+import { authApi } from "@/features/auth/api/auth.api";
+import { userApi } from "@/features/user/api/user.api";
+import { majorApi } from "@/features/major/api/major.api";
+import { mDocApi } from "@/features/mdoc/api/mDoc.api";
+import { commentApi } from "@/features/comment/api/comment.api";
+import { notificationApi } from "@/features/notification/api/notification.api";
+import { tagApi } from "@/features/tag/api/tag.api";
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     userMenu: userMenuSlice,
-    comment: commentSlice,
     favorite: favoriteSlice,
     [postApi.reducerPath]: postApi.reducer,
     [adminPostApi.reducerPath]: adminPostApi.reducer,
@@ -30,6 +29,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [majorApi.reducerPath]: majorApi.reducer,
     [mDocApi.reducerPath]: mDocApi.reducer,
+    [tagApi.reducerPath]: tagApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
     [notificationApi.reducerPath]: notificationApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,

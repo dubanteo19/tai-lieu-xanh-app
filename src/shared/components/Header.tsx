@@ -1,8 +1,5 @@
 import { ROUTES } from "@/app/router/routes";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { getThumbUri } from "../utils/uri";
@@ -14,12 +11,8 @@ const Header = () => {
     if (isLogin) {
       return (
         <div>
-          <LinkButton to={ROUTES.USER_NEW_DOC}>
-            <FileUploadIcon sx={{ color: "white" }} />
-          </LinkButton>
-          <Button>
-            <NotificationsIcon sx={{ color: "white" }} />
-          </Button>
+          <LinkButton to={ROUTES.USER_NEW_DOC}>FileUploadIcon</LinkButton>
+          <Button>NotificationsIcon</Button>
           <LinkButton to="/user">
             <img alt={fullName} className="w-20 " src={getThumbUri(avatar)} />
           </LinkButton>
@@ -46,9 +39,7 @@ const Header = () => {
           <img className="w-30 h-full" src="/assets/logo.png" />
         </Link>
         <SearchBar />
-        <Link to="/favorite">
-          <FavoriteIcon color="error" />
-        </Link>
+        <Link to="/favorite">FavoriteIcon</Link>
       </div>
       {renderLinks()}
     </header>

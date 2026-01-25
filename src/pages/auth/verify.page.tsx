@@ -1,5 +1,5 @@
 import { VerifyForm } from "@/features/auth/components/verify-form";
 
-export const VerfifyPage = () => {
+export const VerifyPage = () => {
   return <VerifyForm />;
 };

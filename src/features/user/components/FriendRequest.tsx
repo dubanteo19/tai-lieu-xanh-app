@@ -1,5 +1,5 @@
+import { friends } from "@/data/friends";
 import { Button } from "@/shared/ui/button";
-import { friends } from "../../data/friends";
 interface FriendRequestCardItemProps {
   id: number;
   fullName: string;

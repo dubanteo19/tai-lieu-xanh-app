@@ -1,4 +1,7 @@
-import { NewDocument, TopDocument } from "./TopDocument";
+import {
+  NewDocument,
+  TopDocument,
+} from "@/features/post/post-list/components/TopDocument";
 
 export const Banner = () => {
   return (

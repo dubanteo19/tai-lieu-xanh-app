@@ -23,10 +23,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, SubmitHandler, useForm } from "react-hook-form";
 import {
+  createMDocDefaultValues,
   createMdocSchema,
   CreateMDocValues,
 } from "../schemas/creat-mdoc.schema";
-import { createMDocDefaultValues } from "../schemas/create-mdoc.form";
 import { TagSelect } from "./TagSelect";
 export const CreateMDocForm = () => {
   const form = useForm<CreateMDocValues>({

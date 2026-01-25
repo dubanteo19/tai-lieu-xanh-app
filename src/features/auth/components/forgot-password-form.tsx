@@ -11,19 +11,21 @@ import {
 import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useForgotMutation } from "../api/authApi";
-import { forgotPasswordSchema } from "../schemas/forgot-password.schema";
-import { ForgotPasswordRequest } from "../types/auth.request";
+import {
+  forgotPasswordSchema,
+  ForgotPasswordValues,
+} from "../schemas/forgot-password.schema";
+import { useForgotMutation } from "../api/auth.api";
 export const ForgotPasswordForm = () => {
   const [forgotPassword, { isLoading }] = useForgotMutation();
-  const form = useForm<ForgotPasswordRequest>({
+  const form = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
   });
-  const handleForgotPassword: SubmitHandler<ForgotPasswordRequest> = async (
+  const handleForgotPassword: SubmitHandler<ForgotPasswordValues> = async (
     data,
   ) => {
     try {
-      await forgotPassword({ email: data.email }).unwrap();
+      await forgotPassword(data.email).unwrap();
     } catch (error) {
       console.error(error);
     }

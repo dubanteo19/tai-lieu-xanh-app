@@ -1,34 +1,34 @@
+import { AdminLayout } from "@/admin/AdminLayout";
 import { DeletedPosts } from "@/admin/components/post/DeletedPosts";
 import { ReportPostPage } from "@/admin/components/post/ReportPostPage";
 import { ReviewPosts } from "@/admin/components/post/ReviewPosts";
 import {
+  CommentManager,
   MajorManager,
   MDashboard,
   PostManager,
   TagManager,
-  CommentManager,
   UserManager,
 } from "@/admin/pages";
 import {
-  ResetPassword,
-  PostDetail,
-  NotificationPage,
-  NewDocPage,
-  ForgotPassword,
-  Home,
-  Register,
-  User,
   FavoritePage,
-  SearchPage,
-  VerifyPage,
-  UserProfilePage,
+  ForgotPasswordPage,
+  HomePage,
   LoginPage,
+  NewDocPage,
+  NotificationPage,
+  PostDetailPage,
+  RegisterPage,
+  ResetPasswordPage,
+  SearchPage,
+  UserPage,
+  UserProfilePage,
+  VerifyPage,
 } from "@/pages";
 import { RouteObject, useRoutes } from "react-router-dom";
-import { ROUTES } from "./routes";
 import { Layout } from "../layouts/main-layout";
-import { AdminLayout } from "@/admin/AdminLayout";
 import SecureRoute from "./protected-route";
+import { ROUTES } from "./routes";
 
 const appRoutes: RouteObject[] = [
   {
@@ -58,16 +58,16 @@ const appRoutes: RouteObject[] = [
     path: ROUTES.HOME,
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: ROUTES.REGISTER, element: <Register /> },
+      { index: true, element: <HomePage /> },
+      { path: ROUTES.REGISTER, element: <RegisterPage /> },
       { path: ROUTES.LOGIN, element: <LoginPage /> },
       {
         path: ROUTES.FORGOT_PASSWORD,
-        element: <ForgotPassword />,
+        element: <ForgotPasswordPage />,
       },
       {
         path: ROUTES.RESET_PASSWORD,
-        element: <ResetPassword />,
+        element: <ResetPasswordPage />,
       },
       { path: ROUTES.VERIFY, element: <VerifyPage /> },
       { path: ROUTES.SEARCH, element: <SearchPage /> },
@@ -78,13 +78,13 @@ const appRoutes: RouteObject[] = [
         path: ROUTES.USER_ROOT,
         element: <SecureRoute />,
         children: [
-          { index: true, element: <User /> },
+          { index: true, element: <UserPage /> },
           { path: ROUTES.USER_NEW_DOC, element: <NewDocPage /> },
           { path: ROUTES.USER_NOTIFICATION, element: <NotificationPage /> },
         ],
       },
 
-      { path: ROUTES.POST_DETAIL, element: <PostDetail /> },
+      { path: ROUTES.POST_DETAIL, element: <PostDetailPage /> },
     ],
   },
 ];

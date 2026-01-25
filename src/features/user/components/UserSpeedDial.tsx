@@ -1,35 +1,20 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  Collapse,
-} from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import CommentIcon from "@mui/icons-material/Comment";
-import PeopleIcon from "@mui/icons-material/People";
-import PasswordIcon from "@mui/icons-material/Password";
-import Typography from "@mui/material/Typography";
-import { RootState } from "../../app/store";
+import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
+import { useAppSelector } from "@/shared/hooks/useAppSelector";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSlectedComponent } from "../../features/user-menu/userMenuSlice";
-import { logout } from "../../features/auth/authSlice";
 
 interface UserSpeedDialProps {
   onComponentChange: (componentName: string) => void;
 }
 
-const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
+const UserSpeedDial = ({ onComponentChange }: UserSpeedDialProps) => {
   const [openSubmenu, setOpenSubmenu] = useState(false);
 
-  const selectedComponent = useSelector(
-    (state: RootState) => state.userMenu.selectedComponent,
+  const selectedComponent = useAppSelector(
+    (state) => state.userMenu.selectedComponent,
   );
+
+  const { fullName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const handleItemClick = (componentName: string) => {
     if (componentName !== "Friends") {
@@ -41,145 +26,86 @@ const UserSpeedDial: React.FC<UserSpeedDialProps> = ({ onComponentChange }) => {
   useEffect(() => {
     onComponentChange(selectedComponent);
   }, [selectedComponent, onComponentChange]);
-  const { fullName } = useSelector((state: RootState) => state.auth);
   return (
-    <Box className="UserProfile">
+    <div>
       <div className="left">
-        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <div>
           <nav aria-label="main mailbox folders">
-            <List>
-              <ListItem disablePadding sx={{ my: 2 }}>
-                Xin chào {fullName}{" "}
-                <Typography sx={{ mx: 1, color: "red" }}> !</Typography>
-              </ListItem>
-              <List disablePadding>
-                <ListItemButton
-                  onClick={() => handleItemClick("UserProfile")}
-                  selected={
-                    selectedComponent === "UserProfile" ||
-                    selectedComponent === "UserProfileUpdate"
-                  }
-                  sx={{
-                    "&.Mui-selected": {
-                      bgcolor: "primary.main",
-                      color: "white",
-                      "& .MuiListItemIcon-root": { color: "white" },
-                    },
-                  }}
-                >
-                  <ListItemIcon>
-                    <AccountCircleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Thông tin" />
-                </ListItemButton>
-              </List>
-              <ListItem disablePadding>
-                <ListItemButton
+            <div>
+              <div>
+                Xin chào {fullName} <p> !</p>
+              </div>
+              <div>
+                <div>
+                  <div>AccountCircleIcon</div>
+                  <p>Thông tin</p>
+                </div>
+              </div>
+              <div>
+                <div
                   onClick={() => handleItemClick("MyPosts")}
                   selected={selectedComponent === "MyPosts"}
-                  sx={{
-                    "&.Mui-selected": {
-                      bgcolor: "primary.main",
-                      color: "white",
-                      "& .MuiListItemIcon-root": { color: "white" },
-                    },
-                  }}
                 >
-                  <ListItemIcon>
-                    <AssignmentIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Bài viết" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
+                  <idv>AssignmentIcon</idv>
+                  <p>Bài viết</p>
+                </div>
+              </div>
+              <div>
+                <div
                   onClick={() => handleItemClick("MyComments")}
                   selected={selectedComponent === "MyComments"}
-                  sx={{
-                    "&.Mui-selected": {
-                      bgcolor: "primary.main",
-                      color: "white",
-                      "& .MuiListItemIcon-root": { color: "white" },
-                    },
-                  }}
                 >
-                  <ListItemIcon>
-                    <CommentIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Bình luận" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
-                  disabled
-                  onClick={() => handleItemClick("Friends")}
-                  selected={selectedComponent === "Friends"}
-                  sx={{
-                    "&.Mui-selected": {
-                      bgcolor: "primary.main",
-                      color: "white",
-                      "& .MuiListItemIcon-root": { color: "white" },
-                    },
-                  }}
-                >
-                  <ListItemIcon>
-                    <PeopleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Bạn bè - Đang phát triển" />
-                </ListItemButton>
-              </ListItem>
-              <Collapse in={openSubmenu} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
+                  <div>CommentIcon</div>
+                  <p>Bình luận</p>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div>PeopleIcon</div>
+                  <p>Bạn bè - Đang phát triển</p>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div
                     onClick={() => handleItemClick("MyFriends")}
                     selected={selectedComponent === "MyFriends"}
                   >
-                    <ListItemText primary="Tất cả bạn bè" />
-                  </ListItemButton>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
+                    <p>Tất cả bạn bè</p>
+                  </div>
+                  <div
                     onClick={() => handleItemClick("FriendRequest")}
                     selected={selectedComponent === "FriendRequest"}
                   >
-                    <ListItemText primary="Lời mời kết bạn" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
+                    <p>Lời mời kết bạn</p>
+                  </div>
+                </div>
+              </div>
 
-              <ListItem disablePadding>
-                <ListItemButton
+              <div>
+                <div
                   onClick={() => handleItemClick("ChangePassword")}
                   selected={selectedComponent === "ChangePassword"}
-                  sx={{
-                    "&.Mui-selected": {
-                      bgcolor: "primary.main",
-                      color: "white",
-                      "& .MuiListItemIcon-root": { color: "white" },
-                    },
-                  }}
                 >
-                  <ListItemIcon>
-                    <PasswordIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Đổi mật khẩu" />
-                </ListItemButton>
-              </ListItem>
-            </List>
+                  <div>PasswordIcon</div>
+                  <p>Đổi mật khẩu</p>
+                </div>
+              </div>
+            </div>
           </nav>
           <Divider />
           <nav aria-label="secondary mailbox folders">
-            <List>
-              <ListItem>
-                <ListItemButton onClick={() => dispatch(logout())}>
-                  <ListItemText primary="Đăng xuất" />
-                </ListItemButton>
-              </ListItem>
-            </List>
+            <div>
+              <div>
+                <div onClick={() => dispatch(logout())}>
+                  <p>Đăng xuất</p>
+                </div>
+              </div>
+            </div>
           </nav>
-        </Box>
+        </div>
       </div>
-    </Box>
+    </div>
   );
 };
 

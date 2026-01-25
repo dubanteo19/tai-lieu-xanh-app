@@ -1,28 +1,14 @@
-import FullLoading from "@/shared/components/FullLoading";
 import SearchBar from "@/shared/components/SearchBar";
-import { Stack, Typography } from "@mui/material";
-import { useGetTagsWithPostsQuery } from "../api/adminMajorApi";
-import { TagTable } from "../components/tag/TagTable";
 export const TagManager = () => {
-  const { data: tags, isLoading } = useGetTagsWithPostsQuery();
   return (
-    <Stack sx={{ px: 4 }}>
-      {isLoading && <FullLoading />}
-      <Typography fontWeight="bold" variant="h5">
-        Quản lý nhãn
-      </Typography>
-      <Stack
-        direction="row"
-        alignItems="center"
-        bgcolor="white"
-        sx={{ mt: 2, px: 4, py: 2, borderRadius: 2 }}
-        justifyContent="space-between"
-      >
-        <Stack>
+    <div>
+      <h5>Quản lý nhãn</h5>
+      <div>
+        <div>
           <SearchBar color="primary.main" />
-        </Stack>
-      </Stack>
-      {tags && <TagTable tags={tags} />}
-    </Stack>
+        </div>
+      </div>
+      TagTable
+    </div>
   );
 };

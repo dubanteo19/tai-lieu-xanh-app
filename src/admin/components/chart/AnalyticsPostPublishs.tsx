@@ -1,4 +1,3 @@
-import { Paper, Typography } from "@mui/material";
 import {
   CartesianGrid,
   Legend,
@@ -16,10 +15,10 @@ interface AnalyticsPostPublishsProps {
   title: string;
   subheader: string;
 }
-export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
+export const AnalyticsPostPublishs = ({
   title,
   subheader,
-}) => {
+}: AnalyticsPostPublishsProps) => {
   const { data: postCounts } = useGetPostCountsLastNDaysQuery(10);
   const data = postCounts?.map((res: StatsCount) => {
     return {
@@ -28,13 +27,9 @@ export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
     };
   });
   return (
-    <Paper sx={{ px: 2, py: 3 }}>
-      <Typography variant="h5" fontWeight="bold">
-        {title}
-      </Typography>
-      <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
-        {subheader}
-      </Typography>
+    <div>
+      <h5>{title}</h5>
+      <p>{subheader}</p>
       <LineChart
         width={1100}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -52,6 +47,6 @@ export const AnalyticsPostPublishs: React.FC<AnalyticsPostPublishsProps> = ({
           stroke="#88884d"
         />
       </LineChart>
-    </Paper>
+    </div>
   );
 };

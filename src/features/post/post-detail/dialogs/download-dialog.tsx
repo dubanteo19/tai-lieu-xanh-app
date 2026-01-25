@@ -1,17 +1,16 @@
-import { DialogBaseProps } from "@/components/dialog/DialogBaseProps";
-import { Button } from "@/components/ui/button";
-import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CircularProgress } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { DialogBaseProps } from "@/shared/components/dialog/DialogBaseProps";
+import { Button } from "@/shared/ui/button";
+import { DialogHeader, DialogTitle } from "@/shared/ui/dialog";
+import { useEffect, useState } from "react";
 
 interface DownloadDialogProps extends DialogBaseProps {
   handleDownload: () => void;
 }
-export const DownloadDialog: FC<DownloadDialogProps> = ({
+export const DownloadDialog = ({
   isFetching,
   closeDialog,
   handleDownload,
-}) => {
+}: DownloadDialogProps) => {
   const [count, setCount] = useState<number | null>(null);
   const [downloadStarted, setDownloadStarted] = useState<boolean>(false);
   useEffect(() => {
@@ -42,7 +41,7 @@ export const DownloadDialog: FC<DownloadDialogProps> = ({
       <DialogHeader>
         <DialogTitle>Download document</DialogTitle>
       </DialogHeader>
-      {isFetching ? <CircularProgress /> : <h2>{renderMessage()}</h2>}
+      {isFetching ? <p>CircularProgress </p> : <h2>{renderMessage()}</h2>}
       <Button disabled={isFetching} onClick={prepareDownload}>
         {isFetching ? "Preparing" : "Download"}
       </Button>

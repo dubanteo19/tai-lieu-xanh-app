@@ -13,16 +13,20 @@ import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "../api/authApi";
-import { registerSchema } from "../schemas/register.schema";
-import { RegisterRequest } from "../types/auth.request";
+import {
+  registerDefaultValues,
+  registerSchema,
+  RegisterValues,
+} from "../schemas/register.schema";
+import { useRegisterMutation } from "../api/auth.api";
 export const RegisterForm = () => {
-  const form = useForm<RegisterRequest>({
+  const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
+    defaultValues: registerDefaultValues,
   });
   const [registerAccount, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
-  const handleRegister: SubmitHandler<RegisterRequest> = async (data) => {
+  const handleRegister: SubmitHandler<RegisterValues> = async (data) => {
     try {
       const res = await registerAccount(data).unwrap();
       if (res.email) {

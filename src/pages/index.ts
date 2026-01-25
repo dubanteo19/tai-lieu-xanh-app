@@ -1,4 +1,4 @@
-export { SearchPage } from "./discovery/search.page";
+export { SearchPage } from "./discovery/search-page";
 export { LoginPage } from "./auth/login.page";
 export { RegisterPage } from "./auth/register.page";
 export { RestPasswordPage } from "./auth/reset-password.page";
@@ -6,8 +6,8 @@ export { ForgotPasswordPage } from "./auth/forgot-password.page";
 export { VerfifyPage } from "./auth/verify.page";
 export { FavoritePage } from "./favorite/favorite.page";
 export { HomePage } from "./home.page";
-export { NewDocPage } from "./NewDoc";
+export { NewDocPage } from "./mdoc/new-mdoc.page";
 export { NotificationPage } from "./notification/notification.page";
-export { PostDetail } from "./PostDetail";
+export { PostDetailPage } from "./post/post-detail.page";
 export { UserPage } from "./user/user-page";
 export { UserProfilePage } from "./user/user-profile.page";

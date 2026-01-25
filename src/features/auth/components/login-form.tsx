@@ -12,22 +12,22 @@ import {
 import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../api/authApi";
-import { setAuthToken } from "../authSlice";
-import { loginSchema } from "../schemas/login.schema";
-import { LoginRequest } from "../types/auth.request";
+import { NavLink } from "react-router-dom";
+import { useLoginMutation } from "../api/auth.api";
+import {
+  loginDefaultValues,
+  loginSchema,
+  LoginValues,
+} from "../schemas/login.schema";
 export const LoginForm = () => {
-  const form = useForm<LoginRequest>({ resolver: zodResolver(loginSchema) });
+  const form = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: loginDefaultValues,
+  });
   const [login, { isLoading, error }] = useLoginMutation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const handleLogin: SubmitHandler<LoginRequest> = async (data) => {
+  const handleLogin: SubmitHandler<LoginValues> = async (data) => {
     try {
-      const res = await login(data).unwrap();
-      dispatch(setAuthToken(res));
-      navigate("/user");
+      await login(data).unwrap();
     } catch (error) {
       console.error(error);
     }

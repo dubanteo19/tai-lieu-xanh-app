@@ -6,7 +6,7 @@ import {
 } from "@/features/post/post-list/components/TopDocument";
 import FullLoading from "@/shared/components/FullLoading";
 import { useParams } from "react-router-dom";
-export const PostDetail = () => {
+export const PostDetailPage = () => {
   const { postId } = useParams();
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));
   if (isLoading) return <FullLoading />;

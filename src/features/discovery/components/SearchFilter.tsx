@@ -1,9 +1,11 @@
 import { useGetAllMajorsQuery } from "@/features/major/api/major.api";
 import { ChangeEvent } from "react";
+import { SearchFilters } from "../types/discovery.type";
+import { Button } from "@/shared/ui/button";
 
 interface SearchFilterProps {
-  filters: ISearchFilters;
-  onFiltersChange: (newFilters: ISearchFilters) => void;
+  filters: SearchFilters;
+  onFiltersChange: (newFilters: SearchFilters) => void;
 }
 export const SearchFilter = ({
   filters,
@@ -27,8 +29,11 @@ export const SearchFilter = ({
   const handleSortChange = (sortType: string) => {
     onFiltersChange({
       ...filters,
-      sort: sortType,
-      dir: filters.sort === sortType && filters.dir === "DESC" ? "ASC" : "DESC",
+      sortBy: sortType,
+      direction:
+        filters.sortBy === sortType && filters.sortBy === "DESC"
+          ? "ASC"
+          : "DESC",
     });
   };
   const handleTagChange = (_event: ChangeEvent, newValue: string[]) => {
@@ -40,7 +45,7 @@ export const SearchFilter = ({
   return (
     <div d>
       <FormControl>
-        <InputLabel id="file-type-label">Loại tài liệu</InputLabel>
+        <p>Loại tài liệu</p>
         <Select
           id="file-type"
           labelId="file-type-label"
@@ -97,38 +102,16 @@ export const SearchFilter = ({
       <div>
         <p>Sắp xếp:</p>
       </div>
-      <ButtonGroup variant="contained">
-        <Button
-          startIcon={<TrendingUp />}
-          onClick={() => handleSortChange("views")}
-          color={filters.sort === "views" ? "warning" : "inherit"}
-          sx={{
-            fontSize: 25,
-            width: 70,
-            bgcolor:
-              filters.sort === "views" ? "warning.lighter" : "transparent",
-          }}
-        >
-          {filters.sort === "views" && (filters.dir === "DESC" ? "↓" : "↑")}
+      <div>
+        <Button onClick={() => handleSortChange("views")}>
+          {filters.sortBy === "views" &&
+            (filters.direction === "DESC" ? "↓" : "↑")}
         </Button>
-        <Button
-          startIcon={<AccessTime />}
-          onClick={() => handleSortChange("createdDate")}
-          color={filters.sort === "createdDate" ? "warning" : "inherit"}
-          sx={{
-            fontSize: 25,
-            width: 70,
-            borderRadius: 2,
-            bgcolor:
-              filters.sort === "createdDate"
-                ? "warning.lighter"
-                : "transparent",
-          }}
-        >
-          {filters.sort === "createdDate" &&
-            (filters.dir === "DESC" ? "↓" : "↑")}
+        <Button onClick={() => handleSortChange("createdDate")}>
+          {filters.sortBy === "createdDate" &&
+            (filters.direction === "DESC" ? "↓" : "↑")}
         </Button>
-      </ButtonGroup>
+      </div>
     </div>
   );
 };

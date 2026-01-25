@@ -2,15 +2,16 @@ import { Button } from "@/shared/ui/button";
 import { ChangeEvent } from "react";
 
 interface FileUploadProps {
-  setFile: (file: File | null) => void;
+  onFileChange: (file: File | null) => void;
 }
-export const FileUpload = ({ setFile }: FileUploadProps) => {
+export const FileUpload = ({ onFileChange }: FileUploadProps) => {
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] ?? null;
     try {
-      if (event?.target?.files?.[0]?.size > 10 * 1024 * 1024) {
+      if (file && file.size > 10 * 1024 * 1024) {
         console.log("up file nho thoi");
       }
-      setFile(event.target.files?.[0] || null);
+      onFileChange(file);
     } catch (error) {
       console.log(error);
     }

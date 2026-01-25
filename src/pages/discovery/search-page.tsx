@@ -1,18 +1,24 @@
+import { SearchFilter } from "@/features/discovery/components/SearchFilter";
+import { SearchResult } from "@/features/discovery/components/SerachResult";
+import {
+  DocType,
+  SearchFilters,
+} from "@/features/discovery/types/discovery.type";
+import { useSearchPostsQuery } from "@/features/post/post-list/api/post.api";
 import FullLoading from "@/shared/components/FullLoading";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useSearchPostsQuery } from "../api/postApi";
-import { ISearchFilters } from "../type/ISearchFilters";
 
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState<ISearchFilters>({
-    major: searchParams.get("major") || "",
-    keyword: searchParams.get("keyword") || "",
-    fileType: searchParams.get("fileType") || "PDF",
+  const [filters, setFilters] = useState<SearchFilters>({
+    majorId: searchParams.get("major") || null,
+    keyword: searchParams.get("keyword") || null,
+    fileType: (searchParams.get("fileType") as DocType) || DocType.PDF,
     tags: searchParams.getAll("tags") || [],
-    sort: "createdDate",
-    dir: "DESC",
+    sortBy: "createdDate",
+    direction: "DESC",
+    page: 0,
   });
 
   const { data: posts, isLoading } = useSearchPostsQuery(filters);
@@ -28,29 +34,21 @@ export const SearchPage = () => {
     setSearchParams(params);
   }, [filters, setSearchParams]);
 
-  const handleFiltersChange = (newFilters: ISearchFilters) => {
+  const handleFiltersChange = (newFilters: SearchFilters) => {
     setFilters(newFilters);
   };
   if (isLoading) return <FullLoading />;
   if (!posts.length)
     return (
       <div>
-        <div>
-          <p>Không tìm thấy tài liệu</p>
-        </div>
-        <SentimentVeryDissatisfiedIcon
-          sx={{ fontSize: 100 }}
-          fontSize="large"
-        />
+        <p>Không tìm thấy tài liệu</p>
+        <span>SentimentVeryDissatisfiedIcon</span>
       </div>
     );
   return (
     <div>
       <h4>Tìm kiếm tài liệu</h4>
-      <SearchSelectList
-        onFiltersChange={handleFiltersChange}
-        filters={filters}
-      />
+      <SearchFilter onFiltersChange={handleFiltersChange} filters={filters} />
       <SearchResult isLoading={isLoading} posts={posts} />
     </div>
   );

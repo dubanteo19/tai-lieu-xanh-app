@@ -1,20 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "./baseApi";
-import { IPost } from "../type/IPost";
-interface IUserInfo {
-  fullName: string;
-  bio: string;
-  email: string;
-  avatar: string;
-  friends: number;
-  posts: number;
-}
+import { baseQuery } from "@/app/config/baseApi";
+import { PostSummary } from "@/features/post/types/post.type";
+import { UserInfo } from "../types/user.type";
+import { UpdatePasswordRequest } from "../types/user.request";
 
-export interface IUserUpdatePassword {
-  id: number;
-  password: string;
-  newPassword: string;
-}
 export interface IUserUpdateInfo {
   id: number;
   fullName: string;
@@ -25,36 +14,36 @@ export const userApi = createApi({
   tagTypes: ["UserInfo", "Post"],
   baseQuery: baseQuery,
   endpoints: (builder) => ({
-    getUserPosts: builder.query<IPost[], number>({
+    getUserPosts: builder.query<PostSummary[], number>({
       query: (id) => `users/${id}/posts`,
       providesTags: ["Post"],
     }),
-    getInfo: builder.query<IUserInfo, number>({
+    getInfo: builder.query<UserInfo, number>({
       query: (id) => `users/${id}/info`,
       providesTags: (_, __, id) => [{ type: "UserInfo", id }],
     }),
-    updateInfo: builder.mutation<IUserInfo, FormData>({
+    updateInfo: builder.mutation<UserInfo, FormData>({
       query: (formData) => ({
         url: `users/${formData.get("id")}/info`,
         method: "PUT",
-        body: formData, // FormData object
+        body: formData,
       }),
       invalidatesTags: (_, __, formData) => [
         { type: "UserInfo", id: Number(formData.get("id")) },
       ],
     }),
-    deletePost: builder.mutation<void, { postId: number; userId: number }>({
+    deletePost: builder.mutation<void, { postId: number }>({
       query: ({ postId }) => ({
         url: `users/posts/${postId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Post"],
     }),
-    updatePassword: builder.mutation<IUserInfo, IUserUpdatePassword>({
-      query: (form) => ({
-        url: `users/${form.id}/update-password`,
+    updatePassword: builder.mutation<UserInfo, UpdatePasswordRequest>({
+      query: (request) => ({
+        url: `users/update-password`,
         method: "PUT",
-        body: form,
+        body: request,
       }),
     }),
   }),

@@ -1,23 +1,9 @@
 import BASE_URL from "@/shared/constants/url";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IPost } from "../type/IPost";
-import { IPostDetail } from "../type/IPostDetail";
-import { ISearchFilters } from "../type/ISearchFilters";
-interface IPostCreate {
-  file: File;
-  postRequest: {
-    title: string;
-    description: string;
-    majorId: number;
-    tags: string[];
-    authorId: number;
-  };
-}
-export interface IMajorWithPost {
-  id: number;
-  majorName: string;
-  posts: number;
-}
+import { PostDetail, PostSummary } from "../../types/post.type";
+import { CreatePostRequest } from "../../types/post.request";
+import { Major } from "@/features/major/types/major.type";
+import { SearchFilters } from "@/features/discovery/types/discovery.type";
 export const postApi = createApi({
   reducerPath: "postApi",
   tagTypes: ["Post"],
@@ -25,41 +11,40 @@ export const postApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    getMajorsWithPosts: builder.query<IMajorWithPost[], void>({
+    getMajorsWithPosts: builder.query<Major[], void>({
       query: () => `posts/hot-majors`,
     }),
-    searchPosts: builder.query<IPost[], ISearchFilters>({
+    searchPosts: builder.query<PostSummary[], SearchFilters>({
       query: (filters) => ({
         url: "posts/search",
         params: {
-          majorId: filters.major,
+          majorId: filters.majorId,
           keyword: filters.keyword,
           fileType: filters.fileType,
           tags: filters.tags,
-          sortBy: filters.sort,
-          direction: filters.dir,
-          size: 8,
+          sortBy: filters.sortBy,
+          direction: filters.direction,
           page: filters.page ?? 0,
         },
       }),
     }),
-    getPostsByPostId: builder.query<IPost[], string>({
+    getPostsByPostId: builder.query<PostSummary[], string>({
       query: (string) => `posts/id-list?ids=${string}`,
     }),
-    getNewPosts: builder.query<IPost[], void>({
+    getNewPosts: builder.query<PostSummary[], void>({
       query: () => `posts/new`,
     }),
-    getHotPosts: builder.query<IPost[], void>({
+    getHotPosts: builder.query<PostSummary[], void>({
       query: () => `posts/hot`,
     }),
-    getRelatedPosts: builder.query<IPost[], { postId: number }>({
+    getRelatedPosts: builder.query<PostSummary[], { postId: number }>({
       query: ({ postId }) => `posts/related?postId=${postId}`,
     }),
-    getAllPosts: builder.query<IPost[], { page: number; size: number }>({
+    getAllPosts: builder.query<PostSummary[], { page: number; size: number }>({
       query: ({ page, size }) => `posts?page=${page}&size=${size}`,
     }),
     getAllPublishedPosts: builder.query<
-      IPost[],
+      PostSummary[],
       { page: number; size: number }
     >({
       query: ({ page, size }) => `posts/published?page=${page}&size=${size}`,
@@ -70,15 +55,16 @@ export const postApi = createApi({
         method: "POST",
       }),
     }),
-    createPost: builder.mutation<IPost, IPostCreate>({
+    createPost: builder.mutation<PostSummary, CreatePostRequest>({
       query: (form) => {
         const formData = new FormData();
-        formData.append("file", form.file);
-        formData.append("title", form.postRequest.title);
-        formData.append("description", form.postRequest.description);
-        formData.append("majorId", form.postRequest.majorId.toString());
-        formData.append("tags", JSON.stringify(form.postRequest.tags)); // or append each tag individually
-        formData.append("authorId", form.postRequest.authorId.toString());
+        const { file, postRequest } = form;
+        const { title, description, majorId, tags } = postRequest;
+        formData.append("file", file);
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("majorId", majorId.toString());
+        formData.append("tags", JSON.stringify(tags));
         return {
           url: "posts",
           method: "POST",
@@ -87,7 +73,7 @@ export const postApi = createApi({
       },
       invalidatesTags: ["Post"],
     }),
-    getPostDetail: builder.query<IPostDetail, number>({
+    getPostDetail: builder.query<PostDetail, number>({
       query: (postId) => `posts/${postId}/detail`,
     }),
   }),

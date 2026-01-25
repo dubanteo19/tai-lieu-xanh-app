@@ -5,3 +5,8 @@ export const loginSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
+export type LoginValues = z.infer<typeof loginSchema>;
+export const loginDefaultValues: LoginValues = {
+  email: "",
+  password: "",
+};

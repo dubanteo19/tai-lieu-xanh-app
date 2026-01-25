@@ -12,3 +12,11 @@ export const registerSchema = z
     message: "Mat khau xac nhan khong khop",
     path: ["confirmPassword"],
   });
+
+export type RegisterValues = z.infer<typeof registerSchema>;
+export const registerDefaultValues: RegisterValues = {
+  email: "",
+  fullName: "",
+  password: "",
+  confirmPassword: "",
+};

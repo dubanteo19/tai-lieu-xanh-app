@@ -1,4 +1,4 @@
-import SearchBar from "@/shared/components/SearchBar";
+import SearchBar from "@/shared/components/search-bar";
 export const TagManager = () => {
   return (
     <div>

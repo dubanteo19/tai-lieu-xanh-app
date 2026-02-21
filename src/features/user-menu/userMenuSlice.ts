@@ -1,16 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { USER_COMPONENTS, UserComponent } from "../user/constants";
 interface InitialState {
-  selectedComponent: string;
+  selectedComponent: UserComponent;
 }
 
 const initialState: InitialState = {
-  selectedComponent: "UserProfile",
+  selectedComponent: USER_COMPONENTS.UserProfile,
 };
 const userMenuSlice = createSlice({
   name: "userMenu",
   initialState,
   reducers: {
-    setSlectedComponent: (state, action) => {
+    setSlectedComponent: (state, action: PayloadAction<UserComponent>) => {
       state.selectedComponent = action.payload;
     },
   },

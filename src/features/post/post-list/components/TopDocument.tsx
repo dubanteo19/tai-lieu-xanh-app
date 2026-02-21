@@ -1,4 +1,4 @@
-import { TitleBar } from "@/shared/components/TitleBar";
+import { TitleBar } from "@/shared/components/title-bar";
 import { ImageHolder } from "@/shared/ui/image-holder";
 import { shortText } from "@/shared/utils/shortText";
 import { Link } from "react-router-dom";

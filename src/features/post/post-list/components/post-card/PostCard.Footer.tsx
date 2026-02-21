@@ -1,11 +1,11 @@
 import { Button } from "@/shared/ui/button";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import { HeaterIcon } from "lucide-react";
 export const PostCardFooter = () => {
   return (
     <div className="flex gap-2">
       <div className="flex items-center">
         <Button>
-          <FavoriteIcon color="error" />
+          <HeaterIcon />i
         </Button>
       </div>
       <Button>Xem chi tiết</Button>

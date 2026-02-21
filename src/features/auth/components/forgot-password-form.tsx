@@ -1,4 +1,4 @@
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { Button } from "@/shared/ui/button";
 import {
   Form,

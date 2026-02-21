@@ -6,3 +6,4 @@ export interface UserInfo {
   friends: number;
   posts: number;
 }
+

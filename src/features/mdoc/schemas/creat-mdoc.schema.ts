@@ -6,7 +6,7 @@ export const createMdocSchema = z.object({
     .min(3, "Tieu de phai co it nhat 3 ky tu")
     .max(40, "Tieu de toi da 40 ky tu"),
 
-  majorId: z.number().min(1, "Vui long chon 1 chuyen nganh"),
+  majorId: z.string().min(1, "Vui long chon 1 chuyen nganh"),
 
   description: z.string().max(200, "Mieu ta toi da 200 ky tu").optional(),
 
@@ -24,7 +24,7 @@ export type CreateMDocValues = z.infer<typeof createMdocSchema>;
 export const createMDocDefaultValues: CreateMDocValues = {
   title: "",
   description: "",
-  majorId: 0,
+  majorId: "",
   tags: [],
   file: undefined,
 };

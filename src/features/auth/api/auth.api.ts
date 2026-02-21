@@ -1,8 +1,9 @@
 import BASE_URL from "@/shared/constants/url";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { LoginResponse, RegisterReponse } from "../types/auth.type";
-import { RegisterValues } from "../schemas/register.schema";
 import { LoginValues } from "../schemas/login.schema";
+import { RegisterValues } from "../schemas/register.schema";
+import { LoginResponse, RegisterReponse } from "../types/auth.type";
+import { setCredentials } from "../authSlice";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
@@ -29,6 +30,14 @@ export const authApi = createApi({
         method: "POST",
         body: credentials,
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setCredentials(data));
+        } catch (error) {
+          console.error(error);
+        }
+      },
     }),
     register: builder.mutation<RegisterReponse, RegisterValues>({
       query: (credentials) => ({

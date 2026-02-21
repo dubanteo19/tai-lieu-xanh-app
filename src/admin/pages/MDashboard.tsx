@@ -1,4 +1,4 @@
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { useGetDashboardInfoQuery } from "../api/dashboardApi";
 import { AnalyticsWidgetSummary } from "../components/AnalyticsWidgetSummary";
 import { AnalyticsCommentsPublishs } from "../components/chart/AnalyticsComments";

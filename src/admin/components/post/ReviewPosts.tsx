@@ -1,4 +1,4 @@
-import SearchBar from "@/shared/components/SearchBar";
+import SearchBar from "@/shared/components/search-bar";
 import { Button } from "@/shared/ui/button";
 import { ReactNode } from "react";
 export const CenterCell = ({ children }: { children: ReactNode }) => {

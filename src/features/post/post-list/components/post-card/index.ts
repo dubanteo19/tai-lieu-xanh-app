@@ -1,12 +1,3 @@
 import { PostCard } from "./PostCard";
-import { PostCardFooter } from "./PostCard.Footer";
-import { PostCardHeader } from "./PostCard.Header";
-import { PostCardMedia } from "./PostCard.Media";
-import { PostCardMeta } from "./PostCard.Meta";
-import { PostCardTags } from "./PostCard.Tags";
-PostCard.Header = PostCardHeader;
-PostCard.Media = PostCardMedia;
-PostCard.Meta = PostCardMeta;
-PostCard.Tags = PostCardTags;
-PostCard.Footer = PostCardFooter;
+
 export default PostCard;

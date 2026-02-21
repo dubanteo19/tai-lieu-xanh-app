@@ -44,6 +44,7 @@ export const store = configureStore({
       authApi.middleware,
       userApi.middleware,
       majorApi.middleware,
+      tagApi.middleware,
       commentApi.middleware,
       mDocApi.middleware,
       reportApi.middleware,

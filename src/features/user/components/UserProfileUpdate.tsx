@@ -1,4 +1,4 @@
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { ChangeEvent, useState } from "react";
 import { useGetInfoQuery, useUpdateInfoMutation } from "../api/user.api";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";

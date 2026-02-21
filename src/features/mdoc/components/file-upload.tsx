@@ -23,12 +23,12 @@ export const FileUpload = ({ onFileChange }: FileUploadProps) => {
       <input
         type="file"
         accept=".pdf, .docx"
-        style={{ display: "none" }}
+        style={{ display: "" }}
         id="file-upload"
         onChange={handleFileChange}
       />
       <label htmlFor="file-upload">
-        <Button>Upload File</Button>
+        <Button type="button">Upload File</Button>
       </label>
     </div>
   );

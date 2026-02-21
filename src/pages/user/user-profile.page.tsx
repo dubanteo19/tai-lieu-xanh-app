@@ -4,7 +4,7 @@ import {
   useGetInfoQuery,
   useGetUserPostsQuery,
 } from "@/features/user/api/user.api";
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { ImageHolder } from "@/shared/ui/image-holder";
 import { getThumbUri } from "@/shared/utils/uri";
 import { useEffect, useState } from "react";

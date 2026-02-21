@@ -1,3 +1,4 @@
+import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../ui/input";
@@ -11,17 +12,17 @@ const SeachBar = ({ color = "white" }) => {
   };
   const navigate = useNavigate();
   return (
-    <div className="flex-center px-2 rounded-2xl border-white border-2">
+    <div className="flex-center hidden md:flex px-2 rounded-2xl border-white border-2 text-white">
       <Input
         onChange={(e) => setKeyword(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="outline-none border-none  text-white
+        className="outline-none border-none  
         focus-visible:ring-0 focus-visible:border-none
         placeholder:text-white"
         value={keyword}
         placeholder="Bạn cần tìm gì?"
       ></Input>
-      <p>Search Icon</p>
+      <SearchIcon />
     </div>
   );
 };

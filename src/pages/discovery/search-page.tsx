@@ -5,7 +5,7 @@ import {
   SearchFilters,
 } from "@/features/discovery/types/discovery.type";
 import { useSearchPostsQuery } from "@/features/post/post-list/api/post.api";
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 

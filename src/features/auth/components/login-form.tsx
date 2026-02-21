@@ -1,5 +1,5 @@
 import { ROUTES } from "@/app/router/routes";
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { Button } from "@/shared/ui/button";
 import {
   Form,
@@ -12,7 +12,7 @@ import {
 import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../api/auth.api";
 import {
   loginDefaultValues,
@@ -25,21 +25,23 @@ export const LoginForm = () => {
     defaultValues: loginDefaultValues,
   });
   const [login, { isLoading, error }] = useLoginMutation();
+  const navigate = useNavigate();
   const handleLogin: SubmitHandler<LoginValues> = async (data) => {
     try {
       await login(data).unwrap();
+      navigate(ROUTES.USER_ROOT);
     } catch (error) {
       console.error(error);
     }
   };
+  if (isLoading) return <FullLoading />;
   return (
     <Form {...form}>
       <form
-        className="flex-center pt-2 w-full"
+        className="flex-center pt-2 "
         onSubmit={form.handleSubmit(handleLogin)}
       >
-        {isLoading && <FullLoading />}
-        <div className="flex-center flex-col p-4  gap-4 max-w-[600px]  border-4 rounded-2xl my-auto mx-auto">
+        <div className="flex-center flex-col p-12   gap-4  border-1 rounded-2xl my-auto ">
           <h4 className="text-center font-bold text-2xl">Đăng nhập</h4>
           <FormField
             control={form.control}
@@ -61,14 +63,20 @@ export const LoginForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Mật khẩu" {...field} />
+                  <Input type="password" placeholder="Mật khẩu" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Đăng nhập</Button>
-          {error && <p>Thông tin đăng nhập không chính xác</p>}
+          <Button className="w-full" type="submit">
+            Đăng nhập
+          </Button>
+          {error && (
+            <span className="text-destructive">
+              Thông tin đăng nhập không chính xác
+            </span>
+          )}
           <NavLink to={ROUTES.FORGOT_PASSWORD}>Quên mật khẩu?</NavLink>
           <NavLink to={ROUTES.REGISTER}>Đăng ký</NavLink>
         </div>

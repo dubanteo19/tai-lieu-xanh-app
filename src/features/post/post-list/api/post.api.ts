@@ -4,11 +4,19 @@ import { PostDetail, PostSummary } from "../../types/post.type";
 import { CreatePostRequest } from "../../types/post.request";
 import { Major } from "@/features/major/types/major.type";
 import { SearchFilters } from "@/features/discovery/types/discovery.type";
+import { CursorReponse } from "@/shared/types/cursor-response";
 export const postApi = createApi({
   reducerPath: "postApi",
   tagTypes: ["Post"],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     getMajorsWithPosts: builder.query<Major[], void>({
@@ -44,10 +52,10 @@ export const postApi = createApi({
       query: ({ page, size }) => `posts?page=${page}&size=${size}`,
     }),
     getAllPublishedPosts: builder.query<
-      PostSummary[],
-      { page: number; size: number }
+      CursorReponse<PostSummary>,
+      { nextCursor: string | null }
     >({
-      query: ({ page, size }) => `posts/published?page=${page}&size=${size}`,
+      query: ({ nextCursor }) => `posts?nextCursor=${nextCursor}`,
     }),
     viewPost: builder.mutation<void, { postId: number }>({
       query: ({ postId }) => ({
@@ -62,7 +70,7 @@ export const postApi = createApi({
         const { title, description, majorId, tags } = postRequest;
         formData.append("file", file);
         formData.append("title", title);
-        formData.append("description", description);
+        formData.append("description", description ?? "");
         formData.append("majorId", majorId.toString());
         formData.append("tags", JSON.stringify(tags));
         return {

@@ -1,110 +1,82 @@
-import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
+import { logout } from "@/features/auth/authSlice";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "@/shared/ui/divider";
+import {
+  BookOpenCheckIcon,
+  LockIcon,
+  LogOutIcon,
+  UserIcon,
+  type LucideIcon,
+} from "lucide-react";
+import { USER_COMPONENTS, UserComponent } from "../constants";
+import { useDispatch } from "react-redux";
+import { cn } from "@/lib/utils";
+import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
+import { Button } from "@/shared/ui/button";
 
-interface UserSpeedDialProps {
-  onComponentChange: (componentName: string) => void;
+interface UserMenu {
+  component: UserComponent;
+  icon: LucideIcon;
+  text: string;
 }
-
-const UserSpeedDial = ({ onComponentChange }: UserSpeedDialProps) => {
-  const [openSubmenu, setOpenSubmenu] = useState(false);
-
-  const selectedComponent = useAppSelector(
-    (state) => state.userMenu.selectedComponent,
-  );
-
-  const { fullName } = useSelector((state) => state.auth);
+const userMenus: UserMenu[] = [
+  {
+    icon: UserIcon,
+    component: USER_COMPONENTS.UserProfile,
+    text: "Thông tin",
+  },
+  {
+    icon: BookOpenCheckIcon,
+    component: USER_COMPONENTS.MyPosts,
+    text: "Bài viết",
+  },
+  {
+    icon: UserIcon,
+    component: USER_COMPONENTS.MyFriends,
+    text: "Bạn bè",
+  },
+  {
+    icon: LockIcon,
+    component: USER_COMPONENTS.ChangePassword,
+    text: "Đổi mật khẩu",
+  },
+];
+const UserSpeedDial = () => {
   const dispatch = useDispatch();
-  const handleItemClick = (componentName: string) => {
-    if (componentName !== "Friends") {
-      dispatch(setSlectedComponent(componentName));
-    }
-    setOpenSubmenu((prev) => (componentName === "Friends" ? !prev : false));
+  const fullName = useAppSelector((state) => state.auth.userSummary?.fullName);
+  const { selectedComponent } = useAppSelector((state) => state.userMenu);
+  const onComponentChange = (componentName: UserComponent) => {
+    dispatch(setSlectedComponent(componentName));
   };
-
-  useEffect(() => {
-    onComponentChange(selectedComponent);
-  }, [selectedComponent, onComponentChange]);
   return (
-    <div>
-      <div className="left">
-        <div>
-          <nav aria-label="main mailbox folders">
-            <div>
-              <div>
-                Xin chào {fullName} <p> !</p>
-              </div>
-              <div>
-                <div>
-                  <div>AccountCircleIcon</div>
-                  <p>Thông tin</p>
-                </div>
-              </div>
-              <div>
-                <div
-                  onClick={() => handleItemClick("MyPosts")}
-                  selected={selectedComponent === "MyPosts"}
-                >
-                  <idv>AssignmentIcon</idv>
-                  <p>Bài viết</p>
-                </div>
-              </div>
-              <div>
-                <div
-                  onClick={() => handleItemClick("MyComments")}
-                  selected={selectedComponent === "MyComments"}
-                >
-                  <div>CommentIcon</div>
-                  <p>Bình luận</p>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <div>PeopleIcon</div>
-                  <p>Bạn bè - Đang phát triển</p>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <div
-                    onClick={() => handleItemClick("MyFriends")}
-                    selected={selectedComponent === "MyFriends"}
-                  >
-                    <p>Tất cả bạn bè</p>
-                  </div>
-                  <div
-                    onClick={() => handleItemClick("FriendRequest")}
-                    selected={selectedComponent === "FriendRequest"}
-                  >
-                    <p>Lời mời kết bạn</p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <div
-                  onClick={() => handleItemClick("ChangePassword")}
-                  selected={selectedComponent === "ChangePassword"}
-                >
-                  <div>PasswordIcon</div>
-                  <p>Đổi mật khẩu</p>
-                </div>
-              </div>
+    <div className="px-6 py-4 border bg-primary rounded-2xl text-white">
+      <h5>
+        Xin chào <strong>{fullName}</strong> !
+      </h5>
+      <nav className="flex flex-col gap-4 mt-4">
+        {userMenus.map(({ icon: Icon, text, component }) => {
+          const isActive = component == selectedComponent;
+          return (
+            <div
+              className={cn(
+                "flex items-center gap-2 transition cursor-pointer p-4 rounded-t ",
+                "hover:bg-white/10",
+                isActive && "bg-white hover:bg-white text-primary shadow-md",
+              )}
+              key={component}
+              onClick={() => onComponentChange(component)}
+            >
+              <Icon />
+              <p>{text}</p>
             </div>
-          </nav>
-          <Divider />
-          <nav aria-label="secondary mailbox folders">
-            <div>
-              <div>
-                <div onClick={() => dispatch(logout())}>
-                  <p>Đăng xuất</p>
-                </div>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
+          );
+        })}
+      </nav>
+      <Divider color="white" className="my-4" />
+      <Button variant="secon" onClick={() => dispatch(logout())}>
+        <LogOutIcon size={20} />
+        <span>Đăng xuất</span>
+      </Button>
     </div>
   );
 };

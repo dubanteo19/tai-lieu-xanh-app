@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-rk-marquee: rk-marquee 10s linear;
+
+  @keyframes rk-marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}

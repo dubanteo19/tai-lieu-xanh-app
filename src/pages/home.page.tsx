@@ -1,6 +1,7 @@
 import { MajorList } from "@/features/major/components/MajorList";
 import { PostList } from "@/features/post/post-list/components/PostList";
-import RightPanel, { Banner } from "@/shared/components/RightPanel";
+import { Banner } from "@/shared/components/banner";
+import { RightPanel } from "@/shared/components/right-panel";
 
 export const HomePage = () => {
   return (

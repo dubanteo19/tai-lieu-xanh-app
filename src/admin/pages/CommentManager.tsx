@@ -1,4 +1,4 @@
-import SearchBar from "@/shared/components/SearchBar";
+import SearchBar from "@/shared/components/search-bar";
 import { useGetAllCommentsQuery } from "../api/adminCommentApi";
 export const CommentManager = () => {
   const { data: comments, isLoading } = useGetAllCommentsQuery();

@@ -1,8 +1,19 @@
-import { FC } from "react";
+import { cn } from "@/lib/utils";
 
 interface DividerProps {
+  className?: string;
   size?: number;
+  color?: string;
 }
-export const Divider: FC<DividerProps> = ({ size = 2 }) => {
-  return <div className={`w-full px-10 bg-primary`} style={{ height: size }} />;
+export const Divider = ({
+  size = 2,
+  color = "primary",
+  className,
+}: DividerProps) => {
+  return (
+    <div
+      className={cn(`w-full px-10`, className)}
+      style={{ height: size, background: color }}
+    />
+  );
 };

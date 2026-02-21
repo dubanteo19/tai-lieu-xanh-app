@@ -2,7 +2,7 @@ import {
   useGetAllNotficationsQuery,
   useMarkReadNotificaitonMutation,
 } from "@/features/notification/api/notification.api";
-import FullLoading from "@/shared/components/FullLoading";
+import FullLoading from "@/shared/components/full-loading";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { Button } from "@/shared/ui/button";
 

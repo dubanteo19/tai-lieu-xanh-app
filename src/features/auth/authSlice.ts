@@ -1,49 +1,38 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthUser, LoginResponse } from "./types/auth.type";
 interface InitialState {
   accessToken: string | null;
-  refreshToken: string | null;
-  fullName: string;
-  bio: string;
-  avatar: string;
   isLogin: boolean;
-  email: string;
-  id: number;
+  userSummary: AuthUser | null;
 }
 
 const initialState: InitialState = {
   accessToken: localStorage.getItem("accessToken") || null,
-  refreshToken: localStorage.getItem("refreshToken") || null,
-  fullName: "",
-  bio: "",
-  avatar: "",
-  email: "",
-  id: 0,
   isLogin: false,
+  userSummary: {
+    avatarUrl: "",
+    email: "",
+    fullName: "",
+    id: 0,
+  },
 };
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAccessToken: (state, action) => {
-      return {
-        ...state,
-        ...action.payload,
-        isLogin: true,
-      };
-    },
-    setAuthToken: (state, action) => {
-      state.refreshToken = action.payload.accessToken;
+    setCredentials: (state, action: PayloadAction<LoginResponse>) => {
+      state.userSummary = action.payload.user;
       state.accessToken = action.payload.accessToken;
-      localStorage.setItem("refreshToken", action.payload);
-      localStorage.setItem("accessToken", action.payload);
+      state.isLogin = true;
+      localStorage.setItem("accessToken", action.payload.accessToken);
     },
     logout: (state) => {
       state.accessToken = null;
-      state.refreshToken = null;
       state.isLogin = false;
+      state.userSummary = null;
       localStorage.removeItem("refreshToken");
     },
   },
 });
-export const { setAuthToken, logout } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;

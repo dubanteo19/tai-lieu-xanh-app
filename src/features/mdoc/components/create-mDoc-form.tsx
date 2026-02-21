@@ -1,11 +1,13 @@
 import { useGetAllMajorsQuery } from "@/features/major/api/major.api";
-import { FilePreview } from "@/features/mdoc/components/FilePreview";
-import { FileUpload } from "@/features/mdoc/components/FileUpload";
 import { useCreatePostMutation } from "@/features/post/post-list/api/post.api";
 import { useGetAllTagsQuery } from "@/features/tag/api/tag.api";
-import FullLoading from "@/shared/components/FullLoading";
+
+import { FilePreview } from "@/features/mdoc/components/file-preview";
+import { FileUpload } from "@/features/mdoc/components/file-upload";
+import FullLoading from "@/shared/components/full-loading";
 import { Button } from "@/shared/ui/button";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
@@ -21,13 +23,13 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   createMDocDefaultValues,
   createMdocSchema,
   CreateMDocValues,
 } from "../schemas/creat-mdoc.schema";
-import { TagSelect } from "./TagSelect";
+import { TagSelect } from "./tag-select";
 export const CreateMDocForm = () => {
   const form = useForm<CreateMDocValues>({
     resolver: zodResolver(createMdocSchema),
@@ -46,7 +48,7 @@ export const CreateMDocForm = () => {
         postRequest: {
           title,
           description,
-          majorId,
+          majorId: Number(majorId),
           tags,
         },
       };
@@ -61,7 +63,9 @@ export const CreateMDocForm = () => {
     <div>
       <div>
         <p>Thêm thông tin cho tài liệu</p>
-        <p>Tiêu đề và mô tả chi tiết sẽ giúp tài liệu của bạn thu hút hơn</p>
+        <p className="text-sm">
+          Tiêu đề và mô tả chi tiết sẽ giúp tài liệu của bạn thu hút hơn
+        </p>
       </div>
       <div>
         <div>
@@ -92,7 +96,7 @@ export const CreateMDocForm = () => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tieu de tai lai</FormLabel>
+                    <FormLabel>Tiêu đề tài liệu</FormLabel>
                     <FormControl>
                       <Input placeholder="title" {...field} />
                     </FormControl>
@@ -105,7 +109,7 @@ export const CreateMDocForm = () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mieu ta tai lieu</FormLabel>
+                    <FormLabel>Miêu tả tài liệu</FormLabel>
                     <FormControl>
                       <Input placeholder="description" {...field} />
                     </FormControl>
@@ -118,14 +122,14 @@ export const CreateMDocForm = () => {
                 name="majorId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Chuyen nganh</FormLabel>
+                    <FormLabel>Chuyên ngành</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       value={String(field.value)}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Chon chuyen nghanh" />
+                          <SelectValue placeholder="Chọn chuyên ngành" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -148,7 +152,7 @@ export const CreateMDocForm = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nhan</FormLabel>
+                      <FormLabel>Nhãn</FormLabel>
                       <FormControl>
                         <TagSelect
                           value={field.value ?? []}
@@ -160,9 +164,9 @@ export const CreateMDocForm = () => {
                   )}
                 />
               )}
-              <div>
-                <Button>Hủy</Button>
+              <div className="flex gap-4 mt-4 w-full justify-center">
                 <Button type="submit">Lưu</Button>
+                <Button variant="destructive">Hủy</Button>
               </div>
             </form>
           </Form>

@@ -1,5 +1,5 @@
-import { Footer } from "@/shared/components/Footer";
-import Header from "@/shared/components/Header";
+import { Footer } from "@/shared/components/footer";
+import { Header } from "@/shared/components/header";
 import { Outlet } from "react-router-dom";
 
 export const Layout = () => {

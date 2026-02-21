@@ -1,15 +1,19 @@
+import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
+import FullLoading from "@/shared/components/full-loading";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { Button } from "@/shared/ui/button";
 import { useDispatch } from "react-redux";
 import { useGetInfoQuery } from "../api/user.api";
+import { skipToken } from "@reduxjs/toolkit/query";
 export const UserProfile = () => {
-  const userId = useAppSelector((state) => state.auth.id);
-  const { data, isLoading } = useGetInfoQuery(userId);
+  const userId = useAppSelector((state) => state.auth.userSummary?.id);
   const dispatch = useDispatch();
+  const { data, isLoading } = useGetInfoQuery(userId ?? skipToken);
+  if (isLoading) return <FullLoading />;
   return (
-    <div>
+    <div className="flex-center w-full ">
       <div>
-        <p>Thông tin tài khoản</p>
+        <h2 className="text-center">Thông tin tài khoản</h2>
         <div>
           <div>Avatar</div>
         </div>

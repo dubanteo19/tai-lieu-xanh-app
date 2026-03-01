@@ -23,7 +23,7 @@ export const SearchPage = () => {
 
   const { data: posts, isLoading } = useSearchPostsQuery(filters);
   useEffect(() => {
-    const params = new URLSearchParams();
+    /* const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         value.forEach((v) => params.append(key, v));
@@ -31,7 +31,7 @@ export const SearchPage = () => {
         params.set(key, value);
       }
     });
-    setSearchParams(params);
+    setSearchParams(params); */
   }, [filters, setSearchParams]);
 
   const handleFiltersChange = (newFilters: SearchFilters) => {

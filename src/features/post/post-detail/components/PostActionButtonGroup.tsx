@@ -9,6 +9,7 @@ import { Button } from "@/shared/ui/button";
 import { downloadFileFromUrl } from "@/shared/utils/downloadFile";
 import { ReportDialog } from "../../report-post/ReportDialog";
 import { DownloadDialog } from "../dialogs/download-dialog";
+import { ThumbsUpIcon } from "lucide-react";
 
 interface PostActionButtonGroupProps {
   postId: number;
@@ -55,16 +56,16 @@ export const PostActionButtonGroup = ({
       );
   };
   return (
-    <div className="flex justify-between border p-2">
+    <div className="flex justify-between  p-2">
       <div className="flex gap-2">
-        <div>
-          <Button>Love</Button>
-        </div>
-        <Button onClick={handleOpenDownloadPopup} color="warning">
+        <Button>
+          <ThumbsUpIcon />
+        </Button>
+        <Button onClick={handleOpenDownloadPopup} variant={"link"}>
           Tải tải liệu
         </Button>
       </div>
-      <Button color="error" onClick={handleOpenReportPopup} variant="default">
+      <Button onClick={handleOpenReportPopup} variant="destructive">
         Báo cáo
       </Button>
     </div>

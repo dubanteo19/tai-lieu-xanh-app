@@ -11,12 +11,12 @@ export const PostDetailPage = () => {
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));
   if (isLoading) return <FullLoading />;
   return (
-    <div className="grid grid-cols-12 gap-4 mt-2">
+    <div className="grid grid-cols-12 gap-4 mt-2 w-full">
       <div className="col-span-8">{data && <Detail {...data} />}</div>
       <div className="col-span-4">
         <div className="flex flex-col gap-2">
-          <RelatedDocument postId={Number(postId)} />
-          <TopDocument />
+          {/* <RelatedDocument postId={Number(postId)} />
+          <TopDocument /> */}
         </div>
       </div>
     </div>

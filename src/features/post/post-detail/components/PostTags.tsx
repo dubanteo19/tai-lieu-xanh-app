@@ -9,7 +9,7 @@ export const PostTags = ({ tags }: PostTagsProps) => {
     <div className="flex my-2 gap-2">
       <p>Nhãn:</p>
       {tags.map((tag) => (
-        <Link key={tag.name} to={`/search?tags=${tag.name}`}>
+        <Link key={tag.id} to={`/search?tags=${tag.name}`}>
           <Badge variant="outline">{tag.name}</Badge>
         </Link>
       ))}

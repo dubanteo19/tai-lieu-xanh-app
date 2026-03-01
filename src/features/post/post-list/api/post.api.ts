@@ -82,7 +82,7 @@ export const postApi = createApi({
       invalidatesTags: ["Post"],
     }),
     getPostDetail: builder.query<PostDetail, number>({
-      query: (postId) => `posts/${postId}/detail`,
+      query: (postId) => `posts/${postId}`,
     }),
   }),
 });

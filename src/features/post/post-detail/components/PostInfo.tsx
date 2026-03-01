@@ -20,7 +20,7 @@ export const PostInfo = (info: PostInfoProps) => {
           <p className="text-sm">{info.date}</p>
         </div>
       </div>
-      <h4 className="font-bold text-2xl">{info.title}</h4>
+      <h3 className="font-bold text-primary text-2xl">{info.title}</h3>
     </div>
   );
 };

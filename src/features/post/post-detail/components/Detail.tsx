@@ -23,7 +23,7 @@ export const Detail = (post: PostDetail) => {
           id={post.author.id}
           fullName={post.author.fullName}
           avatar={post.author.avatarUrl}
-          date={post.createdDate}
+          date={post.meta.createdDate}
           title={post.title}
         />
       </div>
@@ -33,7 +33,7 @@ export const Detail = (post: PostDetail) => {
         description={post.description}
         postId={post.id}
       />
-      <PostTags tags={post.tags} />
+      {post.tags && <PostTags tags={post.tags} />}
       <PostActionButtonGroup postId={post.id} />
       {data && <PostComments postId={post.id} comments={data} />}
     </div>

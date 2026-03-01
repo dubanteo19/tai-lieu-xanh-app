@@ -21,7 +21,7 @@ export const PostBody = ({ description, mdoc }: PostBodyProps) => {
   return (
     <div>
       <div className="p-2">
-        <h5>Thông tin về tài liệu</h5>
+        <h4>Thông tin về tài liệu</h4>
         <MDocProperty mkey="Tên tài liệu:" value={mdoc.fileName} />
         <MDocProperty mkey="Loại tài liệu: " value={mdoc.fileType} />
         <MDocProperty mkey="Kích thước:" value={bytesToMB(mdoc.fileSize)} />

@@ -10,15 +10,18 @@ export const Header = () => {
   const renderLinks = () => {
     if (isLogin) {
       return (
-        <div>
+        <div className="flex items-center">
           <LinkButton to={ROUTES.USER_NEW_DOC}>
             <Upload />
           </LinkButton>
           <LinkButton to={ROUTES.USER_NOTIFICATION}>
             <BellIcon />
           </LinkButton>
-          <LinkButton to="/user">
-            <ImageHolder className="size-12" src={userSummary?.avatarUrl} />
+          <LinkButton to={ROUTES.USER_ROOT}>
+            <ImageHolder
+              className="size-8 rounded-full"
+              src={userSummary?.avatarUrl}
+            />
           </LinkButton>
         </div>
       );

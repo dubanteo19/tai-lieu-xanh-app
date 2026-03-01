@@ -15,14 +15,14 @@ export const PostCardHeader = () => {
           <Link style={{ color: "black" }} to={`/profile/${author.id}`}>
             {author.fullName}
           </Link>
-          <p className="text-gray-500 text-sm">{post.createdDate}</p>
+          <p className="text-gray-500 text-sm">{post.meta.createdDate}</p>
         </div>
       </div>
       <Button
         className="rounded-full md:size-8 size-5 "
         variant={"ghost"}
         onClick={() => {
-          handleHidePost?.(author.id);
+          handleHidePost?.(post.id);
         }}
       >
         <GridCloseIcon fontSize="small" />

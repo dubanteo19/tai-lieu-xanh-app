@@ -17,19 +17,19 @@ export const FileUpload = ({ onFileChange }: FileUploadProps) => {
     }
   };
   return (
-    <div>
+    <div className="border-primary border-1 p-4 rounded my-2">
       <p>Chỉ chấp nhận tải lên tài liệu có định dạng pdf, docx</p>
       <p>Tài liệu phải có kích thước nhỏ hơn 10MB</p>
       <input
         type="file"
         accept=".pdf, .docx"
-        style={{ display: "" }}
+        style={{ display: "none" }}
         id="file-upload"
         onChange={handleFileChange}
       />
-      <label htmlFor="file-upload">
-        <Button type="button">Upload File</Button>
-      </label>
+      <Button asChild className="w-full">
+        <label htmlFor="file-upload">Upload File</label>
+      </Button>
     </div>
   );
 };

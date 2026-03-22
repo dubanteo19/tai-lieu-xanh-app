@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 export const PostDetailPage = () => {
   const { postId } = useParams();
   const { data, isLoading } = useGetPostDetailQuery(Number(postId));
+  console.log(data);
   if (isLoading) return <FullLoading />;
   return (
     <div className="grid grid-cols-12 gap-4 mt-2 w-full">

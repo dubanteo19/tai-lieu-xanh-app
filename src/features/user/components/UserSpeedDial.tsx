@@ -1,5 +1,10 @@
-import { logout } from "@/features/auth/authSlice";
+import { useLogoutMutation } from "@/features/auth/api/auth.api";
+import { clearAuth } from "@/features/auth/authSlice";
+import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
+import { cn } from "@/lib/utils";
+import FullLoading from "@/shared/components/full-loading";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
+import { Button } from "@/shared/ui/button";
 import { Divider } from "@/shared/ui/divider";
 import {
   BookOpenCheckIcon,
@@ -8,11 +13,8 @@ import {
   UserIcon,
   type LucideIcon,
 } from "lucide-react";
-import { USER_COMPONENTS, UserComponent } from "../constants";
 import { useDispatch } from "react-redux";
-import { cn } from "@/lib/utils";
-import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
-import { Button } from "@/shared/ui/button";
+import { USER_COMPONENTS, UserComponent } from "../constants";
 
 interface UserMenu {
   component: UserComponent;
@@ -45,9 +47,15 @@ const UserSpeedDial = () => {
   const dispatch = useDispatch();
   const fullName = useAppSelector((state) => state.auth.userSummary?.fullName);
   const { selectedComponent } = useAppSelector((state) => state.userMenu);
+  const [logout, { isLoading }] = useLogoutMutation();
   const onComponentChange = (componentName: UserComponent) => {
     dispatch(setSlectedComponent(componentName));
   };
+  const handleLogout = async () => {
+    await logout();
+    dispatch(clearAuth());
+  };
+  if (isLoading) return <FullLoading />;
   return (
     <div className="px-6 py-4 border bg-primary rounded-2xl text-white">
       <h5>
@@ -73,7 +81,7 @@ const UserSpeedDial = () => {
         })}
       </nav>
       <Divider color="white" className="my-4" />
-      <Button variant="secon" onClick={() => dispatch(logout())}>
+      <Button onClick={handleLogout}>
         <LogOutIcon size={20} />
         <span>Đăng xuất</span>
       </Button>

@@ -5,6 +5,15 @@ import { Button } from "@/shared/ui/button";
 import { useDispatch } from "react-redux";
 import { useGetInfoQuery } from "../api/user.api";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { ImageHolder } from "@/shared/ui/image-holder";
+import {
+  MailIcon,
+  MailPlusIcon,
+  PanelsTopLeftIcon,
+  UserIcon,
+  UsersIcon,
+} from "lucide-react";
+import { IconText } from "@/shared/components/icon-text";
 export const UserProfile = () => {
   const userId = useAppSelector((state) => state.auth.userSummary?.id);
   const dispatch = useDispatch();
@@ -14,40 +23,26 @@ export const UserProfile = () => {
     <div className="flex-center w-full ">
       <div>
         <h2 className="text-center">Thông tin tài khoản</h2>
-        <div>
-          <div>Avatar</div>
+        <div className="flex justify-center ">
+          <ImageHolder className="size-20 rounded-full" src={data?.avatar} />
         </div>
         <div>
-          <div>
-            <p>Tiểu sử:</p>
+          <div className="bg-gray-200  rounded-xl min-h-20 p-2 ">
             <p>{data?.bio || "Chưa có tiểu sử"}</p>
           </div>
         </div>
         <div>
-          <div>
-            <div>
-              accountCircleIcon /<p>Tên người dùng</p>
-              {data?.fullName}
-            </div>
+          <div className="flex ">
+            <IconText icon={<UserIcon />}>Ho va ten: </IconText>
+            <h4>{data?.fullName}</h4>
           </div>
-          <div>
-            <div>
-              EmailIcon
-              <p>Email:</p>
-            </div>
+          <div className="flex">
+            <IconText icon={<MailIcon />}>Email :</IconText>
+            <h4>{data?.email}</h4>
           </div>
-          <div>
-            <div>
-              Diversity3Icon
-              <p>Bạn bè</p>
-            </div>
-          </div>
-          <div>
-            <div>
-              rticleIcon
-              <p>Bài viết</p>
-              <p>0</p>
-            </div>
+          <div className="flex">
+            <IconText icon={<UsersIcon />}>Tai Lieu</IconText>
+            <h4>{data?.friends || 0}</h4>
           </div>
         </div>
         <div>

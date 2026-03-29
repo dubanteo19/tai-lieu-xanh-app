@@ -6,7 +6,9 @@ import { LinkButton } from "../ui/link-button";
 import SearchBar from "./search-bar";
 import { ImageHolder } from "../ui/image-holder";
 export const Header = () => {
-  const { isLogin, userSummary } = useAppSelector((state) => state.auth);
+  const { accessToken: isLogin, userSummary } = useAppSelector(
+    (state) => state.auth,
+  );
   const renderLinks = () => {
     if (isLogin) {
       return (

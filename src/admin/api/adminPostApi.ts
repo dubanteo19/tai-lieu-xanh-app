@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import BASE_URL from "@/shared/constants/url";
-import { IPost } from "../../type/IPost";
-import { IPostDetail } from "../../type/IPostDetail";
+import { PostDetail, PostSummary } from "@/features/post/types/post.type";
 interface IMajorWithPost {
   id: number;
   majorName: string;
@@ -18,22 +17,28 @@ export const adminPostApi = createApi({
       query: () => `posts/hot-majors`,
       providesTags: ["Post"],
     }),
-    getAllPosts: builder.query<IPost[], { page: number; size: number }>({
+    getAllPosts: builder.query<PostSummary[], { page: number; size: number }>({
       query: ({ page, size }) => `posts?page=${page}&size=${size}`,
       providesTags: ["Post"],
     }),
     getAllPublishedPosts: builder.query<
-      IPost[],
+      PostSummary[],
       { page: number; size: number }
     >({
       query: ({ page, size }) => `posts/published?page=${page}&size=${size}`,
       providesTags: ["Post"],
     }),
-    getAllReviewPosts: builder.query<IPost[], { page: number; size: number }>({
+    getAllReviewPosts: builder.query<
+      PostSummary[],
+      { page: number; size: number }
+    >({
       query: ({ page, size }) => `posts/review?page=${page}&size=${size}`,
       providesTags: ["Post"],
     }),
-    getAllDeletedPosts: builder.query<IPost[], { page: number; size: number }>({
+    getAllDeletedPosts: builder.query<
+      PostSummary[],
+      { page: number; size: number }
+    >({
       query: ({ page, size }) => `posts/deleted?page=${page}&size=${size}`,
       providesTags: ["Post"],
     }),
@@ -64,7 +69,6 @@ export const adminPostApi = createApi({
         url: `posts/${postId}/deep-delete`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Post"],
     }),
     deletePost: builder.mutation<void, { postId: number }>({
       query: ({ postId }) => ({
@@ -73,7 +77,7 @@ export const adminPostApi = createApi({
       }),
       invalidatesTags: ["Post"],
     }),
-    getPostDetail: builder.query<IPostDetail, number>({
+    getPostDetail: builder.query<PostDetail, number>({
       query: (postId) => `posts/${postId}/detail`,
     }),
   }),

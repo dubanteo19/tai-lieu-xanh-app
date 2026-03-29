@@ -1,8 +1,7 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "@/app/config/baseApi";
+import { baseQuery } from "@/app/config/base-query";
 import { PostSummary } from "@/features/post/types/post.type";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { UserInfo } from "../types/user.type";
-import { UpdatePasswordRequest } from "../types/user.request";
 
 export interface IUserUpdateInfo {
   id: number;
@@ -12,7 +11,7 @@ export interface IUserUpdateInfo {
 export const userApi = createApi({
   reducerPath: "userApi",
   tagTypes: ["UserInfo", "Post"],
-  baseQuery: baseQuery,
+  baseQuery,
   endpoints: (builder) => ({
     getUserPosts: builder.query<PostSummary[], number>({
       query: (id) => `users/${id}/posts`,
@@ -39,13 +38,6 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Post"],
     }),
-    updatePassword: builder.mutation<UserInfo, UpdatePasswordRequest>({
-      query: (request) => ({
-        url: `users/update-password`,
-        method: "PUT",
-        body: request,
-      }),
-    }),
   }),
 });
 export const {
@@ -53,5 +45,4 @@ export const {
   useGetUserPostsQuery,
   useDeletePostMutation,
   useUpdateInfoMutation,
-  useUpdatePasswordMutation,
 } = userApi;

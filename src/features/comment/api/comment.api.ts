@@ -1,10 +1,10 @@
-import { baseQuery } from "@/app/config/baseApi";
+import { baseQuery } from "@/app/config/base-query";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { Comment } from "../types/comment.type";
 import { UpdateCommentRequest } from "../types/comment.request";
 export const commentApi = createApi({
   reducerPath: "commentApi",
-  baseQuery: baseQuery,
+  baseQuery,
   tagTypes: ["Comment"],
   endpoints: (builder) => ({
     getCommentsByPostId: builder.query<Comment[], number>({

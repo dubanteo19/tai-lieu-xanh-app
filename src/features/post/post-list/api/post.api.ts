@@ -1,23 +1,14 @@
-import BASE_URL from "@/shared/constants/url";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { PostDetail, PostSummary } from "../../types/post.type";
-import { CreatePostRequest } from "../../types/post.request";
-import { Major } from "@/features/major/types/major.type";
+import { baseQuery } from "@/app/config/base-query";
 import { SearchFilters } from "@/features/discovery/types/discovery.type";
+import { Major } from "@/features/major/types/major.type";
 import { CursorReponse } from "@/shared/types/cursor-response";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { CreatePostRequest } from "../../types/post.request";
+import { PostDetail, PostSummary } from "../../types/post.type";
 export const postApi = createApi({
   reducerPath: "postApi",
   tagTypes: ["Post"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     getMajorsWithPosts: builder.query<Major[], void>({
       query: () => `posts/hot-majors`,

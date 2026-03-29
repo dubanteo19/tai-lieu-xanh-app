@@ -5,7 +5,6 @@ export interface RegisterReponse {
 }
 export interface LoginResponse {
   accessToken: string;
-  user: AuthUser;
 }
 export interface AuthUser {
   id: number;

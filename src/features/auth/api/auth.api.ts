@@ -1,14 +1,12 @@
-import BASE_URL from "@/shared/constants/url";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "@/app/config/base-query";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { setCredentials } from "../authSlice";
 import { LoginValues } from "../schemas/login.schema";
 import { RegisterValues } from "../schemas/register.schema";
-import { LoginResponse, RegisterReponse } from "../types/auth.type";
-import { setCredentials } from "../authSlice";
+import { AuthUser, LoginResponse, RegisterReponse } from "../types/auth.type";
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     forgot: builder.mutation<string, string>({
       query: (email) => ({
@@ -39,6 +37,15 @@ export const authApi = createApi({
         }
       },
     }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: "auth/logout",
+        method: "POST",
+      }),
+    }),
+    me: builder.query<AuthUser, void>({
+      query: () => "auth/me",
+    }),
     register: builder.mutation<RegisterReponse, RegisterValues>({
       query: (credentials) => ({
         url: "auth/register",
@@ -60,4 +67,6 @@ export const {
   useVerifyMutation,
   useForgotMutation,
   useResetMutation,
+  useMeQuery,
+  useLogoutMutation,
 } = authApi;

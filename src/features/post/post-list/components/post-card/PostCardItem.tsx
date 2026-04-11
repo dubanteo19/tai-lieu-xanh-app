@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { PostCard } from "./PostCard";
 import { PostCardTags } from "./PostCard.Tags";
 
-
 interface PostCardItemProps {
   post: PostSummary;
   handleHidePost: (id: number) => void;
@@ -13,15 +12,8 @@ export const PostCardItem = ({ post, handleHidePost }: PostCardItemProps) => {
     <div className="p-4 relative group rounded-2xl border border-primary">
       <PostCard post={post} handleHidePost={handleHidePost}>
         <PostCard.Header />
-        <div>{post.title}</div>
+        <h4>{post.title}</h4>
         <PostCard.Media />
-        <div className=" group-hover:opacity-100 transition-all rotate-30  absolute top-12 right-0  opacity-0">
-          <div className="border-primary border-2 borde text-primary  px-3 py-2 ">
-            <NavLink to={`/search?major=${post.major.id}`}>
-              {post.major.name}
-            </NavLink>
-          </div>
-        </div>
         <PostCardTags />
         <PostCard.Meta />
         <PostCard.Footer />

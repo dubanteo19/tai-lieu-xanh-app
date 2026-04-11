@@ -1,19 +1,13 @@
 import { setSlectedComponent } from "@/features/user-menu/userMenuSlice";
 import FullLoading from "@/shared/components/full-loading";
+import { IconText } from "@/shared/components/icon-text";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { Button } from "@/shared/ui/button";
+import { ImageHolder } from "@/shared/ui/image-holder";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { MailIcon, UserIcon, UsersIcon } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useGetInfoQuery } from "../api/user.api";
-import { skipToken } from "@reduxjs/toolkit/query";
-import { ImageHolder } from "@/shared/ui/image-holder";
-import {
-  MailIcon,
-  MailPlusIcon,
-  PanelsTopLeftIcon,
-  UserIcon,
-  UsersIcon,
-} from "lucide-react";
-import { IconText } from "@/shared/components/icon-text";
 export const UserProfile = () => {
   const userId = useAppSelector((state) => state.auth.userSummary?.id);
   const dispatch = useDispatch();
@@ -33,7 +27,7 @@ export const UserProfile = () => {
         </div>
         <div>
           <div className="flex ">
-            <IconText icon={<UserIcon />}>Ho va ten: </IconText>
+            <IconText icon={<UserIcon />}>Họ và tên: </IconText>
             <h4>{data?.fullName}</h4>
           </div>
           <div className="flex">
@@ -41,8 +35,8 @@ export const UserProfile = () => {
             <h4>{data?.email}</h4>
           </div>
           <div className="flex">
-            <IconText icon={<UsersIcon />}>Tai Lieu</IconText>
-            <h4>{data?.friends || 0}</h4>
+            <IconText icon={<UsersIcon />}>Tài liệu</IconText>
+            <h4>{data?.friends }</h4>
           </div>
         </div>
         <div>

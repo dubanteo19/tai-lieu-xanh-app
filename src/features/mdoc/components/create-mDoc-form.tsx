@@ -60,7 +60,7 @@ export const CreateMDocForm = () => {
 
   if (isLoading) return <FullLoading />;
   return (
-    <div>
+    <div className="max-w-2xl mx-auto w-full  border border-gray-400 rounded py-4 px-6 mt-4">
       <div>
         <p>Thêm thông tin cho tài liệu</p>
         <p className="text-sm">
@@ -76,7 +76,6 @@ export const CreateMDocForm = () => {
                 name="file"
                 render={() => (
                   <FormItem>
-                    <FormLabel>Tài liệu</FormLabel>
                     <FormControl>
                       <FileUpload
                         onFileChange={(file) =>
@@ -91,83 +90,91 @@ export const CreateMDocForm = () => {
                 )}
               />
               {file && <FilePreview file={file} />}
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tiêu đề tài liệu</FormLabel>
-                    <FormControl>
-                      <Input placeholder="title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Miêu tả tài liệu</FormLabel>
-                    <FormControl>
-                      <Input placeholder="description" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="majorId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Chuyên ngành</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={String(field.value)}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Chọn chuyên ngành" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {majors &&
-                          majors.map((major) => (
-                            <SelectItem key={major.id} value={String(major.id)}>
-                              {major.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {file && (
+                <div className="flex flex-col gap-4">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tiêu đề:</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Tin hoc dai cuong" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Miêu tả:</FormLabel>
+                        <FormControl>
+                          <Input placeholder="tai lieu xin" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="majorId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Chuyên ngành:</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={String(field.value)}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Chọn chuyên ngành" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {majors &&
+                              majors.map((major) => (
+                                <SelectItem
+                                  key={major.id}
+                                  value={String(major.id)}
+                                >
+                                  {major.name}
+                                </SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              {tags && (
-                <FormField
-                  name="tags"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nhãn</FormLabel>
-                      <FormControl>
-                        <TagSelect
-                          value={field.value ?? []}
-                          options={tags.map((t) => t.name)}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
+                  {tags && (
+                    <FormField
+                      name="tags"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nhãn:</FormLabel>
+                          <FormControl>
+                            <TagSelect
+                              value={field.value ?? []}
+                              options={tags.map((t) => t.name)}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
                   )}
-                />
+
+                  <div className="flex gap-4 mt-4 w-full justify-center">
+                    <Button type="submit">Lưu</Button>
+                    <Button variant="destructive">Hủy</Button>
+                  </div>
+                </div>
               )}
-              <div className="flex gap-4 mt-4 w-full justify-center">
-                <Button type="submit">Lưu</Button>
-                <Button variant="destructive">Hủy</Button>
-              </div>
             </form>
           </Form>
         </div>

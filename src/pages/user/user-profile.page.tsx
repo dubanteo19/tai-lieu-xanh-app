@@ -36,7 +36,7 @@ export const UserPostList = ({ userId }: UserPostListProps) => {
           key={post.id}
           handleHidePost={handleHidePost}
           post={post}
-        />
+          />
       ))}
       <button onClick={handleShowMore} disabled={isLoading}>
         Xem thêm

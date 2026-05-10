@@ -9,7 +9,7 @@ interface LinkButtonProp {
   className?: string;
   children: ReactNode;
 }
-export const LinkButton = ({ to, className, children }: LinkButtonProp) => {
+export const MLink = ({ to, className, children }: LinkButtonProp) => {
   return (
     <NavLink className={"relative"} to={to}>
       {({ isActive }) => (

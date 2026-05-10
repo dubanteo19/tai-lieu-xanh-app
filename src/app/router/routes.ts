@@ -13,6 +13,7 @@ export const ROUTES = {
   USER_NOTIFICATION: "/user/notification",
 
   POST_DETAIL: "/post/:postId",
+  post_detail: (id: number) => `/post/${id}`,
 
   // Admin
   ADMIN: "/admin",

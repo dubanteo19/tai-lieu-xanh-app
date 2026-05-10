@@ -26,17 +26,17 @@ export const UserProfile = () => {
           </div>
         </div>
         <div>
-          <div className="flex ">
+          <div className="flex items-center ">
             <IconText icon={<UserIcon />}>Họ và tên: </IconText>
-            <h4>{data?.fullName}</h4>
+            <p>{data?.fullName}</p>
           </div>
-          <div className="flex">
-            <IconText icon={<MailIcon />}>Email :</IconText>
-            <h4>{data?.email}</h4>
+          <div className="flex items-center">
+            <IconText icon={<MailIcon />}>Email: </IconText>
+            <p>{data?.email}</p>
           </div>
-          <div className="flex">
-            <IconText icon={<UsersIcon />}>Tài liệu</IconText>
-            <h4>{data?.friends }</h4>
+          <div className="flex items-center">
+            <IconText icon={<UsersIcon />}>Tài liệu: </IconText>
+            <p>{data?.posts || 0}</p>
           </div>
         </div>
         <div>

@@ -31,23 +31,24 @@ export const DownloadDialog = ({
     setDownloadStarted(false);
   };
   const renderMessage = () => {
-    if (isFetching) return "Preparing your file...";
-    if (downloadStarted) return "Your download has started";
-    if (count === null) return "Click below to start download";
-    return `Your download will start in ${count} second (s)`;
+    if (isFetching) return "Đang chuẩn bị tài liệu";
+    if (downloadStarted) return "Tài liệu đã được tải xuống";
+    if (count === null)
+      return "Vui lòng nhấn nút donwnload để tải xuống tài liệu";
+    return `Tài liệu sẽ được tải xuống trong ${count} giây`;
   };
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Download document</DialogTitle>
+        <DialogTitle className="text-center">Tải tài liệu</DialogTitle>
       </DialogHeader>
-      {isFetching ? <p>CircularProgress </p> : <h2>{renderMessage()}</h2>}
-      <Button disabled={isFetching} onClick={prepareDownload}>
-        {isFetching ? "Preparing" : "Download"}
-      </Button>
+      {isFetching ? <p>CircularProgress </p> : <p>{renderMessage()}</p>}
       <div className="flex gap-2 justify-end">
+        <Button disabled={isFetching} onClick={prepareDownload}>
+          {isFetching ? "Preparing" : "Download"}
+        </Button>
         <Button variant={"destructive"} onClick={closeDialog}>
-          Close
+          Đóng
         </Button>
       </div>
     </>

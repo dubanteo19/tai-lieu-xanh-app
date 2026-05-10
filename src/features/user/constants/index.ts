@@ -4,7 +4,6 @@ export const USER_COMPONENTS = {
   MyPosts: "MyPosts",
   ChangePassword: "ChangePassword",
   MyFriends: "MyFriends",
-  FriendRequest: "FriendRequest",
   MyComments: "MyComments",
 } as const;
 export type UserComponent =

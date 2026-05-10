@@ -7,9 +7,9 @@ import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { useDialog } from "@/shared/hooks/useDialog";
 import { Button } from "@/shared/ui/button";
 import { downloadFileFromUrl } from "@/shared/utils/downloadFile";
+import { ThumbsUpIcon } from "lucide-react";
 import { ReportDialog } from "../../report-post/ReportDialog";
 import { DownloadDialog } from "../dialogs/download-dialog";
-import { ThumbsUpIcon } from "lucide-react";
 
 interface PostActionButtonGroupProps {
   postId: number;
@@ -17,13 +17,13 @@ interface PostActionButtonGroupProps {
 export const PostActionButtonGroup = ({
   postId,
 }: PostActionButtonGroupProps) => {
-  const { id: userId } = useAppSelector((state) => state.auth);
+  const userId = useAppSelector((state) => state.auth.userSummary?.id);
   const { data: reasons, isFetching: isFetchingReasons } =
     useGetAllReasonsQuery();
   const [reportPost, { isLoading, isError }] = useReportPostMutation();
   const handleReportPost = (reason: string) => {
     try {
-      reportPost({ postId, userId, reason });
+      if (userId) reportPost({ postId, userId, reason });
     } catch (error) {
       console.log(error);
     }
@@ -61,9 +61,7 @@ export const PostActionButtonGroup = ({
         <Button>
           <ThumbsUpIcon />
         </Button>
-        <Button onClick={handleOpenDownloadPopup} variant={"link"}>
-          Tải tải liệu
-        </Button>
+        <Button onClick={handleOpenDownloadPopup}>Tải tải liệu</Button>
       </div>
       <Button onClick={handleOpenReportPopup} variant="destructive">
         Báo cáo

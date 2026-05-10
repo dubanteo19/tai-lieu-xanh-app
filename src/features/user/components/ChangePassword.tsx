@@ -1,5 +1,4 @@
 import { Button } from "@/shared/ui/button";
-import React from "react";
 const ChangePassword = () => {
   return (
     <div>

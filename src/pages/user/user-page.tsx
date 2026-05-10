@@ -1,5 +1,4 @@
 import ChangePassword from "@/features/user/components/ChangePassword";
-import { FriendRequest } from "@/features/user/components/FriendRequest";
 import MyComments from "@/features/user/components/MyComments";
 import MyFriends from "@/features/user/components/MyFriends";
 import MyPosts from "@/features/user/components/MyPosts";
@@ -13,7 +12,6 @@ const COMPONENT_MAP: Record<UserComponent, JSX.Element> = {
   [USER_COMPONENTS.UserProfileUpdate]: <UserProfileUpdate />,
   [USER_COMPONENTS.MyPosts]: <MyPosts />,
   [USER_COMPONENTS.MyFriends]: <MyFriends />,
-  [USER_COMPONENTS.FriendRequest]: <FriendRequest />,
   [USER_COMPONENTS.ChangePassword]: <ChangePassword />,
   [USER_COMPONENTS.MyComments]: <MyComments />,
 };
